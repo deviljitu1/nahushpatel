@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, MessageCircle, Linkedin, Github, Download, Calendar } from "lucide-react";
+import { Send, MessageCircle, Linkedin, Github, Download, Calendar, Play, Youtube } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -103,6 +103,42 @@ const ContactPage = () => {
           <button className="glass rounded-xl p-3 flex items-center gap-2 text-sm font-medium hover:scale-[1.02] transition-transform">
             <Download className="w-4 h-4 text-primary" /> Resume
           </button>
+        </motion.div>
+      </motion.div>
+
+      {/* Video Portfolio */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="mt-6"
+      >
+        <motion.h2 variants={item} className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          <Youtube className="w-4 h-4 inline mr-1" /> Video Portfolio
+        </motion.h2>
+        <motion.div variants={item} className="space-y-3">
+          {[
+            { title: "My Marketing Strategy Explained", embedId: "dQw4w9WgXcQ" },
+            { title: "Client Case Study — 3x Revenue", embedId: "dQw4w9WgXcQ" },
+          ].map((video) => (
+            <div key={video.title} className="glass rounded-2xl overflow-hidden">
+              <div className="relative w-full aspect-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.embedId}`}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full rounded-t-2xl"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-3">
+                <h3 className="text-sm font-semibold flex items-center gap-1.5">
+                  <Play className="w-3.5 h-3.5 text-primary" /> {video.title}
+                </h3>
+              </div>
+            </div>
+          ))}
         </motion.div>
       </motion.div>
 
