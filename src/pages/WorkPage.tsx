@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Film, Video } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
@@ -105,42 +105,74 @@ const videoPortfolio = [
     title: "Brand Intro Reel",
     category: "Reel",
     videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    creator: "@yourusername",
+    description: "Created this brand intro using After Effects + Premiere Pro. Focused on smooth transitions and brand color matching. 🎬",
+    likes: "2.4K",
+    comments: "186",
+    shares: "342",
   },
   {
     id: 2,
     title: "Product Motion Graphics",
     category: "Motion",
     videoUrl: "https://www.w3schools.com/html/movie.mp4",
+    creator: "@yourusername",
+    description: "3D product showcase with motion graphics. Made with Blender + After Effects. Client loved the floating effect ✨",
+    likes: "5.1K",
+    comments: "423",
+    shares: "891",
   },
   {
     id: 3,
     title: "AI Generated Ad",
     category: "AI Video",
     videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    creator: "@yourusername",
+    description: "Fully AI-generated ad using Runway + Midjourney. Prompt engineering + post-production editing in Premiere 🤖",
+    likes: "8.7K",
+    comments: "1.2K",
+    shares: "2.1K",
   },
   {
     id: 4,
     title: "Client Testimonial Edit",
     category: "Edit",
     videoUrl: "https://www.w3schools.com/html/movie.mp4",
+    creator: "@yourusername",
+    description: "Testimonial video edit with dynamic captions, b-roll cuts, and color grading. Shot on iPhone, edited in DaVinci 🎥",
+    likes: "1.8K",
+    comments: "94",
+    shares: "156",
   },
   {
     id: 5,
     title: "Social Media Campaign",
     category: "Reel",
     videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    creator: "@yourusername",
+    description: "Campaign reel for a food brand. Hook → Value → CTA format. 3x engagement vs their previous content 📱",
+    likes: "12K",
+    comments: "890",
+    shares: "3.4K",
   },
   {
     id: 6,
     title: "Explainer Animation",
     category: "Motion",
     videoUrl: "https://www.w3schools.com/html/movie.mp4",
+    creator: "@yourusername",
+    description: "2D explainer animation for a SaaS product. Script → Storyboard → Animation pipeline in 5 days 🚀",
+    likes: "3.6K",
+    comments: "267",
+    shares: "518",
   },
 ];
 
-const VideoCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
+const ReelCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -153,13 +185,12 @@ const VideoCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="glass rounded-2xl overflow-hidden group cursor-pointer"
-      onClick={togglePlay}
-    >
-      <div className="relative aspect-[9/16] bg-secondary/30">
+    <div className="relative w-full snap-start" style={{ height: "calc(100vh - 140px)" }}>
+      {/* Video */}
+      <div
+        className="relative w-full h-full rounded-2xl overflow-hidden bg-secondary/30 cursor-pointer"
+        onClick={togglePlay}
+      >
         <video
           ref={videoRef}
           src={video.videoUrl}
@@ -169,29 +200,109 @@ const VideoCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
           playsInline
           preload="metadata"
         />
-        <div
-          className={`absolute inset-0 flex items-center justify-center bg-background/30 transition-opacity ${
-            isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
-          }`}
-        >
-          {isPlaying ? (
-            <Pause className="w-10 h-10 text-primary-foreground drop-shadow-lg" />
-          ) : (
-            <Play className="w-10 h-10 text-primary-foreground drop-shadow-lg fill-primary-foreground" />
+
+        {/* Play/Pause overlay */}
+        <AnimatePresence>
+          {!isPlaying && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              className="absolute inset-0 flex items-center justify-center bg-background/20"
+            >
+              <div className="w-16 h-16 rounded-full bg-background/30 backdrop-blur-sm flex items-center justify-center">
+                <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground ml-1" />
+              </div>
+            </motion.div>
           )}
-        </div>
-        <div className="absolute top-2 left-2">
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/80 text-primary-foreground font-medium backdrop-blur-sm">
+        </AnimatePresence>
+
+        {/* Category badge */}
+        <div className="absolute top-3 left-3 z-10">
+          <span className="text-[11px] px-2.5 py-1 rounded-full bg-primary/80 text-primary-foreground font-medium backdrop-blur-sm">
             {video.category}
           </span>
         </div>
+
+        {/* Right side actions (Instagram style) */}
+        <div className="absolute right-3 bottom-28 z-10 flex flex-col items-center gap-5">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLiked(!isLiked);
+            }}
+            className="flex flex-col items-center gap-1"
+          >
+            <Heart
+              className={`w-7 h-7 transition-all ${
+                isLiked
+                  ? "text-red-500 fill-red-500 scale-110"
+                  : "text-primary-foreground drop-shadow-lg"
+              }`}
+            />
+            <span className="text-[11px] text-primary-foreground font-semibold drop-shadow-lg">
+              {video.likes}
+            </span>
+          </button>
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex flex-col items-center gap-1"
+          >
+            <MessageCircle className="w-7 h-7 text-primary-foreground drop-shadow-lg" />
+            <span className="text-[11px] text-primary-foreground font-semibold drop-shadow-lg">
+              {video.comments}
+            </span>
+          </button>
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex flex-col items-center gap-1"
+          >
+            <Send className="w-6 h-6 text-primary-foreground drop-shadow-lg" />
+            <span className="text-[11px] text-primary-foreground font-semibold drop-shadow-lg">
+              {video.shares}
+            </span>
+          </button>
+        </div>
+
+        {/* Bottom info overlay (Instagram style) */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-background/90 via-background/50 to-transparent">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+              <span className="text-xs font-bold text-primary-foreground">Y</span>
+            </div>
+            <span className="text-sm font-semibold text-primary-foreground drop-shadow-lg">
+              {video.creator}
+            </span>
+          </div>
+          <h3 className="text-sm font-bold text-primary-foreground drop-shadow-lg mb-1">
+            {video.title}
+          </h3>
+          <p
+            className={`text-xs text-primary-foreground/80 drop-shadow-lg leading-relaxed ${
+              !showMore ? "line-clamp-2" : ""
+            }`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowMore(!showMore);
+            }}
+          >
+            {video.description}
+            {!showMore && (
+              <span className="text-primary-foreground font-semibold ml-1 cursor-pointer">
+                more
+              </span>
+            )}
+          </p>
+          <div className="flex items-center gap-1.5 mt-2 text-primary-foreground/60">
+            <Music2 className="w-3 h-3" />
+            <span className="text-[10px]">Original Audio</span>
+          </div>
+        </div>
       </div>
-      <div className="p-2.5">
-        <h3 className="text-xs font-semibold truncate">{video.title}</h3>
-      </div>
-    </motion.div>
+    </div>
   );
 };
+
 
 const container = {
   hidden: {},
@@ -300,11 +411,14 @@ const WorkPage = () => {
         ) : (
           <motion.div key="videos" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
             <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
-              <Video className="w-3.5 h-3.5" /> Reels, motion graphics & AI videos — tap to play
+              <Video className="w-3.5 h-3.5" /> Swipe through reels — tap to play
             </p>
-            <div className="grid grid-cols-2 gap-3">
+            <div
+              className="flex flex-col gap-4 snap-y snap-mandatory overflow-y-auto scrollbar-none -mx-5 px-5"
+              style={{ height: "calc(100vh - 220px)" }}
+            >
               {videoPortfolio.map((video) => (
-                <VideoCard key={video.id} video={video} />
+                <ReelCard key={video.id} video={video} />
               ))}
             </div>
           </motion.div>
