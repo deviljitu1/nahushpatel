@@ -211,7 +211,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
           src={video.videoUrl}
           className="absolute inset-0 w-full h-full object-cover"
           loop
-          muted={false} // Start with sound if possible
+          muted={true}
           playsInline
           preload="metadata"
         />
@@ -412,6 +412,15 @@ const WorkPage = () => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    if (container.clientHeight === 0) return;
+    const index = Math.round(container.scrollTop / container.clientHeight);
+    if (!isNaN(index) && index !== activeVideoIndex) {
+      setActiveVideoIndex(index);
+    }
+  };
 
   // Reset creative mode when section changes
   useEffect(() => {
