@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import HomePage from "@/pages/HomePage";
@@ -17,16 +17,42 @@ const pageVariants = {
 };
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("home");
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    return tabs.includes(tab as Tab) ? (tab as Tab) : "home";
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab");
+      if (tab && tabs.includes(tab as Tab)) {
+        setActiveTab(tab as Tab);
+      } else {
+        setActiveTab("home");
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab);
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set("tab", tab);
+    window.history.pushState({}, "", newUrl);
+  };
 
   const renderPage = () => {
     switch (activeTab) {
       case "home":
-        return <HomePage onNavigate={(tab: string) => setActiveTab(tab as Tab)} />;
+        return <HomePage onNavigate={(tab: string) => handleTabChange(tab as Tab)} />;
       case "work":
         return <WorkPage />;
       case "services":
-        return <ServicesPage onNavigate={(tab: string) => setActiveTab(tab as Tab)} />;
+        return <ServicesPage onNavigate={(tab: string) => handleTabChange(tab as Tab)} />;
       case "skills":
         return <SkillsPage />;
       case "contact":
@@ -56,7 +82,7 @@ const Index = () => {
         </AnimatePresence>
       </main>
 
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
 };
