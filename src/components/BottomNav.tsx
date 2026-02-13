@@ -16,7 +16,7 @@ interface BottomNavProps {
 
 const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[env(safe-area-inset-bottom,8px)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-[env(safe-area-inset-bottom,8px)]">
       <div className="glass rounded-2xl mx-auto max-w-md px-2 py-2 flex items-center justify-around shadow-lg">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;

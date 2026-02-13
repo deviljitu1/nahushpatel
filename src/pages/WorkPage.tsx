@@ -256,8 +256,8 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
             <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
               <Heart
                 className={`w-7 h-7 transition-colors ${isLiked
-                    ? "text-red-500 fill-red-500"
-                    : "text-white"
+                  ? "text-red-500 fill-red-500"
+                  : "text-white"
                   }`}
               />
             </div>
@@ -423,8 +423,8 @@ const WorkPage = () => {
             <button
               onClick={() => setActiveSection("projects")}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "projects"
-                  ? "gradient-bg text-primary-foreground"
-                  : "glass text-muted-foreground hover:text-foreground"
+                ? "gradient-bg text-primary-foreground"
+                : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
               <TrendingUp className="w-3.5 h-3.5" /> Projects
@@ -432,8 +432,8 @@ const WorkPage = () => {
             <button
               onClick={() => setActiveSection("videos")}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "videos"
-                  ? "bg-white/20 text-white backdrop-blur-md"
-                  : "glass text-muted-foreground hover:text-foreground"
+                ? "bg-white/20 text-white backdrop-blur-md"
+                : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
               <Film className="w-3.5 h-3.5" /> Video Portfolio
@@ -452,8 +452,8 @@ const WorkPage = () => {
                   key={f}
                   onClick={() => setActiveFilter(f)}
                   className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${activeFilter === f
-                      ? "gradient-bg text-primary-foreground"
-                      : "glass text-muted-foreground hover:text-foreground"
+                    ? "gradient-bg text-primary-foreground"
+                    : "glass text-muted-foreground hover:text-foreground"
                     }`}
                 >
                   {f}
@@ -508,7 +508,7 @@ const WorkPage = () => {
               {videoPortfolio.map((video, index) => (
                 <div
                   key={video.id}
-                  ref={(el) => (videoRefs.current[index] = el)}
+                  ref={(el) => { if (el) videoRefs.current[index] = el; }}
                   data-index={index}
                   className="w-full h-[100dvh] snap-center snap-always relative"
                 >
