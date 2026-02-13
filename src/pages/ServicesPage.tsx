@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Search, Megaphone, Zap, GitBranch, FileText, ChevronDown, Phone } from "lucide-react";
+import { ScheduleDialog } from "@/components/ScheduleDialog";
 
 const services = [
   {
@@ -62,10 +63,6 @@ interface ServicesPageProps {
 
 const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
-  const handleBookCall = () => {
-    window.open("https://calendly.com", "_blank");
-  };
 
   return (
     <div className="px-5 pt-14 max-w-lg mx-auto">
@@ -139,12 +136,13 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         transition={{ delay: 0.5 }}
         className="mt-8 text-center"
       >
-        <button
-          onClick={handleBookCall}
-          className="gradient-bg text-primary-foreground px-8 py-3 rounded-2xl font-semibold text-sm flex items-center gap-2 mx-auto glow-primary hover:opacity-90 transition-opacity"
-        >
-          <Phone className="w-4 h-4" /> Book a Call
-        </button>
+        <ScheduleDialog>
+          <button
+            className="gradient-bg text-primary-foreground px-8 py-3 rounded-2xl font-semibold text-sm flex items-center gap-2 mx-auto glow-primary hover:opacity-90 transition-opacity"
+          >
+            <Phone className="w-4 h-4" /> Book a Call
+          </button>
+        </ScheduleDialog>
       </motion.div>
     </div>
   );
