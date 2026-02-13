@@ -403,13 +403,7 @@ const creativeItems = [
   },
 ];
 
-// Sound Assets (Using reliable public placeholders)
-const SOUNDS = {
-  summer: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=forest-wind-and-birds-6881.mp3",
-  winter: "https://cdn.pixabay.com/download/audio/2022/03/24/audio_03d659683d.mp3?filename=blizzard-cold-winds-17441.mp3",
-  rainy: "https://cdn.pixabay.com/download/audio/2021/08/09/audio_8ed439970b.mp3?filename=rain-and-thunder-16705.mp3",
-  autumn: "https://cdn.pixabay.com/download/audio/2022/02/07/audio_4083a2a4b3.mp3?filename=autumn-breeze-14022.mp3"
-};
+
 
 const SeasonBackground = ({ season }: { season: 'summer' | 'winter' | 'rainy' | 'autumn' }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -431,7 +425,7 @@ const SeasonBackground = ({ season }: { season: 'summer' | 'winter' | 'rainy' | 
         clearInterval(fadeOut);
         if (audioRef.current) {
           audioRef.current.pause();
-          audioRef.current.src = SOUNDS[season];
+          // audioRef.current.src = SOUNDS[season];
           // Attempt to play (browser may block without interaction)
           const playPromise = audioRef.current.play();
           if (playPromise !== undefined) {
@@ -614,14 +608,10 @@ const WorkPage = () => {
     }
   }, [activeSection]);
 
-  // Determine current season based on active section
-  const currentSeason = activeSection === 'projects' ? 'rainy' : activeSection === 'videos' ? 'winter' : 'autumn';
+
 
   return (
-    <div className={`relative pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg min-h-screen overflow-hidden'}`}>
-
-      {/* Global Season Layer - Renders ON TOP of content for immersion */}
-      <SeasonBackground season={currentSeason} />
+    <div className={`relative pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg min-h-screen'}`}>
 
       {/* Header - Variable Padding based on section */}
       <div className={`${activeSection === 'videos' || activeSection === 'creatives' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
@@ -650,32 +640,34 @@ const WorkPage = () => {
             </>
           )}
 
-          {/* 3D Segmented Control / Navigation */}
-          <div className={`flex gap-3 overflow-x-auto py-3 px-4 mx-auto scrollbar-none rounded-full bg-slate-900/40 backdrop-blur-xl border border-white/5 shadow-2xl ${activeSection === 'videos' || activeSection === 'creatives' ? 'mt-2' : 'mb-8'}`}>
+          {/* Section Toggle */}
+          <div className={`flex gap-2 overflow-x-auto pb-2 scrollbar-none ${activeSection === 'videos' || activeSection === 'creatives' ? 'mt-2' : 'mb-4'}`}>
             <button
               onClick={() => setActiveSection("projects")}
-              className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeSection === "projects"
-                ? "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_4px_14px_rgba(59,130,246,0.5),inset_0_1px_1px_rgba(255,255,255,0.3)] scale-105"
-                : "text-slate-400 hover:text-white hover:bg-white/5"}`}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
+                ? "gradient-bg text-primary-foreground"
+                : "glass text-muted-foreground hover:text-foreground"
+                }`}
             >
-              Projects
+              <TrendingUp className="w-3.5 h-3.5" /> Projects
             </button>
             <button
               onClick={() => setActiveSection("videos")}
-              className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeSection === "videos"
-                ? "bg-gradient-to-b from-cyan-400 to-cyan-600 text-white shadow-[0_4px_14px_rgba(34,211,238,0.5),inset_0_1px_1px_rgba(255,255,255,0.3)] scale-105"
-                : "text-slate-400 hover:text-white hover:bg-white/5"}`}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "videos"
+                ? "bg-white/20 text-white backdrop-blur-md"
+                : "glass text-muted-foreground hover:text-foreground"
+                }`}
             >
-              Videos
+              <Film className="w-3.5 h-3.5" /> Video Portfolio
             </button>
             <button
               onClick={() => setActiveSection("creatives")}
-              className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeSection === "creatives"
-                ? "bg-gradient-to-b from-orange-400 to-orange-600 text-white shadow-[0_4px_14px_rgba(249,115,22,0.5),inset_0_1px_1px_rgba(255,255,255,0.3)] scale-105"
-                : "text-slate-400 hover:text-white hover:bg-white/5"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "creatives"
+                ? "gradient-bg text-primary-foreground"
+                : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
-              Creatives
+              <Wrench className="w-3.5 h-3.5" /> Creatives
             </button>
           </div>
         </div>
@@ -712,37 +704,24 @@ const WorkPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 onClick={() => setSelectedProject(project)}
-                className="group relative cursor-pointer"
+                className="glass rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99]"
               >
-                {/* 3D Card Container */}
-                <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-slate-800/90 to-slate-950/90 border border-white/10 shadow-[0_15px_40px_-5px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.1)] backdrop-blur-md transform transition-transform duration-500 hover:-translate-y-2 hover:shadow-[0_25px_50px_-10px_rgba(0,0,0,0.5)]">
-
-                  {/* Image Area */}
-                  <div className="relative h-64 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10 opacity-60" />
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                    />
-                    {/* Floating Tag */}
-                    <div className="absolute top-4 left-4 z-20">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 border border-white/20 text-white backdrop-blur-md">
-                        {project.category}
-                      </span>
+                <div className="flex items-start gap-3">
+                  <div className="text-3xl">{project.image}</div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-sm">{project.title}</h3>
+                    <p className="text-xs text-primary font-medium flex items-center gap-1 mt-0.5">
+                      <TrendingUp className="w-3 h-3" /> {project.result}
+                    </p>
+                    <div className="flex gap-1.5 mt-2 flex-wrap">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
-
-                  {/* Content Area - Looking like "Forecast" info */}
-                  <div className="p-6 relative z-20 -mt-10">
-                    <div className="flex justify-between items-end mb-2">
-                      <h3 className="text-2xl font-bold text-white leading-tight drop-shadow-md">{project.title}</h3>
-                      <div className="bg-blue-500/20 p-2 rounded-full border border-blue-400/30 text-blue-300">
-                        <ArrowUpRight className="w-5 h-5" />
-                      </div>
-                    </div>
-                    <p className="text-slate-400 text-sm font-medium leading-relaxed">{project.description}</p>
-                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
                 </div>
               </motion.div>
             ))}
