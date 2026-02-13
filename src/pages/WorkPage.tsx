@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2 } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
@@ -408,32 +408,43 @@ const WorkPage = () => {
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
   const [selectedCreative, setSelectedCreative] = useState<(typeof creativeItems)[number] | null>(null);
   const [activeSection, setActiveSection] = useState<"projects" | "videos" | "creatives">("projects");
+  const [creativeMode, setCreativeMode] = useState<"wall" | "carousel">("wall");
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const index = Math.round(container.scrollTop / container.clientHeight);
-    if (index !== activeVideoIndex) {
-      setActiveVideoIndex(index);
+  // Reset creative mode when section changes
+  useEffect(() => {
+    if (activeSection !== 'creatives') {
+      setTimeout(() => setCreativeMode('wall'), 300);
     }
-  };
+  }, [activeSection]);
 
   return (
-    <div className={`pt-14 mx-auto ${activeSection === 'videos' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
+    <div className={`pt-14 mx-auto ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
 
       {/* Header - Variable Padding based on section */}
-      <div className={`${activeSection === 'videos' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-14 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
-        <div className={activeSection === 'videos' ? 'pointer-events-auto max-w-lg mx-auto' : ''}>
+      <div className={`${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-14 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
+        <div className={activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'pointer-events-auto max-w-lg mx-auto' : ''}>
+
+          {/* Back Button for Creative Carousel */}
+          {activeSection === 'creatives' && creativeMode === 'carousel' && (
+            <button
+              onClick={() => setCreativeMode('wall')}
+              className="mb-4 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to Gallery
+            </button>
+          )}
+
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`text-2xl font-bold mb-1 ${activeSection === 'videos' ? 'text-white' : ''}`}
+            className={`text-2xl font-bold mb-1 ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'text-white' : ''}`}
           >
-            My <span className={activeSection === 'videos' ? 'text-white' : 'gradient-text'}>Work</span>
+            My <span className={activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'text-white' : 'gradient-text'}>Work</span>
           </motion.h1>
-          <p className={`text-sm mb-4 ${activeSection === 'videos' ? 'text-white/70' : 'text-muted-foreground'}`}>Case studies & creative work</p>
+          <p className={`text-sm mb-4 ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'text-white/70' : 'text-muted-foreground'}`}>Case studies & creative work</p>
 
           {/* Section Toggle */}
           <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-none">
@@ -550,57 +561,94 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-0 bg-neutral-900 flex flex-col pt-28"
+            className={creativeMode === 'carousel' ? "fixed inset-0 z-0 bg-neutral-900 flex flex-col pt-28" : "pb-24"}
           >
             {/* Spotlight Effect Background */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.1),rgba(0,0,0,0)50%)] pointer-events-none" />
+            {creativeMode === 'carousel' && (
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.1),rgba(0,0,0,0)50%)] pointer-events-none" />
+            )}
 
-            <div className="relative z-10 px-5 mb-2">
-              <p className="text-xs text-white/50 font-serif italic mb-4 text-center">"A curation of visual experiments"</p>
-            </div>
+            {creativeMode === "wall" ? (
+              <>
+                <p className="text-xs text-muted-foreground mb-6 text-center">Welcome to the gallery. Tap a frame to view details.</p>
 
-            {/* Gallery Wall - Horizontal Scroll */}
-            <div className="flex-1 overflow-x-auto overflow-y-hidden flex items-center gap-12 px-10 pb-20 snap-x snap-mandatory scrollbar-none perspective-1000">
-              {creativeItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, scale: 0.8, rotateY: 20 }}
-                  whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  viewport={{ margin: "-10% 0px -10% 0px" }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="relative group shrink-0 w-[280px] snap-center"
-                  onClick={() => setSelectedCreative(item)}
-                >
-                  {/* Hanging String (Visual) */}
-                  <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-0.5 h-16 bg-white/20 z-0" />
-                  <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white/40 shadow-[0_0_10px_rgba(255,255,255,0.5)] z-0" />
+                {/* Wall View - Grid of Frames */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-8 px-2 perspective-1000">
+                  {creativeItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="relative group cursor-pointer"
+                      onClick={() => setCreativeMode('carousel')}
+                    >
+                      {/* Hanging String */}
+                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-black/20 z-0" />
+                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-black/40 z-0" />
 
-                  {/* Frame & Artwork */}
-                  <div className="relative bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer z-10">
-                    <div className="relative overflow-hidden aspect-[4/5] bg-gray-100">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover filter sepia-[0.2] contrast-105 group-hover:sepia-0 transition-all duration-500"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                    </div>
+                      <div className="bg-white p-2 shadow-xl hover:scale-105 transition-transform duration-300 relative z-10">
+                        <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover filter contrast-105" />
+                        </div>
+                        <div className="mt-2 text-center">
+                          <h3 className="text-[10px] font-serif font-bold truncate px-1">{item.title}</h3>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Carousel View - Horizontal Scroll */}
+                <div className="relative z-10 px-5 mb-2">
+                  <p className="text-xs text-white/50 font-serif italic mb-4 text-center">"A curation of visual experiments"</p>
+                </div>
 
-                    {/* Plaque / Label */}
-                    <div className="mt-4 text-center">
-                      <h3 className="text-black font-serif text-lg font-bold tracking-tight">{item.title}</h3>
-                      <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{item.category}</p>
-                    </div>
-                  </div>
+                <div className="flex-1 overflow-x-auto overflow-y-hidden flex items-center gap-12 px-10 pb-20 snap-x snap-mandatory scrollbar-none perspective-1000">
+                  {creativeItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, scale: 0.8, rotateY: 20 }}
+                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      viewport={{ margin: "-10% 0px -10% 0px" }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="relative group shrink-0 w-[280px] snap-center"
+                      onClick={() => setSelectedCreative(item)}
+                    >
+                      {/* Hanging String (Visual) */}
+                      <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-0.5 h-16 bg-white/20 z-0" />
+                      <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white/40 shadow-[0_0_10px_rgba(255,255,255,0.5)] z-0" />
 
-                  {/* Floor Reflection (Subtle) */}
-                  <div className="absolute -bottom-12 left-0 right-0 h-10 bg-gradient-to-b from-white/10 to-transparent transform scale-y-[-1] opacity-20 blur-sm pointer-events-none" />
-                </motion.div>
-              ))}
+                      {/* Frame & Artwork */}
+                      <div className="relative bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer z-10">
+                        <div className="relative overflow-hidden aspect-[4/5] bg-gray-100">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover filter sepia-[0.2] contrast-105 group-hover:sepia-0 transition-all duration-500"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                        </div>
 
-              {/* Spacer for end of gallery */}
-              <div className="w-10 shrink-0" />
-            </div>
+                        {/* Plaque / Label */}
+                        <div className="mt-4 text-center">
+                          <h3 className="text-black font-serif text-lg font-bold tracking-tight">{item.title}</h3>
+                          <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{item.category}</p>
+                        </div>
+                      </div>
+
+                      {/* Floor Reflection (Subtle) */}
+                      <div className="absolute -bottom-12 left-0 right-0 h-10 bg-gradient-to-b from-white/10 to-transparent transform scale-y-[-1] opacity-20 blur-sm pointer-events-none" />
+                    </motion.div>
+                  ))}
+
+                  {/* Spacer for end of gallery */}
+                  <div className="w-10 shrink-0" />
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
