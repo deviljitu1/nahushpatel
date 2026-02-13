@@ -357,10 +357,57 @@ const cardAnim = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
+// Creative portfolio items
+const creativeItems = [
+  {
+    id: 1,
+    title: "Neon Brand Identity",
+    category: "Branding",
+    image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
+    description: "Complete visual identity for a cyberpunk-themed coffee shop.",
+  },
+  {
+    id: 2,
+    title: "Minimalist Poster Series",
+    category: "Print Design",
+    image: "https://images.unsplash.com/photo-1572044162444-ad6021105507?q=80&w=2000&auto=format&fit=crop",
+    description: "Series of 3 posters focusing on typography and negative space.",
+  },
+  {
+    id: 3,
+    title: "Social Media Kit",
+    category: "Social Media",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2000&auto=format&fit=crop",
+    description: " cohesive set of templates for Instagram stories and posts.",
+  },
+  {
+    id: 4,
+    title: "3D Product Render",
+    category: "3D Art",
+    image: "https://images.unsplash.com/photo-1633596683562-4a46a328325a?q=80&w=2000&auto=format&fit=crop",
+    description: "Hyper-realistic render of a concept smart watch.",
+  },
+  {
+    id: 5,
+    title: "Event Banner",
+    category: "Marketing",
+    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop",
+    description: "Large format banner design for a tech conference.",
+  },
+  {
+    id: 6,
+    title: "App UI Concept",
+    category: "UI/UX",
+    image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=2000&auto=format&fit=crop",
+    description: "Dark mode interface design for a music streaming app.",
+  },
+];
+
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
-  const [activeSection, setActiveSection] = useState<"projects" | "videos">("projects");
+  const [selectedCreative, setSelectedCreative] = useState<(typeof creativeItems)[number] | null>(null);
+  const [activeSection, setActiveSection] = useState<"projects" | "videos" | "creatives">("projects");
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
@@ -374,10 +421,9 @@ const WorkPage = () => {
   };
 
   return (
-    <div className={`pt-14 mx-auto ${activeSection === 'projects' ? 'px-5 max-w-lg' : 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col'}`}>
+    <div className={`pt-14 mx-auto ${activeSection === 'videos' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
 
       {/* Header - Variable Padding based on section */}
-      {/* For videos, we float the header on top or hide it? Let's float it on top with z-index */}
       <div className={`${activeSection === 'videos' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-14 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
         <div className={activeSection === 'videos' ? 'pointer-events-auto max-w-lg mx-auto' : ''}>
           <motion.h1
@@ -389,11 +435,11 @@ const WorkPage = () => {
           </motion.h1>
           <p className={`text-sm mb-4 ${activeSection === 'videos' ? 'text-white/70' : 'text-muted-foreground'}`}>Case studies & creative work</p>
 
-          {/* Section Toggle: Projects vs Video Portfolio */}
-          <div className="flex gap-2 mb-4">
+          {/* Section Toggle */}
+          <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-none">
             <button
               onClick={() => setActiveSection("projects")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "projects"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
                 ? "gradient-bg text-primary-foreground"
                 : "glass text-muted-foreground hover:text-foreground"
                 }`}
@@ -402,12 +448,21 @@ const WorkPage = () => {
             </button>
             <button
               onClick={() => setActiveSection("videos")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "videos"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "videos"
                 ? "bg-white/20 text-white backdrop-blur-md"
                 : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
               <Film className="w-3.5 h-3.5" /> Video Portfolio
+            </button>
+            <button
+              onClick={() => setActiveSection("creatives")}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "creatives"
+                ? "gradient-bg text-primary-foreground"
+                : "glass text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              <Wrench className="w-3.5 h-3.5" /> Creatives
             </button>
           </div>
         </div>
@@ -465,7 +520,7 @@ const WorkPage = () => {
               </AnimatePresence>
             </motion.div>
           </motion.div>
-        ) : (
+        ) : activeSection === "videos" ? (
           <motion.div
             key="videos"
             initial={{ opacity: 0 }}
@@ -485,13 +540,43 @@ const WorkPage = () => {
                   <ReelCard video={video} isActive={activeVideoIndex === index} />
                 </div>
               ))}
-
-              {/* Spacer at bottom to ensure last video snaps correctly without being covered by browser chrome if any */}
               <div className="h-1 w-full snap-align-none" />
             </div>
-
-            {/* Gradient fade at bottom for smooth transition to nav - only needed if nav is overlaying */}
             <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="creatives"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="pb-24"
+          >
+            <p className="text-xs text-muted-foreground mb-4">A curated collection of visual experiments.</p>
+
+            {/* Masonry-style Grid */}
+            <div className="columns-2 gap-3 space-y-3">
+              {creativeItems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => setSelectedCreative(item)}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                    <span className="text-[10px] text-primary-foreground font-medium uppercase tracking-wider">{item.category}</span>
+                    <h3 className="text-xs text-white font-bold">{item.title}</h3>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -544,8 +629,27 @@ const WorkPage = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Creative Detail Modal (Lightbox) */}
+      <Dialog open={!!selectedCreative} onOpenChange={() => setSelectedCreative(null)}>
+        <DialogContent className="bg-black/95 border-none text-white max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
+          {selectedCreative && (
+            <div className="relative">
+              <img src={selectedCreative.image} alt={selectedCreative.title} className="w-full h-auto max-h-[60vh] object-contain bg-black/50" />
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">{selectedCreative.category}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-2 font-serif tracking-tight">{selectedCreative.title}</h3>
+                <p className="text-sm text-gray-300 leading-relaxed font-light">{selectedCreative.description}</p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
+
 
 export default WorkPage;
