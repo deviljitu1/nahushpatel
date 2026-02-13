@@ -583,7 +583,7 @@ const WorkPage = () => {
 
             {creativeMode === "wall" ? (
               <div className="pb-20 px-5">
-                <p className="text-xs text-muted-foreground mb-8 text-center pt-4">Welcome to the gallery. Tap a frame to view details.</p>
+                <p className="text-xs text-muted-foreground mb-24 text-center pt-4">Welcome to the gallery. Tap a frame to view details.</p>
 
                 {/* Wall View - Grid of Frames */}
                 <div className="grid grid-cols-2 gap-x-6 gap-y-20 perspective-1000 max-w-lg mx-auto">
