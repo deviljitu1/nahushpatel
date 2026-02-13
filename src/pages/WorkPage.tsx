@@ -377,15 +377,15 @@ const WorkPage = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
             const index = Number(entry.target.getAttribute('data-index'));
             setActiveVideoIndex(index);
           }
         });
       },
       {
-        root: null, // Use viewport
-        threshold: 0.6, // Trigger when 60% of video is visible
+        root: null,
+        threshold: 0.5,
       }
     );
 
