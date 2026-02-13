@@ -174,20 +174,14 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
   const [isLiked, setIsLiked] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
-  // Auto-play when active
   useEffect(() => {
     if (isActive) {
-      const playPromise = videoRef.current?.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch((error) => {
-            console.log("Autoplay blocked/failed:", error);
-            setIsPlaying(false);
-          });
-      }
+      videoRef.current?.play().then(() => {
+        setIsPlaying(true);
+      }).catch((e) => {
+        console.error("Autoplay failed:", e);
+        setIsPlaying(false);
+      });
     } else {
       videoRef.current?.pause();
       setIsPlaying(false);
@@ -198,14 +192,15 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
+      setIsPlaying(false);
     } else {
-      videoRef.current.play();
+      videoRef.current.play().catch(console.error);
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying);
   };
 
   return (
-    <div className="relative w-full h-[100dvh] md:h-full snap-center shrink-0 flex items-center justify-center bg-black">
+    <div className="relative w-full h-[100dvh] md:h-full snap-start shrink-0 flex items-center justify-center bg-black">
       {/* Video */}
       <div
         className="relative w-full h-full overflow-hidden cursor-pointer"
@@ -216,7 +211,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
           src={video.videoUrl}
           className="absolute inset-0 w-full h-full object-cover"
           loop
-          muted={false}
+          muted={false} // Start with sound if possible
           playsInline
           preload="metadata"
         />
@@ -368,39 +363,15 @@ const WorkPage = () => {
   const [activeSection, setActiveSection] = useState<"projects" | "videos">("projects");
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
-  const videoRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  // Intersection Observer for robust scroll detection
-  useEffect(() => {
-    if (activeSection !== 'videos') return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            const index = Number(entry.target.getAttribute('data-index'));
-            setActiveVideoIndex(index);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.5,
-      }
-    );
-
-    videoRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => {
-      videoRefs.current.forEach((ref) => {
-        if (ref) observer.unobserve(ref);
-      });
-    };
-  }, [activeSection]);
-
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const index = Math.round(container.scrollTop / container.clientHeight);
+    if (index !== activeVideoIndex) {
+      setActiveVideoIndex(index);
+    }
+  };
 
   return (
     <div className={`pt-14 mx-auto ${activeSection === 'projects' ? 'px-5 max-w-lg' : 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col'}`}>
@@ -504,13 +475,12 @@ const WorkPage = () => {
           >
             <div
               className="w-full h-full snap-y snap-mandatory overflow-y-auto scrollbar-none"
+              onScroll={handleScroll}
             >
               {videoPortfolio.map((video, index) => (
                 <div
                   key={video.id}
-                  ref={(el) => { if (el) videoRefs.current[index] = el; }}
-                  data-index={index}
-                  className="w-full h-[100dvh] snap-center snap-always relative"
+                  className="w-full h-[100dvh] snap-start snap-always relative"
                 >
                   <ReelCard video={video} isActive={activeVideoIndex === index} />
                 </div>
