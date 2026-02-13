@@ -430,11 +430,11 @@ const WorkPage = () => {
   }, [activeSection]);
 
   return (
-    <div className={`pt-14 mx-auto ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
+    <div className={`pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
 
       {/* Header - Variable Padding based on section */}
-      <div className={`${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
-        <div className={activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'pointer-events-auto max-w-lg mx-auto flex flex-col items-center' : ''}>
+      <div className={`${activeSection === 'videos' || activeSection === 'creatives' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
+        <div className={activeSection === 'videos' || activeSection === 'creatives' ? 'pointer-events-auto max-w-lg mx-auto flex flex-col items-center' : ''}>
 
           {/* Back Button for Creative Carousel */}
           {activeSection === 'creatives' && creativeMode === 'carousel' && (
@@ -446,7 +446,7 @@ const WorkPage = () => {
             </button>
           )}
 
-          {!(activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel')) && (
+          {!(activeSection === 'videos' || activeSection === 'creatives') && (
             <>
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
@@ -460,7 +460,7 @@ const WorkPage = () => {
           )}
 
           {/* Section Toggle */}
-          <div className={`flex gap-2 overflow-x-auto pb-2 scrollbar-none ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'mt-2' : 'mb-4'}`}>
+          <div className={`flex gap-2 overflow-x-auto pb-2 scrollbar-none ${activeSection === 'videos' || activeSection === 'creatives' ? 'mt-2' : 'mb-4'}`}>
             <button
               onClick={() => setActiveSection("projects")}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
@@ -574,7 +574,7 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={creativeMode === 'carousel' ? "fixed inset-0 z-0 bg-neutral-900 flex flex-col pt-28" : "pb-24"}
+            className={creativeMode === 'carousel' ? "fixed inset-0 z-0 bg-neutral-900 flex flex-col pt-28" : "fixed inset-0 z-0 bg-neutral-100 dark:bg-neutral-900 flex flex-col pt-24 overflow-y-auto"}
           >
             {/* Spotlight Effect Background */}
             {creativeMode === 'carousel' && (
@@ -582,11 +582,11 @@ const WorkPage = () => {
             )}
 
             {creativeMode === "wall" ? (
-              <>
-                <p className="text-xs text-muted-foreground mb-6 text-center">Welcome to the gallery. Tap a frame to view details.</p>
+              <div className="pb-20 px-5">
+                <p className="text-xs text-muted-foreground mb-8 text-center pt-4">Welcome to the gallery. Tap a frame to view details.</p>
 
                 {/* Wall View - Grid of Frames */}
-                <div className="grid grid-cols-2 gap-x-4 gap-y-8 px-2 perspective-1000">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-20 perspective-1000 max-w-lg mx-auto">
                   {creativeItems.map((item, index) => (
                     <motion.div
                       key={item.id}
@@ -597,21 +597,21 @@ const WorkPage = () => {
                       onClick={() => setCreativeMode('carousel')}
                     >
                       {/* Hanging String */}
-                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-black/20 z-0" />
-                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-black/40 z-0" />
+                      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-0.5 h-12 bg-black/20 dark:bg-white/20 z-0" />
+                      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-black/40 dark:bg-white/40 shadow-sm z-0" />
 
-                      <div className="bg-white p-2 shadow-xl hover:scale-105 transition-transform duration-300 relative z-10">
+                      <div className="bg-white p-3 shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:scale-105 transition-transform duration-300 relative z-10 transform-gpu">
                         <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                           <img src={item.image} alt={item.title} className="w-full h-full object-cover filter contrast-105" />
                         </div>
-                        <div className="mt-2 text-center">
-                          <h3 className="text-[10px] font-serif font-bold truncate px-1">{item.title}</h3>
+                        <div className="mt-3 text-center">
+                          <h3 className="text-[10px] font-serif font-bold truncate px-1 text-black">{item.title}</h3>
                         </div>
                       </div>
                     </motion.div>
                   ))}
                 </div>
-              </>
+              </div>
             ) : (
               <>
                 {/* Carousel View - Horizontal Scroll */}
