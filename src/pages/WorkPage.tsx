@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, X, TrendingUp, Wrench, ArrowUpRight, Play, Youtube } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Film, Video } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
@@ -98,6 +98,101 @@ const projects = [
   },
 ];
 
+// Video portfolio items — replace URLs with your actual hosted video files
+const videoPortfolio = [
+  {
+    id: 1,
+    title: "Brand Intro Reel",
+    category: "Reel",
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+  {
+    id: 2,
+    title: "Product Motion Graphics",
+    category: "Motion",
+    videoUrl: "https://www.w3schools.com/html/movie.mp4",
+  },
+  {
+    id: 3,
+    title: "AI Generated Ad",
+    category: "AI Video",
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+  {
+    id: 4,
+    title: "Client Testimonial Edit",
+    category: "Edit",
+    videoUrl: "https://www.w3schools.com/html/movie.mp4",
+  },
+  {
+    id: 5,
+    title: "Social Media Campaign",
+    category: "Reel",
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+  {
+    id: 6,
+    title: "Explainer Animation",
+    category: "Motion",
+    videoUrl: "https://www.w3schools.com/html/movie.mp4",
+  },
+];
+
+const VideoCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="glass rounded-2xl overflow-hidden group cursor-pointer"
+      onClick={togglePlay}
+    >
+      <div className="relative aspect-[9/16] bg-secondary/30">
+        <video
+          ref={videoRef}
+          src={video.videoUrl}
+          className="absolute inset-0 w-full h-full object-cover"
+          loop
+          muted
+          playsInline
+          preload="metadata"
+        />
+        <div
+          className={`absolute inset-0 flex items-center justify-center bg-background/30 transition-opacity ${
+            isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+          }`}
+        >
+          {isPlaying ? (
+            <Pause className="w-10 h-10 text-primary-foreground drop-shadow-lg" />
+          ) : (
+            <Play className="w-10 h-10 text-primary-foreground drop-shadow-lg fill-primary-foreground" />
+          )}
+        </div>
+        <div className="absolute top-2 left-2">
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/80 text-primary-foreground font-medium backdrop-blur-sm">
+            {video.category}
+          </span>
+        </div>
+      </div>
+      <div className="p-2.5">
+        <h3 className="text-xs font-semibold truncate">{video.title}</h3>
+      </div>
+    </motion.div>
+  );
+};
+
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07 } },
@@ -110,6 +205,7 @@ const cardAnim = {
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
+  const [activeSection, setActiveSection] = useState<"projects" | "videos">("projects");
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
 
@@ -122,93 +218,98 @@ const WorkPage = () => {
       >
         My <span className="gradient-text">Work</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-5">Case studies & results</p>
+      <p className="text-sm text-muted-foreground mb-4">Case studies & creative work</p>
 
-      {/* Filter Chips */}
-      <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none -mx-1 px-1">
-        {filters.map((f) => (
-          <button
-            key={f}
-            onClick={() => setActiveFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
-              activeFilter === f
-                ? "gradient-bg text-primary-foreground"
-                : "glass text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
+      {/* Section Toggle: Projects vs Video Portfolio */}
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setActiveSection("projects")}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeSection === "projects"
+              ? "gradient-bg text-primary-foreground"
+              : "glass text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <TrendingUp className="w-3.5 h-3.5" /> Projects
+        </button>
+        <button
+          onClick={() => setActiveSection("videos")}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeSection === "videos"
+              ? "gradient-bg text-primary-foreground"
+              : "glass text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Film className="w-3.5 h-3.5" /> Video Portfolio
+        </button>
       </div>
 
-      {/* Project Cards */}
-      <motion.div variants={container} initial="hidden" animate="show" className="space-y-3 mt-3">
-        <AnimatePresence mode="popLayout">
-          {filtered.map((project) => (
-            <motion.div
-              key={project.id}
-              variants={cardAnim}
-              layout
-              onClick={() => setSelectedProject(project)}
-              className="glass rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99]"
-            >
-              <div className="flex items-start gap-3">
-                <div className="text-3xl">{project.image}</div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm">{project.title}</h3>
-                  <p className="text-xs text-primary font-medium flex items-center gap-1 mt-0.5">
-                    <TrendingUp className="w-3 h-3" /> {project.result}
-                  </p>
-                  <div className="flex gap-1.5 mt-2 flex-wrap">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      <AnimatePresence mode="wait">
+        {activeSection === "projects" ? (
+          <motion.div key="projects" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+            {/* Filter Chips */}
+            <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none -mx-1 px-1">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setActiveFilter(f)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                    activeFilter === f
+                      ? "gradient-bg text-primary-foreground"
+                      : "glass text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
 
-      {/* Video Portfolio */}
-      <div className="mt-8">
-        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-          <Youtube className="w-4 h-4 inline mr-1" /> Video Portfolio
-        </h2>
-        <div className="space-y-3">
-          {[
-            { title: "My Marketing Strategy Explained", embedId: "dQw4w9WgXcQ" },
-            { title: "Client Case Study — 3x Revenue", embedId: "dQw4w9WgXcQ" },
-          ].map((video) => (
-            <motion.div
-              key={video.title}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="glass rounded-2xl overflow-hidden"
-            >
-              <div className="relative w-full aspect-video">
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.embedId}`}
-                  title={video.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full rounded-t-2xl"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-3">
-                <h3 className="text-sm font-semibold flex items-center gap-1.5">
-                  <Play className="w-3.5 h-3.5 text-primary" /> {video.title}
-                </h3>
-              </div>
+            {/* Project Cards */}
+            <motion.div variants={container} initial="hidden" animate="show" className="space-y-3 mt-3">
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project) => (
+                  <motion.div
+                    key={project.id}
+                    variants={cardAnim}
+                    layout
+                    onClick={() => setSelectedProject(project)}
+                    className="glass rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99]"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="text-3xl">{project.image}</div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-sm">{project.title}</h3>
+                        <p className="text-xs text-primary font-medium flex items-center gap-1 mt-0.5">
+                          <TrendingUp className="w-3 h-3" /> {project.result}
+                        </p>
+                        <div className="flex gap-1.5 mt-2 flex-wrap">
+                          {project.tags.map((tag) => (
+                            <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <ArrowUpRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </motion.div>
-          ))}
-        </div>
-      </div>
+          </motion.div>
+        ) : (
+          <motion.div key="videos" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+            <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
+              <Video className="w-3.5 h-3.5" /> Reels, motion graphics & AI videos — tap to play
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {videoPortfolio.map((video) => (
+                <VideoCard key={video.id} video={video} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Project Detail Modal */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
