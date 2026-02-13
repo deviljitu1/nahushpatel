@@ -684,13 +684,13 @@ const WorkPage = () => {
           >
             {/* Filter Tags - Glass Pill Style */}
             <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-none -mx-1 px-1">
-              {["All", "Web dev", "UI/UX", "Marketing"].map((tag) => (
+              {filters.map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setActiveFilter(tag)}
                   className={`px-5 py-2 rounded-xl text-xs font-bold tracking-wide transition-all shadow-lg ${activeFilter === tag
-                    ? "bg-slate-100 text-slate-900 scale-105"
-                    : "bg-slate-800/60 text-slate-400 border border-white/5 hover:bg-slate-700/60"}`}
+                    ? "gradient-bg text-primary-foreground"
+                    : "glass text-muted-foreground hover:text-foreground"}`}
                 >
                   {tag}
                 </button>
