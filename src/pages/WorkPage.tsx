@@ -211,7 +211,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
           src={video.videoUrl}
           className="absolute inset-0 w-full h-full object-cover"
           loop
-          muted={true}
+          muted={false}
           playsInline
           preload="metadata"
         />
@@ -433,30 +433,34 @@ const WorkPage = () => {
     <div className={`pt-14 mx-auto ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
 
       {/* Header - Variable Padding based on section */}
-      <div className={`${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-4 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
-        <div className={activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'pointer-events-auto max-w-lg mx-auto' : ''}>
+      <div className={`${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
+        <div className={activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'pointer-events-auto max-w-lg mx-auto flex flex-col items-center' : ''}>
 
           {/* Back Button for Creative Carousel */}
           {activeSection === 'creatives' && creativeMode === 'carousel' && (
             <button
               onClick={() => setCreativeMode('wall')}
-              className="mb-2 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit"
+              className="mb-2 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit self-start"
             >
               <ArrowLeft className="w-4 h-4" /> Back to Gallery
             </button>
           )}
 
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`text-2xl font-bold mb-1 ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'text-white' : ''}`}
-          >
-            My <span className={activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'text-white' : 'gradient-text'}>Work</span>
-          </motion.h1>
-          <p className={`text-sm mb-2 ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'text-white/70' : 'text-muted-foreground'}`}>Case studies & creative work</p>
+          {!(activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel')) && (
+            <>
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-2xl font-bold mb-1"
+              >
+                My <span className="gradient-text">Work</span>
+              </motion.h1>
+              <p className="text-sm mb-4 text-muted-foreground">Case studies & creative work</p>
+            </>
+          )}
 
           {/* Section Toggle */}
-          <div className="flex gap-2 mb-2 overflow-x-auto pb-2 scrollbar-none">
+          <div className={`flex gap-2 overflow-x-auto pb-2 scrollbar-none ${activeSection === 'videos' || (activeSection === 'creatives' && creativeMode === 'carousel') ? 'mt-2' : 'mb-4'}`}>
             <button
               onClick={() => setActiveSection("projects")}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
