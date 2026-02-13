@@ -56,8 +56,16 @@ const cardAnim = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
-const ServicesPage = () => {
+interface ServicesPageProps {
+  onNavigate: (tab: string) => void;
+}
+
+const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const handleBookCall = () => {
+    window.open("https://calendly.com", "_blank");
+  };
 
   return (
     <div className="px-5 pt-14 max-w-lg mx-auto">
@@ -108,7 +116,10 @@ const ServicesPage = () => {
                       <p className="text-sm text-muted-foreground mb-3">{service.details}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold gradient-text">{service.pricing}</span>
-                        <button className="text-xs gradient-bg text-primary-foreground px-4 py-1.5 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                        <button
+                          onClick={() => onNavigate("contact")}
+                          className="text-xs gradient-bg text-primary-foreground px-4 py-1.5 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                        >
                           Get Quote
                         </button>
                       </div>
@@ -128,7 +139,10 @@ const ServicesPage = () => {
         transition={{ delay: 0.5 }}
         className="mt-8 text-center"
       >
-        <button className="gradient-bg text-primary-foreground px-8 py-3 rounded-2xl font-semibold text-sm flex items-center gap-2 mx-auto glow-primary hover:opacity-90 transition-opacity">
+        <button
+          onClick={handleBookCall}
+          className="gradient-bg text-primary-foreground px-8 py-3 rounded-2xl font-semibold text-sm flex items-center gap-2 mx-auto glow-primary hover:opacity-90 transition-opacity"
+        >
           <Phone className="w-4 h-4" /> Book a Call
         </button>
       </motion.div>

@@ -26,7 +26,7 @@ const Index = () => {
       case "work":
         return <WorkPage />;
       case "services":
-        return <ServicesPage />;
+        return <ServicesPage onNavigate={(tab: string) => setActiveTab(tab as Tab)} />;
       case "skills":
         return <SkillsPage />;
       case "contact":

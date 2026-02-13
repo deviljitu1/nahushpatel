@@ -117,7 +117,10 @@ const ContactPage = () => {
           <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
           <h3 className="font-semibold text-sm mb-1">Schedule a Meeting</h3>
           <p className="text-xs text-muted-foreground mb-3">Pick a time that works for you</p>
-          <button className="text-xs gradient-bg text-primary-foreground px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+          <button
+            onClick={() => window.open("https://calendly.com", "_blank")}
+            className="text-xs gradient-bg text-primary-foreground px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
+          >
             Open Calendar
           </button>
         </motion.div>
