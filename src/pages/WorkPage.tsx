@@ -547,35 +547,59 @@ const WorkPage = () => {
         ) : (
           <motion.div
             key="creatives"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="pb-24"
+            className="fixed inset-0 z-0 bg-neutral-900 flex flex-col pt-28"
           >
-            <p className="text-xs text-muted-foreground mb-4">A curated collection of visual experiments.</p>
+            {/* Spotlight Effect Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.1),rgba(0,0,0,0)50%)] pointer-events-none" />
 
-            {/* Masonry-style Grid */}
-            <div className="columns-2 gap-3 space-y-3">
+            <div className="relative z-10 px-5 mb-2">
+              <p className="text-xs text-white/50 font-serif italic mb-4 text-center">"A curation of visual experiments"</p>
+            </div>
+
+            {/* Gallery Wall - Horizontal Scroll */}
+            <div className="flex-1 overflow-x-auto overflow-y-hidden flex items-center gap-12 px-10 pb-20 snap-x snap-mandatory scrollbar-none perspective-1000">
               {creativeItems.map((item, index) => (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer"
+                  initial={{ opacity: 0, scale: 0.8, rotateY: 20 }}
+                  whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  viewport={{ margin: "-10% 0px -10% 0px" }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="relative group shrink-0 w-[280px] snap-center"
                   onClick={() => setSelectedCreative(item)}
                 >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
-                    <span className="text-[10px] text-primary-foreground font-medium uppercase tracking-wider">{item.category}</span>
-                    <h3 className="text-xs text-white font-bold">{item.title}</h3>
+                  {/* Hanging String (Visual) */}
+                  <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-0.5 h-16 bg-white/20 z-0" />
+                  <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white/40 shadow-[0_0_10px_rgba(255,255,255,0.5)] z-0" />
+
+                  {/* Frame & Artwork */}
+                  <div className="relative bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer z-10">
+                    <div className="relative overflow-hidden aspect-[4/5] bg-gray-100">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover filter sepia-[0.2] contrast-105 group-hover:sepia-0 transition-all duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                    </div>
+
+                    {/* Plaque / Label */}
+                    <div className="mt-4 text-center">
+                      <h3 className="text-black font-serif text-lg font-bold tracking-tight">{item.title}</h3>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{item.category}</p>
+                    </div>
                   </div>
+
+                  {/* Floor Reflection (Subtle) */}
+                  <div className="absolute -bottom-12 left-0 right-0 h-10 bg-gradient-to-b from-white/10 to-transparent transform scale-y-[-1] opacity-20 blur-sm pointer-events-none" />
                 </motion.div>
               ))}
+
+              {/* Spacer for end of gallery */}
+              <div className="w-10 shrink-0" />
             </div>
           </motion.div>
         )}
