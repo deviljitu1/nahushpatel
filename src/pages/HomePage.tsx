@@ -52,9 +52,70 @@ interface HomePageProps {
   onNavigate: (tab: string) => void;
 }
 
+// Seasonal Background Component
+const SeasonBackground = ({ season }: { season: 'summer' | 'winter' | 'rainy' | 'autumn' }) => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+      {season === 'summer' && (
+        <>
+          <div className="absolute top-[-20%] right-[-20%] w-[600px] h-[600px] bg-yellow-400/20 blur-[100px] rounded-full animate-pulse" />
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute top-10 right-10 w-20 h-20 bg-yellow-500/10 rounded-full blur-xl"
+          />
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: -20, opacity: 1 }}
+              transition={{ duration: 3, repeat: Infinity, delay: i * 0.5, repeatType: "reverse" }}
+              className="absolute w-2 h-2 bg-yellow-300/40 rounded-full blur-sm"
+              style={{ top: `${Math.random() * 100}%`, left: `${Math.random() * 100}%` }}
+            />
+          ))}
+        </>
+      )}
+      {season === 'winter' && (
+        <>
+          <div className="absolute inset-0 bg-blue-50/5 pointer-events-none" />
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: '100vh', opacity: [0, 1, 0] }}
+              transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 5, ease: "linear" }}
+              className="absolute w-1 h-1 bg-white/60 rounded-full blur-[1px]"
+              style={{ left: `${Math.random() * 100}%` }}
+            />
+          ))}
+        </>
+      )}
+      {season === 'rainy' && (
+        <>
+          <div className="absolute inset-0 bg-slate-900/10 pointer-events-none" />
+          {[...Array(30)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: '110vh', opacity: 0.4 }}
+              transition={{ duration: 0.8 + Math.random() * 0.5, repeat: Infinity, delay: Math.random() * 2, ease: "linear" }}
+              className="absolute w-[1px] h-4 bg-blue-400/30"
+              style={{ left: `${Math.random() * 100}%` }}
+            />
+          ))}
+        </>
+      )}
+    </div>
+  );
+};
+
 const HomePage = ({ onNavigate }: HomePageProps) => {
   return (
-    <div className="px-5 pt-14 max-w-lg mx-auto">
+    <div className="relative px-5 pt-14 max-w-lg mx-auto min-h-screen overflow-hidden">
+      {/* Seasonal Background - Defaulting to Summer for Home */}
+      <SeasonBackground season="summer" />
+
       {/* Hero Section */}
       <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-10">
         <motion.div variants={item} className="mb-6 inline-block relative">

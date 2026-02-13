@@ -403,6 +403,34 @@ const creativeItems = [
   },
 ];
 
+const SeasonBackground = ({ season }: { season: 'summer' | 'winter' | 'rainy' | 'autumn' }) => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-[-1]">
+      {season === 'summer' && (
+        <>
+          <div className="absolute top-[-20%] right-[-20%] w-[600px] h-[600px] bg-yellow-400/20 blur-[100px] rounded-full animate-pulse" />
+          {/* ... summer particles ... */}
+        </>
+      )}
+      {season === 'winter' && (
+        <>
+          <div className="absolute inset-0 bg-blue-50/5 pointer-events-none" />
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: '100vh', opacity: [0, 1, 0] }}
+              transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 5, ease: "linear" }}
+              className="absolute w-1 h-1 bg-white/60 rounded-full blur-[1px]"
+              style={{ left: `${Math.random() * 100}%` }}
+            />
+          ))}
+        </>
+      )}
+    </div>
+  );
+};
+
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
@@ -430,7 +458,10 @@ const WorkPage = () => {
   }, [activeSection]);
 
   return (
-    <div className={`pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg'}`}>
+    <div className={`relative pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg min-h-screen overflow-hidden'}`}>
+
+      {/* Seasonal Background - Winter for Work Page */}
+      {activeSection === 'projects' && <SeasonBackground season="winter" />}
 
       {/* Header - Variable Padding based on section */}
       <div className={`${activeSection === 'videos' || activeSection === 'creatives' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
