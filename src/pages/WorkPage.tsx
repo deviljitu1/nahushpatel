@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
@@ -168,11 +168,25 @@ const videoPortfolio = [
   },
 ];
 
-const ReelCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
+const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number]; isActive: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showMore, setShowMore] = useState(false);
+
+  // Auto-play when active
+  useEffect(() => {
+    if (isActive) {
+      videoRef.current?.play().catch(() => {
+        // Handle autoplay restrictions
+        console.log("Autoplay blocked, waiting for interaction");
+      });
+      setIsPlaying(true);
+    } else {
+      videoRef.current?.pause();
+      setIsPlaying(false);
+    }
+  }, [isActive]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -185,10 +199,10 @@ const ReelCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
   };
 
   return (
-    <div className="relative w-full snap-start" style={{ height: "calc(100vh - 140px)" }}>
+    <div className="relative w-full h-full snap-center shrink-0 flex items-center justify-center bg-black">
       {/* Video */}
       <div
-        className="relative w-full h-full rounded-2xl overflow-hidden bg-secondary/30 cursor-pointer"
+        className="relative w-full h-full overflow-hidden cursor-pointer"
         onClick={togglePlay}
       >
         <video
@@ -196,91 +210,107 @@ const ReelCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
           src={video.videoUrl}
           className="absolute inset-0 w-full h-full object-cover"
           loop
-          muted
+          muted={false} // Maybe allow sound? Or start muted. Let's start unmuted but browsers might block.
           playsInline
           preload="metadata"
         />
 
-        {/* Play/Pause overlay */}
+        {/* Play/Pause overlay - Minimal */}
         <AnimatePresence>
           {!isPlaying && (
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="absolute inset-0 flex items-center justify-center bg-background/20"
+              className="absolute inset-0 flex items-center justify-center bg-black/20"
             >
-              <div className="w-16 h-16 rounded-full bg-background/30 backdrop-blur-sm flex items-center justify-center">
-                <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground ml-1" />
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Play className="w-8 h-8 text-white fill-white ml-1" />
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Category badge */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className="text-[11px] px-2.5 py-1 rounded-full bg-primary/80 text-primary-foreground font-medium backdrop-blur-sm">
+        <div className="absolute top-4 left-4 z-10">
+          <span className="text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full bg-black/40 text-white font-medium backdrop-blur-md border border-white/10">
             {video.category}
           </span>
         </div>
 
         {/* Right side actions (Instagram style) */}
-        <div className="absolute right-3 bottom-28 z-10 flex flex-col items-center gap-5">
+        <div className="absolute right-4 bottom-24 z-10 flex flex-col items-center gap-6">
           <button
             onClick={(e) => {
               e.stopPropagation();
               setIsLiked(!isLiked);
             }}
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-1 group"
           >
-            <Heart
-              className={`w-7 h-7 transition-all ${
-                isLiked
-                  ? "text-red-500 fill-red-500 scale-110"
-                  : "text-primary-foreground drop-shadow-lg"
-              }`}
-            />
-            <span className="text-[11px] text-primary-foreground font-semibold drop-shadow-lg">
+            <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
+              <Heart
+                className={`w-7 h-7 transition-colors ${isLiked
+                    ? "text-red-500 fill-red-500"
+                    : "text-white"
+                  }`}
+              />
+            </div>
+            <span className="text-xs text-white font-medium drop-shadow-md">
               {video.likes}
             </span>
           </button>
+
           <button
             onClick={(e) => e.stopPropagation()}
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-1 group"
           >
-            <MessageCircle className="w-7 h-7 text-primary-foreground drop-shadow-lg" />
-            <span className="text-[11px] text-primary-foreground font-semibold drop-shadow-lg">
+            <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
+              <MessageCircle className="w-7 h-7 text-white" />
+            </div>
+            <span className="text-xs text-white font-medium drop-shadow-md">
               {video.comments}
             </span>
           </button>
+
           <button
             onClick={(e) => e.stopPropagation()}
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-1 group"
           >
-            <Send className="w-6 h-6 text-primary-foreground drop-shadow-lg" />
-            <span className="text-[11px] text-primary-foreground font-semibold drop-shadow-lg">
+            <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
+              <Send className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-xs text-white font-medium drop-shadow-md">
               {video.shares}
             </span>
           </button>
         </div>
 
         {/* Bottom info overlay (Instagram style) */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-background/90 via-background/50 to-transparent">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
-              <span className="text-xs font-bold text-primary-foreground">Y</span>
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px]">
+              <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
+                <span className="text-xs font-bold text-white">NP</span>
+              </div>
             </div>
-            <span className="text-sm font-semibold text-primary-foreground drop-shadow-lg">
-              {video.creator}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-sm font-bold text-white drop-shadow-md flex items-center gap-1">
+                {video.creator} <CheckCircle2 className="w-3 h-3 text-blue-400 fill-blue-400/20" />
+              </span>
+              <span className="text-[10px] text-white/80">Original Audio</span>
+            </div>
+            <button className="ml-2 px-3 py-1 rounded-lg border border-white/30 text-[10px] text-white font-medium backdrop-blur-sm hover:bg-white/10 transition-colors">
+              Follow
+            </button>
           </div>
-          <h3 className="text-sm font-bold text-primary-foreground drop-shadow-lg mb-1">
+
+          <h3 className="text-sm font-bold text-white drop-shadow-md mb-2 line-clamp-1">
             {video.title}
           </h3>
+
           <p
-            className={`text-xs text-primary-foreground/80 drop-shadow-lg leading-relaxed ${
-              !showMore ? "line-clamp-2" : ""
-            }`}
+            className={`text-xs text-white/90 drop-shadow-md leading-relaxed pr-12 ${!showMore ? "line-clamp-2" : ""
+              }`}
             onClick={(e) => {
               e.stopPropagation();
               setShowMore(!showMore);
@@ -288,14 +318,27 @@ const ReelCard = ({ video }: { video: (typeof videoPortfolio)[number] }) => {
           >
             {video.description}
             {!showMore && (
-              <span className="text-primary-foreground font-semibold ml-1 cursor-pointer">
+              <span className="text-white/60 font-medium ml-1 cursor-pointer hover:text-white">
                 more
               </span>
             )}
           </p>
-          <div className="flex items-center gap-1.5 mt-2 text-primary-foreground/60">
-            <Music2 className="w-3 h-3" />
-            <span className="text-[10px]">Original Audio</span>
+
+          {showMore && (
+            <div className="mt-2 text-[10px] text-white/50 flex gap-2">
+              <span>#portfolio</span>
+              <span>#video</span>
+              <span>#creative</span>
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 mt-4 text-white/70">
+            <Music2 className="w-3 h-3 animate-pulse" />
+            <div className="text-[10px] overflow-hidden w-32 relative">
+              <div className="whitespace-nowrap animate-marquee">
+                Original Audio - {video.creator} • Trending Sound
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -317,42 +360,67 @@ const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
   const [activeSection, setActiveSection] = useState<"projects" | "videos">("projects");
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  // Handle scroll snap detection
+  const handleScroll = () => {
+    if (!videoContainerRef.current) return;
+
+    const container = videoContainerRef.current;
+    const index = Math.round(container.scrollTop / container.clientHeight);
+
+    if (index !== activeVideoIndex && index >= 0 && index < videoPortfolio.length) {
+      setActiveVideoIndex(index);
+    }
+  };
+
+  useEffect(() => {
+    const container = videoContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [activeVideoIndex]); // Re-bind if needed, or just [] is fine if ref doesn't change
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
 
   return (
-    <div className="px-5 pt-14 max-w-lg mx-auto">
-      <motion.h1
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-bold mb-1"
-      >
-        My <span className="gradient-text">Work</span>
-      </motion.h1>
-      <p className="text-sm text-muted-foreground mb-4">Case studies & creative work</p>
+    <div className={`pt-14 mx-auto ${activeSection === 'projects' ? 'px-5 max-w-lg' : 'px-0 max-w-lg h-[calc(100dvh-6rem)] flex flex-col'}`}>
 
-      {/* Section Toggle: Projects vs Video Portfolio */}
-      <div className="flex gap-2 mb-4">
-        <button
-          onClick={() => setActiveSection("projects")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
-            activeSection === "projects"
-              ? "gradient-bg text-primary-foreground"
-              : "glass text-muted-foreground hover:text-foreground"
-          }`}
+      {/* Header - Variable Padding based on section */}
+      <div className={`${activeSection === 'videos' ? 'px-5' : ''}`}>
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-2xl font-bold mb-1"
         >
-          <TrendingUp className="w-3.5 h-3.5" /> Projects
-        </button>
-        <button
-          onClick={() => setActiveSection("videos")}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
-            activeSection === "videos"
-              ? "gradient-bg text-primary-foreground"
-              : "glass text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Film className="w-3.5 h-3.5" /> Video Portfolio
-        </button>
+          My <span className="gradient-text">Work</span>
+        </motion.h1>
+        <p className="text-sm text-muted-foreground mb-4">Case studies & creative work</p>
+
+        {/* Section Toggle: Projects vs Video Portfolio */}
+        <div className="flex gap-2 mb-4">
+          <button
+            onClick={() => setActiveSection("projects")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "projects"
+                ? "gradient-bg text-primary-foreground"
+                : "glass text-muted-foreground hover:text-foreground"
+              }`}
+          >
+            <TrendingUp className="w-3.5 h-3.5" /> Projects
+          </button>
+          <button
+            onClick={() => setActiveSection("videos")}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "videos"
+                ? "gradient-bg text-primary-foreground"
+                : "glass text-muted-foreground hover:text-foreground"
+              }`}
+          >
+            <Film className="w-3.5 h-3.5" /> Video Portfolio
+          </button>
+        </div>
       </div>
 
       <AnimatePresence mode="wait">
@@ -364,11 +432,10 @@ const WorkPage = () => {
                 <button
                   key={f}
                   onClick={() => setActiveFilter(f)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
-                    activeFilter === f
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${activeFilter === f
                       ? "gradient-bg text-primary-foreground"
                       : "glass text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
                   {f}
                 </button>
@@ -376,7 +443,7 @@ const WorkPage = () => {
             </div>
 
             {/* Project Cards */}
-            <motion.div variants={container} initial="hidden" animate="show" className="space-y-3 mt-3">
+            <motion.div variants={container} initial="hidden" animate="show" className="space-y-3 mt-3 pb-24">
               <AnimatePresence mode="popLayout">
                 {filtered.map((project) => (
                   <motion.div
@@ -409,18 +476,26 @@ const WorkPage = () => {
             </motion.div>
           </motion.div>
         ) : (
-          <motion.div key="videos" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-            <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
-              <Video className="w-3.5 h-3.5" /> Swipe through reels — tap to play
-            </p>
+          <motion.div
+            key="videos"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex-1 relative w-full h-full overflow-hidden"
+          >
             <div
-              className="flex flex-col gap-4 snap-y snap-mandatory overflow-y-auto scrollbar-none -mx-5 px-5"
-              style={{ height: "calc(100vh - 220px)" }}
+              ref={videoContainerRef}
+              className="absolute inset-0 snap-y snap-mandatory overflow-y-auto scrollbar-none pb-20"
             >
-              {videoPortfolio.map((video) => (
-                <ReelCard key={video.id} video={video} />
+              {videoPortfolio.map((video, index) => (
+                <div key={video.id} className="w-full h-full snap-start snap-always">
+                  <ReelCard video={video} isActive={activeVideoIndex === index} />
+                </div>
               ))}
             </div>
+
+            {/* Gradient fade at bottom for smooth transition to nav */}
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent pointer-events-none z-20" />
           </motion.div>
         )}
       </AnimatePresence>
