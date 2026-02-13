@@ -177,11 +177,17 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
   // Auto-play when active
   useEffect(() => {
     if (isActive) {
-      videoRef.current?.play().catch(() => {
-        // Handle autoplay restrictions
-        console.log("Autoplay blocked, waiting for interaction");
-      });
-      setIsPlaying(true);
+      const playPromise = videoRef.current?.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error) => {
+            console.log("Autoplay blocked/failed:", error);
+            setIsPlaying(false);
+          });
+      }
     } else {
       videoRef.current?.pause();
       setIsPlaying(false);
@@ -199,7 +205,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
   };
 
   return (
-    <div className="relative w-full h-full snap-center shrink-0 flex items-center justify-center bg-black">
+    <div className="relative w-full h-[100dvh] md:h-full snap-center shrink-0 flex items-center justify-center bg-black">
       {/* Video */}
       <div
         className="relative w-full h-full overflow-hidden cursor-pointer"
@@ -210,7 +216,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
           src={video.videoUrl}
           className="absolute inset-0 w-full h-full object-cover"
           loop
-          muted={false} // Maybe allow sound? Or start muted. Let's start unmuted but browsers might block.
+          muted={false}
           playsInline
           preload="metadata"
         />
@@ -222,9 +228,9 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="absolute inset-0 flex items-center justify-center bg-black/20"
+              className="absolute inset-0 flex items-center justify-center bg-black/20 z-10"
             >
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center pointer-events-none">
                 <Play className="w-8 h-8 text-white fill-white ml-1" />
               </div>
             </motion.div>
@@ -232,14 +238,14 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
         </AnimatePresence>
 
         {/* Category badge */}
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-16 left-4 z-10 md:top-4">
           <span className="text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full bg-black/40 text-white font-medium backdrop-blur-md border border-white/10">
             {video.category}
           </span>
         </div>
 
         {/* Right side actions (Instagram style) */}
-        <div className="absolute right-4 bottom-24 z-10 flex flex-col items-center gap-6">
+        <div className="absolute right-4 bottom-32 md:bottom-24 z-10 flex flex-col items-center gap-6">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -286,7 +292,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
         </div>
 
         {/* Bottom info overlay (Instagram style) */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-24 md:pb-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px]">
               <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
@@ -362,64 +368,77 @@ const WorkPage = () => {
   const [activeSection, setActiveSection] = useState<"projects" | "videos">("projects");
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
-  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Handle scroll snap detection
-  const handleScroll = () => {
-    if (!videoContainerRef.current) return;
-
-    const container = videoContainerRef.current;
-    const index = Math.round(container.scrollTop / container.clientHeight);
-
-    if (index !== activeVideoIndex && index >= 0 && index < videoPortfolio.length) {
-      setActiveVideoIndex(index);
-    }
-  };
-
+  // Intersection Observer for robust scroll detection
   useEffect(() => {
-    const container = videoContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, [activeVideoIndex]); // Re-bind if needed, or just [] is fine if ref doesn't change
+    if (activeSection !== 'videos') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-index'));
+            setActiveVideoIndex(index);
+          }
+        });
+      },
+      {
+        root: null, // Use viewport
+        threshold: 0.6, // Trigger when 60% of video is visible
+      }
+    );
+
+    videoRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      videoRefs.current.forEach((ref) => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
+  }, [activeSection]);
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
 
   return (
-    <div className={`pt-14 mx-auto ${activeSection === 'projects' ? 'px-5 max-w-lg' : 'px-0 max-w-lg h-[calc(100dvh-6rem)] flex flex-col'}`}>
+    <div className={`pt-14 mx-auto ${activeSection === 'projects' ? 'px-5 max-w-lg' : 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col'}`}>
 
       {/* Header - Variable Padding based on section */}
-      <div className={`${activeSection === 'videos' ? 'px-5' : ''}`}>
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-2xl font-bold mb-1"
-        >
-          My <span className="gradient-text">Work</span>
-        </motion.h1>
-        <p className="text-sm text-muted-foreground mb-4">Case studies & creative work</p>
+      {/* For videos, we float the header on top or hide it? Let's float it on top with z-index */}
+      <div className={`${activeSection === 'videos' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-14 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
+        <div className={activeSection === 'videos' ? 'pointer-events-auto max-w-lg mx-auto' : ''}>
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`text-2xl font-bold mb-1 ${activeSection === 'videos' ? 'text-white' : ''}`}
+          >
+            My <span className={activeSection === 'videos' ? 'text-white' : 'gradient-text'}>Work</span>
+          </motion.h1>
+          <p className={`text-sm mb-4 ${activeSection === 'videos' ? 'text-white/70' : 'text-muted-foreground'}`}>Case studies & creative work</p>
 
-        {/* Section Toggle: Projects vs Video Portfolio */}
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={() => setActiveSection("projects")}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "projects"
-                ? "gradient-bg text-primary-foreground"
-                : "glass text-muted-foreground hover:text-foreground"
-              }`}
-          >
-            <TrendingUp className="w-3.5 h-3.5" /> Projects
-          </button>
-          <button
-            onClick={() => setActiveSection("videos")}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "videos"
-                ? "gradient-bg text-primary-foreground"
-                : "glass text-muted-foreground hover:text-foreground"
-              }`}
-          >
-            <Film className="w-3.5 h-3.5" /> Video Portfolio
-          </button>
+          {/* Section Toggle: Projects vs Video Portfolio */}
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={() => setActiveSection("projects")}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "projects"
+                  ? "gradient-bg text-primary-foreground"
+                  : "glass text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              <TrendingUp className="w-3.5 h-3.5" /> Projects
+            </button>
+            <button
+              onClick={() => setActiveSection("videos")}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${activeSection === "videos"
+                  ? "bg-white/20 text-white backdrop-blur-md"
+                  : "glass text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              <Film className="w-3.5 h-3.5" /> Video Portfolio
+            </button>
+          </div>
         </div>
       </div>
 
@@ -481,21 +500,28 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex-1 relative w-full h-full overflow-hidden"
+            className="fixed inset-0 z-0 bg-black"
           >
             <div
-              ref={videoContainerRef}
-              className="absolute inset-0 snap-y snap-mandatory overflow-y-auto scrollbar-none pb-20"
+              className="w-full h-full snap-y snap-mandatory overflow-y-auto scrollbar-none"
             >
               {videoPortfolio.map((video, index) => (
-                <div key={video.id} className="w-full h-full snap-start snap-always">
+                <div
+                  key={video.id}
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  data-index={index}
+                  className="w-full h-[100dvh] snap-center snap-always relative"
+                >
                   <ReelCard video={video} isActive={activeVideoIndex === index} />
                 </div>
               ))}
+
+              {/* Spacer at bottom to ensure last video snaps correctly without being covered by browser chrome if any */}
+              <div className="h-1 w-full snap-align-none" />
             </div>
 
-            {/* Gradient fade at bottom for smooth transition to nav */}
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent pointer-events-none z-20" />
+            {/* Gradient fade at bottom for smooth transition to nav - only needed if nav is overlaying */}
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
           </motion.div>
         )}
       </AnimatePresence>
