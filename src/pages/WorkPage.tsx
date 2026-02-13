@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, X, TrendingUp, Wrench, ArrowUpRight } from "lucide-react";
+import { ExternalLink, X, TrendingUp, Wrench, ArrowUpRight, Play, Youtube } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
@@ -173,6 +173,42 @@ const WorkPage = () => {
           ))}
         </AnimatePresence>
       </motion.div>
+
+      {/* Video Portfolio */}
+      <div className="mt-8">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          <Youtube className="w-4 h-4 inline mr-1" /> Video Portfolio
+        </h2>
+        <div className="space-y-3">
+          {[
+            { title: "My Marketing Strategy Explained", embedId: "dQw4w9WgXcQ" },
+            { title: "Client Case Study — 3x Revenue", embedId: "dQw4w9WgXcQ" },
+          ].map((video) => (
+            <motion.div
+              key={video.title}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="glass rounded-2xl overflow-hidden"
+            >
+              <div className="relative w-full aspect-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.embedId}`}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full rounded-t-2xl"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-3">
+                <h3 className="text-sm font-semibold flex items-center gap-1.5">
+                  <Play className="w-3.5 h-3.5 text-primary" /> {video.title}
+                </h3>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
       {/* Project Detail Modal */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
