@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun as SunIcon, Moon as MoonIcon } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import HomePage from "@/pages/HomePage";
 import WorkPage from "@/pages/WorkPage";
@@ -65,25 +64,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
-      {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className="fixed top-6 right-6 z-50 p-2 rounded-full bg-background/80 backdrop-blur-md border shadow-sm hover:shadow-md transition-all active:scale-95"
-      >
-        <motion.div
-          key={isDark ? "moon" : "sun"}
-          initial={{ rotate: -90, opacity: 0 }}
-          animate={{ rotate: 0, opacity: 1 }}
-          transition={{ duration: 0.2 }}
-        >
-          {isDark ? (
-            <SunIcon className="w-5 h-5 text-foreground" />
-          ) : (
-            <MoonIcon className="w-5 h-5 text-foreground" />
-          )}
-        </motion.div>
-      </button>
-
       {/* Ambient background effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-[100px] animate-pulse-glow" />
