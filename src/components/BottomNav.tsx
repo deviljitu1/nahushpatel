@@ -19,7 +19,7 @@ interface BottomNavProps {
 const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavProps) => {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-[env(safe-area-inset-bottom,8px)]">
-      <div className="glass rounded-2xl mx-auto max-w-md lg:max-w-2xl px-2 py-2 flex items-center justify-around shadow-lg">
+      <div className="glass rounded-full mx-auto max-w-md lg:max-w-lg px-3 py-2 flex items-end justify-around shadow-xl relative">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
@@ -27,20 +27,23 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors min-w-[56px]"
+              className="relative flex flex-col items-center gap-0.5 transition-all min-w-[48px]"
             >
-              {isActive && (
+              {isActive ? (
                 <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-0 gradient-bg rounded-xl opacity-15"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
+                  layoutId="activeTabDock"
+                  className="absolute -top-5 w-12 h-12 rounded-full gradient-bg flex items-center justify-center shadow-lg glow-primary"
+                  transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                >
+                  <Icon className="w-5 h-5 text-primary-foreground" />
+                </motion.div>
+              ) : (
+                <Icon className="w-5 h-5 text-muted-foreground" />
               )}
-              <Icon
-                className={`w-5 h-5 transition-colors relative z-10 ${isActive ? "text-primary" : "text-muted-foreground"}`}
-              />
               <span
-                className={`text-[10px] font-medium relative z-10 transition-colors ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                className={`text-[10px] font-medium transition-colors ${
+                  isActive ? "mt-7 text-primary" : "mt-1 text-muted-foreground"
+                }`}
               >
                 {tab.label}
               </span>
@@ -51,7 +54,7 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
         {/* Theme toggle */}
         <button
           onClick={onToggleTheme}
-          className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors min-w-[44px]"
+          className="relative flex flex-col items-center gap-0.5 min-w-[44px]"
         >
           <motion.div
             key={isDark ? "moon" : "sun"}
@@ -65,7 +68,7 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
               <Moon className="w-5 h-5 text-muted-foreground" />
             )}
           </motion.div>
-          <span className="text-[10px] font-medium text-muted-foreground">
+          <span className="text-[10px] font-medium text-muted-foreground mt-1">
             {isDark ? "Light" : "Dark"}
           </span>
         </button>
