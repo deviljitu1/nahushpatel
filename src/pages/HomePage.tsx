@@ -119,10 +119,10 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
 };
 
 const clients = [
-  { name: "Eyes Event", logo: "/brands/Eyes_logo.png", link: "https://instagram.com/nahushpatel" },
-  { name: "Orgalife", logo: "/brands/Orgalife_Logo_2.avif", link: "https://instagram.com/nahushpatel" },
-  { name: "Rajim Kumbh", logo: "/brands/Rajim%20Kumbh.png", link: "https://instagram.com/nahushpatel" },
-  { name: "Chai Signal", logo: "/brands/Chai%20Signal.png", link: "https://instagram.com/nahushpatel" },
+  { name: "Eyes Event", logo: "/brands/Eyes_logo.png", link: "https://www.facebook.com/eyesraipur/" },
+  { name: "Orgalife", logo: "/brands/Orgalife_Logo_2.avif", link: "https://www.instagram.com/orgalifefood" },
+  { name: "Rajim Kumbh", logo: "/brands/Rajim%20Kumbh.png", link: "https://www.instagram.com/rajimkumbhkalp2026" },
+  { name: "Chai Signal", logo: "/brands/Chai%20Signal.png", link: "https://www.instagram.com/chaisignal_cafe/" },
 ];
 
 const ClientMarquee = () => {
