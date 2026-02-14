@@ -111,6 +111,65 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           <StatCard key={stat.label} stat={stat} />
         ))}
       </motion.div>
+
+      {/* Client Marquee */}
+      <ClientMarquee />
+    </div>
+  );
+};
+
+const clients = [
+  { name: "Eyes Event", logo: "/brands/eyes-event.svg", link: "https://instagram.com/nahushpatel" },
+  { name: "Orgalife", logo: "/brands/Orgalife_Logo_2.avif", link: "https://instagram.com/nahushpatel" },
+  { name: "Rajim Kumbh", logo: "/brands/Rajim%20Kumbh.png", link: "https://instagram.com/nahushpatel" },
+  { name: "Chai Signal", logo: "/brands/Chai%20Signal.png", link: "https://instagram.com/nahushpatel" },
+];
+
+const ClientMarquee = () => {
+  return (
+    <div className="w-full overflow-hidden py-12 opacity-90">
+      <h2 className="text-center text-xs font-bold text-muted-foreground/50 uppercase tracking-widest mb-8">
+        Trusted By Leading Brands
+      </h2>
+      <div className="relative flex overflow-hidden group select-none">
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+
+        <div className="flex animate-marquee whitespace-nowrap gap-12 min-w-full shrink-0 items-center px-6">
+          {[...clients, ...clients, ...clients, ...clients].map((client, i) => (
+            <a
+              key={i}
+              href={client.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center min-w-[140px] grayscale hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100 hover:scale-110 transform cursor-pointer"
+            >
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="h-12 w-auto object-contain drop-shadow-sm"
+              />
+            </a>
+          ))}
+        </div>
+        <div className="flex animate-marquee whitespace-nowrap gap-12 min-w-full shrink-0 items-center px-6" aria-hidden="true">
+          {[...clients, ...clients, ...clients, ...clients].map((client, i) => (
+            <a
+              key={`dup-${i}`}
+              href={client.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center min-w-[140px] grayscale hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100 hover:scale-110 transform cursor-pointer"
+            >
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="h-12 w-auto object-contain drop-shadow-sm"
+              />
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
