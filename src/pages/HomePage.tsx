@@ -142,7 +142,7 @@ const ClientMarquee = () => {
               href={client.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center min-w-[140px] grayscale hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100 hover:scale-110 transform cursor-pointer"
+              className="flex items-center justify-center min-w-[140px] transition-all duration-500 opacity-100 hover:scale-110 transform cursor-pointer"
             >
               <img
                 src={client.logo}
@@ -159,7 +159,7 @@ const ClientMarquee = () => {
               href={client.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center min-w-[140px] grayscale hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100 hover:scale-110 transform cursor-pointer"
+              className="flex items-center justify-center min-w-[140px] transition-all duration-500 opacity-100 hover:scale-110 transform cursor-pointer"
             >
               <img
                 src={client.logo}
