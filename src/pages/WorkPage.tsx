@@ -682,6 +682,39 @@ const WorkPage = () => {
             exit={{ opacity: 0, y: -20 }}
             className="pb-24 grid gap-8 px-1"
           >
+            {/* Stats & Clients Section */}
+            <div className="grid gap-6">
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: "Brands Handled", value: "25+" },
+                  { label: "Ad Spend", value: "₹50L+" },
+                  { label: "Revenue", value: "3x" },
+                ].map((stat, i) => (
+                  <div key={i} className="glass rounded-2xl p-4 text-center flex flex-col items-center justify-center">
+                    <span className="text-2xl md:text-3xl font-bold gradient-text">{stat.value}</span>
+                    <span className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider font-medium mt-1">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="glass rounded-2xl p-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <TrendingUp className="w-24 h-24" />
+                </div>
+                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">Trusted By</h3>
+                <div className="flex flex-wrap gap-3">
+                  {["Orgalife", "Eyes Event", "Rajim Kumbh", "TechSolutions", "Urban Cafe"].map((brand, i) => (
+                    <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/50 border border-white/5">
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                      <span className="text-sm font-medium">{brand}</span>
+                    </div>
+                  ))}
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-white/20 text-muted-foreground">
+                    <span className="text-xs">+15 others</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Filter Tags - Glass Pill Style */}
             <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-none -mx-1 px-1 lg:justify-center">
               {filters.map((tag) => (
@@ -698,34 +731,34 @@ const WorkPage = () => {
             </div>
 
             <div className="lg:grid lg:grid-cols-2 lg:gap-6">
-            {filtered.map((project) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                onClick={() => setSelectedProject(project)}
-                className="glass rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99]"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="text-3xl">{project.image}</div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm">{project.title}</h3>
-                    <p className="text-xs text-primary font-medium flex items-center gap-1 mt-0.5">
-                      <TrendingUp className="w-3 h-3" /> {project.result}
-                    </p>
-                    <div className="flex gap-1.5 mt-2 flex-wrap">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
-                          {tag}
-                        </span>
-                      ))}
+              {filtered.map((project) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  onClick={() => setSelectedProject(project)}
+                  className="glass rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99]"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="text-3xl">{project.image}</div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm">{project.title}</h3>
+                      <p className="text-xs text-primary font-medium flex items-center gap-1 mt-0.5">
+                        <TrendingUp className="w-3 h-3" /> {project.result}
+                      </p>
+                      <div className="flex gap-1.5 mt-2 flex-wrap">
+                        {project.tags.map((tag) => (
+                          <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
+                    <ArrowUpRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         ) : activeSection === "videos" ? (
