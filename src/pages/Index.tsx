@@ -104,7 +104,7 @@ const Index = () => {
         </AnimatePresence>
       </main>
 
-      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
     </div>
   );
 };
