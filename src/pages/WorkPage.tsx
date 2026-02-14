@@ -611,7 +611,7 @@ const WorkPage = () => {
 
 
   return (
-    <div className={`relative pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg min-h-screen'}`}>
+    <div className={`relative pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg lg:max-w-4xl min-h-screen'}`}>
 
       {/* Header - Variable Padding based on section */}
       <div className={`${activeSection === 'videos' || activeSection === 'creatives' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
@@ -683,7 +683,7 @@ const WorkPage = () => {
             className="pb-24 grid gap-8 px-1"
           >
             {/* Filter Tags - Glass Pill Style */}
-            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-none -mx-1 px-1">
+            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-none -mx-1 px-1 lg:justify-center">
               {filters.map((tag) => (
                 <button
                   key={tag}
@@ -697,6 +697,7 @@ const WorkPage = () => {
               ))}
             </div>
 
+            <div className="lg:grid lg:grid-cols-2 lg:gap-6">
             {filtered.map((project) => (
               <motion.div
                 key={project.id}
@@ -725,6 +726,7 @@ const WorkPage = () => {
                 </div>
               </motion.div>
             ))}
+            </div>
           </motion.div>
         ) : activeSection === "videos" ? (
           <motion.div
@@ -732,23 +734,51 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-0 bg-black"
+            className="fixed inset-0 z-0 bg-black lg:flex lg:items-center lg:justify-center"
           >
+            {/* Desktop: centered phone-frame container */}
             <div
-              className="w-full h-full snap-y snap-mandatory overflow-y-auto scrollbar-none"
+              className="w-full h-full lg:w-[400px] lg:h-[85vh] lg:rounded-3xl lg:overflow-hidden lg:border-2 lg:border-white/10 lg:shadow-2xl snap-y snap-mandatory overflow-y-auto scrollbar-none relative"
               onScroll={handleScroll}
             >
               {videoPortfolio.map((video, index) => (
                 <div
                   key={video.id}
-                  className="w-full h-[100dvh] snap-start snap-always relative"
+                  className="w-full h-[100dvh] lg:h-full snap-start snap-always relative"
                 >
                   <ReelCard video={video} isActive={activeVideoIndex === index} />
                 </div>
               ))}
               <div className="h-1 w-full snap-align-none" />
             </div>
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
+
+            {/* Desktop side info */}
+            <div className="hidden lg:flex flex-col gap-4 ml-8 max-w-xs">
+              <h2 className="text-2xl font-bold text-white">Video Portfolio</h2>
+              <p className="text-sm text-white/60 leading-relaxed">
+                Scroll through my reels, motion graphics, and AI-generated videos. Tap to play/pause.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {videoPortfolio.map((v, i) => (
+                  <button
+                    key={v.id}
+                    onClick={() => {
+                      const container = document.querySelector('.snap-y');
+                      if (container) {
+                        const child = container.children[i] as HTMLElement;
+                        child?.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setActiveVideoIndex(i);
+                    }}
+                    className={`text-xs px-3 py-1.5 rounded-full transition-all ${activeVideoIndex === i ? 'bg-white text-black font-semibold' : 'bg-white/10 text-white/70 hover:bg-white/20'}`}
+                  >
+                    {v.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none z-20 lg:hidden" />
           </motion.div>
         ) : (
           <motion.div
@@ -773,7 +803,7 @@ const WorkPage = () => {
                 </div>
 
                 {/* Wall View - Grid of Frames */}
-                <div className="grid grid-cols-2 gap-x-6 gap-y-20 perspective-1000 max-w-lg mx-auto">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-20 perspective-1000 max-w-lg lg:max-w-4xl mx-auto">
                   {creativeItems.map((item, index) => (
                     <motion.div
                       key={item.id}
