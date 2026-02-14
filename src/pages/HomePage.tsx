@@ -119,7 +119,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
 };
 
 const clients = [
-  { name: "Eyes Event", logo: "/brands/eyes-event.svg", link: "https://instagram.com/nahushpatel" },
+  { name: "Eyes Event", logo: "/brands/Eyes_logo.png", link: "https://instagram.com/nahushpatel" },
   { name: "Orgalife", logo: "/brands/Orgalife_Logo_2.avif", link: "https://instagram.com/nahushpatel" },
   { name: "Rajim Kumbh", logo: "/brands/Rajim%20Kumbh.png", link: "https://instagram.com/nahushpatel" },
   { name: "Chai Signal", logo: "/brands/Chai%20Signal.png", link: "https://instagram.com/nahushpatel" },
@@ -129,7 +129,7 @@ const ClientMarquee = () => {
   return (
     <div className="w-full overflow-hidden py-12 opacity-90">
       <h2 className="text-center text-xs font-bold text-muted-foreground/50 uppercase tracking-widest mb-8">
-        Trusted By Leading Brands
+        Worked for the Brand
       </h2>
       <div className="relative flex overflow-hidden group select-none">
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
