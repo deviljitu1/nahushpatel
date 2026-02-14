@@ -65,7 +65,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
-    <div className="px-5 pt-14 max-w-lg mx-auto">
+    <div className="px-5 pt-14 max-w-lg lg:max-w-4xl mx-auto">
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
       </motion.h1>
       <p className="text-sm text-muted-foreground mb-6">What I can do for you</p>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="space-y-3">
+      <motion.div variants={container} initial="hidden" animate="show" className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
         {services.map((service, i) => {
           const Icon = service.icon;
           const isExpanded = expandedIndex === i;

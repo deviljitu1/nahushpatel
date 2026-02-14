@@ -6,6 +6,7 @@ import WorkPage from "@/pages/WorkPage";
 import ServicesPage from "@/pages/ServicesPage";
 import SkillsPage from "@/pages/SkillsPage";
 import ContactPage from "@/pages/ContactPage";
+import { useTheme } from "@/hooks/use-theme";
 
 const tabs = ["home", "work", "services", "skills", "contact"] as const;
 type Tab = (typeof tabs)[number];
@@ -17,6 +18,7 @@ const pageVariants = {
 };
 
 const Index = () => {
+  const { isDark, toggle: toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<Tab>(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
@@ -82,7 +84,7 @@ const Index = () => {
         </AnimatePresence>
       </main>
 
-      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
     </div>
   );
 };
