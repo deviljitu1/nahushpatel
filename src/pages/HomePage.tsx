@@ -54,7 +54,7 @@ interface HomePageProps {
 
 const HomePage = ({ onNavigate }: HomePageProps) => {
   return (
-    <div className="px-5 pt-14 max-w-lg mx-auto">
+    <div className="px-5 pt-14 max-w-lg lg:max-w-4xl mx-auto">
 
       {/* Hero Section */}
       <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-10">
@@ -105,7 +105,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-2 gap-3"
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3"
       >
         {stats.map((stat) => (
           <StatCard key={stat.label} stat={stat} />

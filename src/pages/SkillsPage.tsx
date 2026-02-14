@@ -73,7 +73,7 @@ const item = {
 
 const SkillsPage = () => {
   return (
-    <div className="px-5 pt-14 max-w-lg mx-auto">
+    <div className="px-5 pt-14 max-w-lg lg:max-w-4xl mx-auto">
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -83,29 +83,32 @@ const SkillsPage = () => {
       </motion.h1>
       <p className="text-sm text-muted-foreground mb-6">Expertise & experience</p>
 
-      {/* Marketing Skills */}
-      <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
-        <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
-          Marketing
-        </motion.h2>
-        <motion.div variants={item} className="glass rounded-2xl p-4">
-          {marketingSkills.map((s) => (
-            <AnimatedBar key={s.name} {...s} />
-          ))}
+      {/* Skills Grid - side by side on desktop */}
+      <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+        {/* Marketing Skills */}
+        <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
+          <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
+            Marketing
+          </motion.h2>
+          <motion.div variants={item} className="glass rounded-2xl p-4">
+            {marketingSkills.map((s) => (
+              <AnimatedBar key={s.name} {...s} />
+            ))}
+          </motion.div>
         </motion.div>
-      </motion.div>
 
-      {/* Tech Skills */}
-      <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
-        <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
-          Tech
-        </motion.h2>
-        <motion.div variants={item} className="glass rounded-2xl p-4">
-          {techSkills.map((s) => (
-            <AnimatedBar key={s.name} {...s} />
-          ))}
+        {/* Tech Skills */}
+        <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
+          <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
+            Tech
+          </motion.h2>
+          <motion.div variants={item} className="glass rounded-2xl p-4">
+            {techSkills.map((s) => (
+              <AnimatedBar key={s.name} {...s} />
+            ))}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Tools Grid */}
       <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
@@ -126,7 +129,7 @@ const SkillsPage = () => {
         <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
           Experience
         </motion.h2>
-        <div className="space-y-3">
+        <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
           {timeline.map((t, i) => (
             <motion.div key={t.year} variants={item} className="glass rounded-2xl p-4 flex gap-3">
               <div className="gradient-bg text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-lg h-fit">

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Home, Briefcase, Layers, BarChart3, Mail } from "lucide-react";
+import { Home, Briefcase, Layers, BarChart3, Mail, Sun, Moon } from "lucide-react";
 
 const tabs = [
   { id: "home", label: "Home", icon: Home },
@@ -12,12 +12,14 @@ const tabs = [
 interface BottomNavProps {
   activeTab: string;
   onTabChange: (tab: any) => void;
+  isDark: boolean;
+  onToggleTheme: () => void;
 }
 
-const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
+const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavProps) => {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-[env(safe-area-inset-bottom,8px)]">
-      <div className="glass rounded-2xl mx-auto max-w-md px-2 py-2 flex items-center justify-around shadow-lg">
+      <div className="glass rounded-2xl mx-auto max-w-md lg:max-w-2xl px-2 py-2 flex items-center justify-around shadow-lg">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
@@ -45,6 +47,28 @@ const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
             </button>
           );
         })}
+
+        {/* Theme toggle */}
+        <button
+          onClick={onToggleTheme}
+          className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors min-w-[44px]"
+        >
+          <motion.div
+            key={isDark ? "moon" : "sun"}
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {isDark ? (
+              <Sun className="w-5 h-5 text-muted-foreground" />
+            ) : (
+              <Moon className="w-5 h-5 text-muted-foreground" />
+            )}
+          </motion.div>
+          <span className="text-[10px] font-medium text-muted-foreground">
+            {isDark ? "Light" : "Dark"}
+          </span>
+        </button>
       </div>
     </nav>
   );
