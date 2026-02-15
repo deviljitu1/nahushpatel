@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
+const filters = ["All", "Social Media", "SEO", "Paid Ads", "Web Dev", "Automation"];
 
 const projects = [
   {
@@ -11,7 +11,7 @@ const projects = [
     title: "E-Commerce Growth Engine",
     result: "3x revenue in 90 days",
     tags: ["SEO", "Paid Ads"],
-    image: "📈",
+    coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=800&auto=format&fit=crop",
     problem: "Low organic traffic and poor ROAS on paid campaigns.",
     solution: "Rebuilt SEO architecture, launched targeted Meta & Google Ads funnels.",
     tools: ["Google Ads", "Meta Ads", "Ahrefs", "GA4"],
@@ -26,7 +26,7 @@ const projects = [
     title: "SaaS Landing Page Redesign",
     result: "45% conversion lift",
     tags: ["Web Dev"],
-    image: "🚀",
+    coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
     problem: "High bounce rate on landing pages, low trial signups.",
     solution: "Designed mobile-first landing with clear CTAs and social proof.",
     tools: ["React", "TailwindCSS", "Figma", "Hotjar"],
@@ -41,7 +41,7 @@ const projects = [
     title: "Lead Gen Automation Pipeline",
     result: "500+ leads/month on autopilot",
     tags: ["Automation"],
-    image: "⚡",
+    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
     problem: "Manual lead collection, no nurture sequences.",
     solution: "Built n8n workflows with WhatsApp + email automation.",
     tools: ["n8n", "WhatsApp API", "Google Sheets", "Zapier"],
@@ -56,7 +56,7 @@ const projects = [
     title: "Restaurant Social Takeover",
     result: "10K followers in 60 days",
     tags: ["Social Media"],
-    image: "📱",
+    coverImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop",
     problem: "Zero social presence, no local visibility.",
     solution: "Created content calendar, Reels strategy, and influencer collabs.",
     tools: ["Instagram", "Canva", "Later", "Meta Business Suite"],
@@ -71,7 +71,7 @@ const projects = [
     title: "SEO Domination for Local Biz",
     result: "#1 on Google for 12 keywords",
     tags: ["SEO"],
-    image: "🎯",
+    coverImage: "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=800&auto=format&fit=crop",
     problem: "Not ranking for any local search terms.",
     solution: "Technical SEO audit, content clusters, and local citation building.",
     tools: ["Ahrefs", "Screaming Frog", "Google Search Console"],
@@ -86,7 +86,7 @@ const projects = [
     title: "Funnel + Ads for Coaching Biz",
     result: "₹15L revenue in 30 days",
     tags: ["Paid Ads", "Web Dev"],
-    image: "💰",
+    coverImage: "https://images.unsplash.com/photo-1553877616-152807fbe913?q=80&w=800&auto=format&fit=crop",
     problem: "No online sales system for high-ticket coaching.",
     solution: "Built sales funnel with webinar flow + retargeting ads.",
     tools: ["ClickFunnels", "Google Ads", "Meta Ads", "Razorpay"],
@@ -600,9 +600,9 @@ const SeasonBackground = ({ season }: { season: 'summer' | 'winter' | 'rainy' | 
 
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [socialSubTab, setSocialSubTab] = useState("All");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
   const [selectedCreative, setSelectedCreative] = useState<(typeof creativeItems)[number] | null>(null);
-  const [activeSection, setActiveSection] = useState<"projects" | "videos" | "creatives">("projects");
   const [creativeMode, setCreativeMode] = useState<"wall" | "carousel">("wall");
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
@@ -620,16 +620,17 @@ const WorkPage = () => {
   };
 
   // Auto-scroll effect when index changes programmatically
+  // Auto-scroll effect when index changes programmatically
   useEffect(() => {
-    if (containerRef.current && activeSection === 'videos') {
+    if (containerRef.current && activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio') {
       const child = containerRef.current.children[activeVideoIndex] as HTMLElement;
       child?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [activeVideoIndex, activeSection]);
+  }, [activeVideoIndex, activeFilter, socialSubTab]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeSection !== "videos") return;
+      if (!(activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio')) return;
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
@@ -642,7 +643,7 @@ const WorkPage = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeSection, activeVideoIndex]);
+  }, [activeFilter, socialSubTab, activeVideoIndex]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
@@ -655,24 +656,24 @@ const WorkPage = () => {
 
   // Reset creative mode when section changes
   useEffect(() => {
-    if (activeSection !== 'creatives') {
+    if (socialSubTab !== 'Creatives') {
       setTimeout(() => setCreativeMode('wall'), 300);
     }
-  }, [activeSection]);
+  }, [socialSubTab]);
 
 
 
-  const isFullscreen = activeSection === 'videos' || activeSection === 'creatives';
+  const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives');
 
   return (
     <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg lg:max-w-4xl min-h-screen pt-2'}`}>
 
       {/* Section Toggle - Always visible */}
-      <div className={`${isFullscreen ? 'absolute top-0 left-0 right-0 z-50 px-5 pt-3 pb-2 bg-gradient-to-b from-black/90 via-black/60 to-transparent' : 'mb-4'}`}>
+      <div className={`${isFullscreen ? 'absolute top-0 left-0 right-0 z-50 px-5 pt-3 pb-2 bg-gradient-to-b from-black/90 via-black/60 to-transparent' : 'mb-8'}`}>
         <div className={isFullscreen ? 'max-w-lg mx-auto' : ''}>
 
           {/* Back Button for Creative Carousel */}
-          {activeSection === 'creatives' && creativeMode === 'carousel' && (
+          {activeFilter === 'Social Media' && socialSubTab === 'Creatives' && creativeMode === 'carousel' && (
             <button
               onClick={() => setCreativeMode('wall')}
               className="mb-2 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit"
@@ -681,7 +682,7 @@ const WorkPage = () => {
             </button>
           )}
 
-          {!(activeSection === 'videos' || activeSection === 'creatives') && (
+          {!isFullscreen && (
             <>
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
@@ -690,67 +691,77 @@ const WorkPage = () => {
               >
                 My <span className="gradient-text">Work</span>
               </motion.h1>
-              <p className="text-sm mb-4 text-muted-foreground">Case studies & creative work</p>
+              <p className="text-sm mb-6 text-muted-foreground">Case studies & creative work</p>
             </>
           )}
 
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-            <button
-              onClick={() => setActiveSection("projects")}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeSection === "projects"
-                ? "bg-primary text-primary-foreground border-primary-foreground/20"
-                : isFullscreen ? "bg-white/10 text-white/70 border-white/5 hover:bg-white/20" : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"
-                }`}
-            >
-              <TrendingUp className="w-3.5 h-3.5" /> Projects
-            </button>
-            <button
-              onClick={() => setActiveSection("videos")}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeSection === "videos"
-                ? "bg-white text-black border-white/50"
-                : isFullscreen ? "bg-white/10 text-white/70 border-white/5 hover:bg-white/20" : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"
-                }`}
-            >
-              <Film className="w-3.5 h-3.5" /> Video Portfolio
-            </button>
-            <button
-              onClick={() => setActiveSection("creatives")}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeSection === "creatives"
-                ? "bg-primary text-primary-foreground border-primary-foreground/20"
-                : isFullscreen ? "bg-white/10 text-white/70 border-white/5 hover:bg-white/20" : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"
-                }`}
-            >
-              <Wrench className="w-3.5 h-3.5" /> Creatives
-            </button>
+          {/* Main Filter Navigation */}
+          <div className={`flex gap-3 overflow-x-auto pb-2 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 lg:justify-center' : ''}`}>
+            {!isFullscreen && filters.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setActiveFilter(tag)}
+                className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] whitespace-nowrap ${activeFilter === tag
+                  ? "bg-slate-800 dark:bg-white text-white dark:text-black border-slate-600 dark:border-slate-300 shadow-md"
+                  : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
+              >
+                {tag}
+              </button>
+            ))}
+
+            {/* If fullscreen (Social Media sub-modes), show a back to projects/all button or similar if needed? 
+                  Actually, user might want to switch tabs even in fullscreen. 
+                  But full screen video portfolio usually hides the main nav.
+                  Let's show a minimal back button or the sub-tabs.
+              */}
+            {isFullscreen && (
+              <button
+                onClick={() => {
+                  // Go back to main view or simply reset subtab
+                  setSocialSubTab('All');
+                }}
+                className="px-4 py-2 rounded-xl bg-white/10 text-white backdrop-blur-sm border border-white/10 text-xs font-bold"
+              >
+                ← Back to Case Studies
+              </button>
+            )}
           </div>
+
+          {/* Social Media Sub-Tabs (Only visible if Social Media is active and NOT fullscreen video, or overlaid?) 
+               Actually, if we want them to switch between All/Video/Creative, we should show this bar.
+           */}
+          {activeFilter === 'Social Media' && !isFullscreen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 flex gap-2 justify-center"
+            >
+              {['All', 'Video Portfolio', 'Creatives'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => setSocialSubTab(sub)}
+                  className={`px-4 py-1.5 rounded-full text-[10px] font-bold transition-all border ${socialSubTab === sub
+                    ? 'bg-primary/10 text-primary border-primary/20'
+                    : 'bg-transparent text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                >
+                  {sub}
+                </button>
+              ))}
+            </motion.div>
+          )}
         </div>
       </div>
 
       <AnimatePresence mode="wait">
-        {activeSection === "projects" ? (
+        {/* VIEW 1: PROJECTS (Case Studies) */}
+        {(!isFullscreen) && (
           <motion.div
-            key="projects"
+            key="projects-list"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className="pb-24 grid gap-8 px-1"
           >
-
-            {/* Filter Tags - Glass Pill Style */}
-            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-none -mx-1 px-1 lg:justify-center">
-              {filters.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setActiveFilter(tag)}
-                  className={`px-5 py-2 rounded-xl text-xs font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeFilter === tag
-                    ? "bg-slate-800 dark:bg-white text-white dark:text-black border-slate-600 dark:border-slate-300"
-                    : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-
             <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-6">
               {filtered.map((project) => (
                 <motion.div
@@ -759,30 +770,50 @@ const WorkPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   onClick={() => setSelectedProject(project)}
-                  className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 border-b-[4px] border-b-slate-200 dark:border-b-slate-800 rounded-2xl p-5 cursor-pointer hover:border-b-primary/50 dark:hover:border-b-primary/50 transition-all active:border-b-0 active:translate-y-[4px]"
+                  className="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 border-b-[4px] border-b-slate-200 dark:border-b-slate-800 rounded-3xl overflow-hidden cursor-pointer hover:border-b-primary/50 dark:hover:border-b-primary/50 transition-all active:border-b-0 active:translate-y-[4px]"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="text-3xl">{project.image}</div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-sm">{project.title}</h3>
-                      <p className="text-xs text-primary font-medium flex items-center gap-1 mt-0.5">
-                        <TrendingUp className="w-3 h-3" /> {project.result}
-                      </p>
-                      <div className="flex gap-1.5 mt-2 flex-wrap">
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={project.coverImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                    <div className="absolute bottom-3 left-4 right-4">
+                      <h3 className="font-bold text-lg text-white leading-tight mb-1">{project.title}</h3>
+                      <div className="flex gap-2 flex-wrap">
                         {project.tags.map((tag) => (
-                          <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
+                          <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-sm text-white border border-white/10">
                             {tag}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
+                  </div>
+
+                  <div className="p-5">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                          <TrendingUp className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-sm">{project.result}</span>
+                      </div>
+                      <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </div>
+
+                    <p className="text-xs text-muted-foreground line-clamp-2">
+                      {project.problem}
+                    </p>
                   </div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
-        ) : activeSection === "videos" ? (
+        )}
+
+        {/* VIEW 2: VIDEO PORTFOLIO */}
+        {activeFilter === "Social Media" && socialSubTab === "Video Portfolio" && (
           <motion.div
             key="videos"
             initial={{ opacity: 0 }}
@@ -822,16 +853,8 @@ const WorkPage = () => {
               <div className="h-1 w-full snap-align-none" />
             </div>
 
-            {/* Desktop side info */}
-            <div className="hidden lg:flex flex-col gap-6 ml-12 max-w-sm h-[80vh] justify-center">
-              <div>
-                <h2 className="text-3xl font-bold text-white mb-2">Video Portfolio</h2>
-                <p className="text-sm text-white/60 leading-relaxed">
-                  Scroll or use arrow keys to navigate.
-                </p>
-              </div>
-
-              {/* Navigation Arrows */}
+            {/* Desktop Side Info / Navigation for Videos */}
+            <div className="hidden lg:flex flex-col ml-8 gap-4">
               <div className="flex gap-4">
                 <button
                   onClick={() => scrollToIndex(Math.max(activeVideoIndex - 1, 0))}
@@ -849,204 +872,155 @@ const WorkPage = () => {
                 </button>
               </div>
 
-              <div className="grid gap-3 overflow-y-auto pr-2 scrollbar-none mask-gradient-b">
+              <div className="grid gap-3 overflow-y-auto pr-2 scrollbar-none mask-gradient-b max-h-[60vh]">
                 {videoPortfolio.map((v, i) => (
                   <button
                     key={v.id}
-                    onClick={() => scrollToIndex(i)}
+                    onClick={() => scrollToIndex(i)} // This will update activeVideoIndex
                     className={`w-full text-left p-4 rounded-xl transition-all border-b-[3px] active:border-b-0 active:translate-y-[3px] flex items-center justify-between group ${activeVideoIndex === i
                       ? 'bg-white text-black border-slate-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]'
                       : 'bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white hover:border-white/20'
                       }`}
                   >
                     <div>
-                      <span className={`block font-bold text-sm ${activeVideoIndex === i ? 'text-black' : 'text-white'}`}>{v.title}</span>
-                      <span className={`text-[10px] ${activeVideoIndex === i ? 'text-black/60' : 'text-white/40'}`}>{v.category}</span>
+                      <p className="font-bold text-sm mb-1">{v.title}</p>
+                      <p className="text-[10px] opacity-70">{v.category}</p>
                     </div>
-                    {activeVideoIndex === i && (
-                      <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center">
-                        <Play className="w-3 h-3 fill-white ml-0.5" />
-                      </div>
-                    )}
+                    {activeVideoIndex === i && <div className="w-2 h-2 rounded-full bg-black animate-pulse" />}
                   </button>
                 ))}
               </div>
             </div>
-
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none z-20 lg:hidden" />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="creatives"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className={creativeMode === 'carousel' ? "fixed inset-0 z-0 bg-neutral-900 flex flex-col pt-28" : "fixed inset-0 z-0 bg-neutral-100 dark:bg-neutral-900 flex flex-col pt-24 overflow-y-auto"}
-          >
-            {/* Spotlight Effect Background */}
-            {creativeMode === 'carousel' && (
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.1),rgba(0,0,0,0)50%)] pointer-events-none" />
-            )}
-
-            {creativeMode === "wall" ? (
-              <div className="pb-20 px-5">
-                <div className="text-center pt-8 mb-24">
-                  <h2 className="text-3xl md:text-4xl font-serif font-bold mb-2 text-foreground">
-                    Welcome to the <span className="italic text-primary">Gallery</span>
-                  </h2>
-                  <p className="text-sm text-muted-foreground font-light tracking-wide">Tap a frame to view details</p>
-                </div>
-
-                {/* Wall View - Grid of Frames */}
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-20 perspective-1000 max-w-lg lg:max-w-4xl mx-auto">
-                  {creativeItems.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="relative group cursor-pointer"
-                      onClick={() => setCreativeMode('carousel')}
-                    >
-                      {/* Hanging String */}
-                      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-0.5 h-12 bg-black/20 dark:bg-white/20 z-0" />
-                      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-black/40 dark:bg-white/40 shadow-sm z-0" />
-
-                      <div className="bg-white p-3 shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:scale-105 transition-transform duration-300 relative z-10 transform-gpu">
-                        <div className="aspect-[3/4] overflow-hidden bg-gray-100">
-                          <img src={item.image} alt={item.title} className="w-full h-full object-cover filter contrast-105" />
-                        </div>
-                        <div className="mt-3 text-center">
-                          <h3 className="text-[10px] font-serif font-bold truncate px-1 text-black">{item.title}</h3>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <>
-                {/* Carousel View - Horizontal Scroll */}
-                <div className="relative z-10 px-5 mb-2">
-                  <p className="text-xs text-white/50 font-serif italic mb-4 text-center">"A curation of visual experiments"</p>
-                </div>
-
-                <div className="flex-1 overflow-x-auto overflow-y-hidden flex items-center gap-12 px-10 pb-20 snap-x snap-mandatory scrollbar-none perspective-1000">
-                  {creativeItems.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, scale: 0.8, rotateY: 20 }}
-                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                      viewport={{ margin: "-10% 0px -10% 0px" }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="relative group shrink-0 w-[280px] snap-center"
-                      onClick={() => setSelectedCreative(item)}
-                    >
-                      {/* Hanging String (Visual) */}
-                      <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-0.5 h-16 bg-white/20 z-0" />
-                      <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white/40 shadow-[0_0_10px_rgba(255,255,255,0.5)] z-0" />
-
-                      {/* Frame & Artwork */}
-                      <div className="relative bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer z-10">
-                        <div className="relative overflow-hidden aspect-[4/5] bg-gray-100">
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-cover filter sepia-[0.2] contrast-105 group-hover:sepia-0 transition-all duration-500"
-                          />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                        </div>
-
-                        {/* Plaque / Label */}
-                        <div className="mt-4 text-center">
-                          <h3 className="text-black font-serif text-lg font-bold tracking-tight">{item.title}</h3>
-                          <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{item.category}</p>
-                        </div>
-                      </div>
-
-                      {/* Floor Reflection (Subtle) */}
-                      <div className="absolute -bottom-12 left-0 right-0 h-10 bg-gradient-to-b from-white/10 to-transparent transform scale-y-[-1] opacity-20 blur-sm pointer-events-none" />
-                    </motion.div>
-                  ))}
-
-                  {/* Spacer for end of gallery */}
-                  <div className="w-10 shrink-0" />
-                </div>
-              </>
-            )}
           </motion.div>
         )}
-      </AnimatePresence>
 
-      {/* Project Detail Modal */}
-      <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="glass rounded-2xl max-w-md mx-auto max-h-[80vh] overflow-y-auto border-border">
-          {selectedProject && (
-            <>
-              <DialogHeader>
-                <div className="text-4xl mb-2">{selectedProject.image}</div>
-                <DialogTitle className="text-lg">{selectedProject.title}</DialogTitle>
-                <DialogDescription className="text-primary font-medium text-sm">
-                  {selectedProject.result}
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-4 mt-2">
-                <div>
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Problem</h4>
-                  <p className="text-sm">{selectedProject.problem}</p>
-                </div>
-                <div>
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Solution</h4>
-                  <p className="text-sm">{selectedProject.solution}</p>
-                </div>
-                <div>
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Tools Used</h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedProject.tools.map((tool) => (
-                      <span key={tool} className="text-xs px-2.5 py-1 rounded-lg bg-secondary text-secondary-foreground">
-                        <Wrench className="w-3 h-3 inline mr-1" />{tool}
-                      </span>
-                    ))}
+        {/* VIEW 3: CREATIVES */}
+        {activeFilter === "Social Media" && socialSubTab === "Creatives" && (
+          <motion.div
+            className="pb-24 pt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <div className="columns-2 md:columns-3 gap-4 space-y-4 px-1">
+              {creativeItems.map(item => (
+                <motion.div
+                  key={item.id}
+                  className="break-inside-avoid bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => {
+                    // Handle selection or open dialog/modal for image
+                  }}
+                >
+                  <img src={item.image} alt={item.title} className="w-full h-auto" />
+                  <div className="p-3">
+                    <h3 className="font-bold text-xs">{item.title}</h3>
+                    <p className="text-[10px] text-muted-foreground">{item.category}</p>
                   </div>
-                </div>
-                <div>
-                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Results</h4>
-                  <div className="grid grid-cols-3 gap-2">
-                    {selectedProject.metrics.map((m) => (
-                      <div key={m.label} className="text-center p-2 rounded-xl bg-secondary/50">
-                        <div className="text-lg font-bold gradient-text">{m.value}</div>
-                        <div className="text-[10px] text-muted-foreground">{m.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+        {/* Frame & Artwork */}
+        <div className="relative bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer z-10">
+          <div className="relative overflow-hidden aspect-[4/5] bg-gray-100">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-full object-cover filter sepia-[0.2] contrast-105 group-hover:sepia-0 transition-all duration-500"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+          </div>
 
-      {/* Creative Detail Modal (Lightbox) */}
-      <Dialog open={!!selectedCreative} onOpenChange={() => setSelectedCreative(null)}>
-        <DialogContent className="bg-black/95 border-none text-white max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
-          {selectedCreative && (
-            <div className="relative">
-              <img src={selectedCreative.image} alt={selectedCreative.title} className="w-full h-auto max-h-[60vh] object-contain bg-black/50" />
-              <div className="p-5">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">{selectedCreative.category}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-2 font-serif tracking-tight">{selectedCreative.title}</h3>
-                <p className="text-sm text-gray-300 leading-relaxed font-light">{selectedCreative.description}</p>
+          {/* Plaque / Label */}
+          <div className="mt-4 text-center">
+            <h3 className="text-black font-serif text-lg font-bold tracking-tight">{item.title}</h3>
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{item.category}</p>
+          </div>
+        </div>
+
+        {/* Floor Reflection (Subtle) */}
+        <div className="absolute -bottom-12 left-0 right-0 h-10 bg-gradient-to-b from-white/10 to-transparent transform scale-y-[-1] opacity-20 blur-sm pointer-events-none" />
+      </motion.div>
+      ))}
+
+      {/* Spacer for end of gallery */}
+      <div className="w-10 shrink-0" />
+    </div>
+  </>
+)}
+      </motion.div >
+        )}
+    </AnimatePresence >
+
+  {/* Project Detail Modal */ }
+  < Dialog open = {!!selectedProject} onOpenChange = {() => setSelectedProject(null)}>
+    <DialogContent className="glass rounded-2xl max-w-md mx-auto max-h-[80vh] overflow-y-auto border-border">
+      {selectedProject && (
+        <>
+          <DialogHeader>
+            <div className="text-4xl mb-2">{selectedProject.image}</div>
+            <DialogTitle className="text-lg">{selectedProject.title}</DialogTitle>
+            <DialogDescription className="text-primary font-medium text-sm">
+              {selectedProject.result}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 mt-2">
+            <div>
+              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Problem</h4>
+              <p className="text-sm">{selectedProject.problem}</p>
+            </div>
+            <div>
+              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Solution</h4>
+              <p className="text-sm">{selectedProject.solution}</p>
+            </div>
+            <div>
+              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Tools Used</h4>
+              <div className="flex flex-wrap gap-1.5">
+                {selectedProject.tools.map((tool) => (
+                  <span key={tool} className="text-xs px-2.5 py-1 rounded-lg bg-secondary text-secondary-foreground">
+                    <Wrench className="w-3 h-3 inline mr-1" />{tool}
+                  </span>
+                ))}
               </div>
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
-    </div>
+            <div>
+              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Results</h4>
+              <div className="grid grid-cols-3 gap-2">
+                {selectedProject.metrics.map((m) => (
+                  <div key={m.label} className="text-center p-2 rounded-xl bg-secondary/50">
+                    <div className="text-lg font-bold gradient-text">{m.value}</div>
+                    <div className="text-[10px] text-muted-foreground">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </DialogContent>
+  </Dialog >
+
+  {/* Creative Detail Modal (Lightbox) */ }
+  < Dialog open = {!!selectedCreative} onOpenChange = {() => setSelectedCreative(null)}>
+    <DialogContent className="bg-black/95 border-none text-white max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
+      {selectedCreative && (
+        <div className="relative">
+          <img src={selectedCreative.image} alt={selectedCreative.title} className="w-full h-auto max-h-[60vh] object-contain bg-black/50" />
+          <div className="p-5">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">{selectedCreative.category}</span>
+            </div>
+            <h3 className="text-xl font-bold mb-2 font-serif tracking-tight">{selectedCreative.title}</h3>
+            <p className="text-sm text-gray-300 leading-relaxed font-light">{selectedCreative.description}</p>
+          </div>
+        </div>
+      )}
+    </DialogContent>
+  </Dialog >
+    </div >
   );
 };
 
-
 export default WorkPage;
+```
