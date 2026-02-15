@@ -140,8 +140,13 @@
 
   /* Soft UI / Neumorphism Utilities */
   .soft-card {
-    @apply bg-white dark:bg-slate-800 rounded-3xl shadow-[5px_5px_15px_rgba(0, 0, 0, 0.1), -5px_-5px_15px_rgba(255, 255, 255, 0.8)] dark:shadow-[5px_5px_15px_rgba(0, 0, 0, 0.3), -5px_-5px_15px_rgba(255, 255, 255, 0.05)] border border-gray-100 dark:border-white/5;
+    @apply bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-white/5;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.8);
     transition: all 0.3s ease;
+  }
+
+  .dark .soft-card {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.05);
   }
 
   .soft-card:hover {
@@ -150,11 +155,21 @@
   }
 
   .soft-icon-box {
-    @apply w-14 h-14 rounded-2xl flex items-center justify-center bg-gray-50 dark:bg-slate-700 shadow-[inset_2px_2px_4px_rgba(0, 0, 0, 0.05), inset_-2px_-2px_4px_rgba(255, 255, 255, 0.8)] dark:shadow-[inset_2px_2px_4px_rgba(0, 0, 0, 0.2), inset_-2px_-2px_4px_rgba(255, 255, 255, 0.05)];
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center bg-gray-50 dark:bg-slate-700;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+  }
+
+  .dark .soft-icon-box {
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), inset -2px -2px 4px rgba(255, 255, 255, 0.05);
   }
 
   .concave-card {
-    @apply bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-5 shadow-[inset_4px_4px_8px_rgba(0, 0, 0, 0.06), inset_-4px_-4px_8px_rgba(255, 255, 255, 0.8)] dark:shadow-[inset_4px_4px_8px_rgba(0, 0, 0, 0.4), inset_-4px_-4px_8px_rgba(255, 255, 255, 0.05)];
+    @apply bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-5;
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+  }
+
+  .dark .concave-card {
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.05);
   }
 }
 
