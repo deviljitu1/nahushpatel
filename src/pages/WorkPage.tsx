@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-const filters = ["All", "Social Media", "SEO", "Paid Ads", "Web Dev", "Automation"];
+const filters = ["All", "Social Media", "SEO", "Web Dev", "Automation"];
 
 const projects = [
   {
@@ -607,22 +607,27 @@ const WorkPage = () => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const isAutoScrolling = useRef(false);
 
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
 
   const scrollToIndex = (index: number) => {
-    if (!containerRef.current) return;
-    const child = containerRef.current.children[index] as HTMLElement;
-    child?.scrollIntoView({ behavior: 'smooth' });
     setActiveVideoIndex(index);
   };
 
   // Auto-scroll effect when index changes programmatically
-  // Auto-scroll effect when index changes programmatically
   useEffect(() => {
     if (containerRef.current && activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio') {
       const child = containerRef.current.children[activeVideoIndex] as HTMLElement;
-      child?.scrollIntoView({ behavior: 'smooth' });
+      if (child) {
+        isAutoScrolling.current = true;
+        child.scrollIntoView({ behavior: 'smooth' });
+
+        const timeout = setTimeout(() => {
+          isAutoScrolling.current = false;
+        }, 800);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [activeVideoIndex, activeFilter, socialSubTab]);
 
@@ -644,6 +649,8 @@ const WorkPage = () => {
   }, [activeFilter, socialSubTab, activeVideoIndex]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (isAutoScrolling.current) return;
+
     const container = e.currentTarget;
     if (container.clientHeight === 0) return;
     const index = Math.round(container.scrollTop / container.clientHeight);
@@ -661,7 +668,7 @@ const WorkPage = () => {
 
 
 
-  const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives');
+  const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
     <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg lg:max-w-4xl min-h-screen pt-2'}`}>
@@ -734,7 +741,7 @@ const WorkPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 flex gap-2 justify-center"
             >
-              {['All', 'Video Portfolio', 'Creatives'].map((sub) => (
+              {['All', 'Video Portfolio', 'Creatives', 'Paid Ads'].map((sub) => (
                 <button
                   key={sub}
                   onClick={() => setSocialSubTab(sub)}
@@ -899,9 +906,9 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="text-center mb-12 mt-4 pointer-events-none">
+            <div className="text-center mb-12 mt-12 pointer-events-none">
               <h2 className="text-2xl font-serif font-bold text-foreground">
-                The <span className="italic text-primary">Gallery</span>
+                Welcome to My <span className="italic text-primary">Gallery</span>
               </h2>
               <p className="text-xs text-muted-foreground font-light tracking-wide mt-1">A curation of visual experiments</p>
             </div>
@@ -937,6 +944,82 @@ const WorkPage = () => {
                     </div>
                   </div>
                 </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+        {/* VIEW 4: PAID ADS */}
+        {activeFilter === "Social Media" && socialSubTab === "Paid Ads" && (
+          <motion.div
+            key="paid-ads"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="pb-24 pt-20 px-2 flex-1 overflow-y-auto"
+          >
+            <div className="text-center mb-10 w-full max-w-2xl mx-auto">
+              <h2 className="text-2xl font-bold mb-2">Ad <span className="gradient-text">Campaigns</span></h2>
+              <p className="text-sm text-muted-foreground">High-converting creatives & strategic funnels.</p>
+            </div>
+
+            <div className="grid gap-12 max-w-5xl mx-auto pb-12">
+              {[
+                {
+                  id: 1,
+                  title: "DTC Fashion Brand Scale",
+                  result: "4.5x ROAS",
+                  strategy: "Full-funnel Meta Ads strategy. We used UGC creatives for top-of-funnel awareness and dynamic product ads for retargeting.",
+                  images: [
+                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop"
+                  ],
+                  stats: { spend: "$5k", revenue: "$22.5k", cpa: "$12" }
+                },
+                {
+                  id: 2,
+                  title: "Webinar Lead Gen",
+                  result: "800+ Signups",
+                  strategy: "YouTube & LinkedIn Ads targeting B2B decision makers. Direct response copy focused on pain points.",
+                  images: [
+                    "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=600&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=600&auto=format&fit=crop"
+                  ],
+                  stats: { spend: "$2k", leads: "842", cpl: "$2.37" }
+                }
+              ].map((campaign) => (
+                <div key={campaign.id} className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                    <div>
+                      <h3 className="text-xl font-bold">{campaign.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1 max-w-lg">{campaign.strategy}</p>
+                    </div>
+                    <div className="px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-xl font-bold text-sm border border-green-200 dark:border-green-900/50 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4" /> {campaign.result}
+                    </div>
+                  </div>
+
+                  {/* Screenshots Grid */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    {campaign.images.map((img, i) => (
+                      <div key={i} className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 aspect-video relative group">
+                        <img src={img} alt="Ad Creative" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <span className="text-xs font-bold text-white border border-white/30 px-3 py-1 rounded-full backdrop-blur-md">View Creative</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Stats Footer */}
+                  <div className="flex gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    {Object.entries(campaign.stats).map(([key, value]) => (
+                      <div key={key}>
+                        <div className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">{key}</div>
+                        <div className="text-lg font-mono font-bold text-foreground">{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>
