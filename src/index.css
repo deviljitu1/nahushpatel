@@ -138,6 +138,25 @@
     display: none;
   }
 
+  /* Soft UI / Neumorphism Utilities */
+  .soft-card {
+    @apply bg-white dark:bg-slate-800 rounded-3xl shadow-[5px_5px_15px_rgba(0, 0, 0, 0.05), -5px_-5px_15px_rgba(255, 255, 255, 0.8)] dark:shadow-[5px_5px_15px_rgba(0, 0, 0, 0.3), -5px_-5px_15px_rgba(255, 255, 255, 0.05)] border border-white/50 dark:border-white/5;
+    transition: all 0.3s ease;
+  }
+
+  .soft-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.08), -8px -8px 20px rgba(255, 255, 255, 0.9);
+  }
+
+  .soft-icon-box {
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center bg-gray-50 dark:bg-slate-700 shadow-[inset_2px_2px_4px_rgba(0, 0, 0, 0.05), inset_-2px_-2px_4px_rgba(255, 255, 255, 0.8)] dark:shadow-[inset_2px_2px_4px_rgba(0, 0, 0, 0.2), inset_-2px_-2px_4px_rgba(255, 255, 255, 0.05)];
+  }
+
+  .concave-card {
+    @apply bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-5 shadow-[inset_4px_4px_8px_rgba(0, 0, 0, 0.06), inset_-4px_-4px_8px_rgba(255, 255, 255, 0.8)] dark:shadow-[inset_4px_4px_8px_rgba(0, 0, 0, 0.4), inset_-4px_-4px_8px_rgba(255, 255, 255, 0.05)];
+  }
+
   @keyframes ring {
 
     0%,
