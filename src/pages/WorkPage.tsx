@@ -614,8 +614,6 @@ const WorkPage = () => {
     if (!containerRef.current) return;
     const child = containerRef.current.children[index] as HTMLElement;
     child?.scrollIntoView({ behavior: 'smooth' });
-    const child = containerRef.current.children[index] as HTMLElement;
-    child?.scrollIntoView({ behavior: 'smooth' });
     setActiveVideoIndex(index);
   };
 
@@ -702,7 +700,7 @@ const WorkPage = () => {
                 key={tag}
                 onClick={() => setActiveFilter(tag)}
                 className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] whitespace-nowrap ${activeFilter === tag
-                  ? "bg-slate-800 dark:bg-white text-white dark:text-black border-slate-600 dark:border-slate-300 shadow-md"
+                  ? "bg-transparent text-primary border-primary/20 shadow-none ring-2 ring-primary/10"
                   : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
               >
                 {tag}
@@ -901,19 +899,42 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="columns-2 md:columns-3 gap-4 space-y-4 px-1">
-              {creativeItems.map(item => (
+            <div className="text-center mb-12 mt-4 pointer-events-none">
+              <h2 className="text-2xl font-serif font-bold text-foreground">
+                The <span className="italic text-primary">Gallery</span>
+              </h2>
+              <p className="text-xs text-muted-foreground font-light tracking-wide mt-1">A curation of visual experiments</p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-16 px-4 max-w-4xl mx-auto">
+              {creativeItems.map((item, index) => (
                 <motion.div
                   key={item.id}
-                  className="break-inside-avoid bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                  onClick={() => {
-                    // Handle selection or open dialog/modal for image
-                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="relative group cursor-pointer"
+                  onClick={() => setSelectedCreative(item)}
                 >
-                  <img src={item.image} alt={item.title} className="w-full h-auto" />
-                  <div className="p-3">
-                    <h3 className="font-bold text-xs">{item.title}</h3>
-                    <p className="text-[10px] text-muted-foreground">{item.category}</p>
+                  {/* Hanging String */}
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-slate-300 dark:bg-slate-700 z-0" />
+                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-600 shadow-sm z-0" />
+
+                  {/* Frame */}
+                  <div className="bg-white p-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-1 relative z-10">
+                    <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover filter contrast-[1.05]"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                    </div>
+                    <div className="mt-3 text-center">
+                      <h3 className="text-[10px] font-serif font-bold truncate px-1 text-black tracking-tight">{item.title}</h3>
+                      <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-0.5">{item.category}</p>
+                    </div>
                   </div>
                 </motion.div>
               ))}
