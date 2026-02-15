@@ -110,11 +110,16 @@ const Index = () => {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex-1 bg-slate-50 dark:bg-slate-900 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col relative -mt-px"
         >
+          {/* Work Tab Custom Gradient Background */}
+          {activeTab === "work" && (
+            <div className="absolute inset-0 pointer-events-none hidden dark:block bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#FDA13640] via-slate-900 to-slate-900" />
+          )}
+
           {/* Accent glow */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-primary/8 blur-3xl pointer-events-none rounded-full transform translate-x-1/2 -translate-y-1/2" />
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto scrollbar-none pb-28">
+          <div className="flex-1 overflow-y-auto scrollbar-none pb-28 relative z-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}

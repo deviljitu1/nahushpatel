@@ -699,7 +699,7 @@ const WorkPage = () => {
               ))}
             </div>
 
-            <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+            <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-6">
               {filtered.map((project) => (
                 <motion.div
                   key={project.id}
