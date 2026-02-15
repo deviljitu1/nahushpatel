@@ -73,57 +73,55 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
       >
         My <span className="gradient-text">Services</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-6">What I can do for you</p>
+      <p className="text-sm text-muted-foreground mb-8 text-center">Tap to explore specialized services</p>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
+      <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 gap-5 px-2 pb-8">
         {services.map((service, i) => {
           const Icon = service.icon;
           const isExpanded = expandedIndex === i;
           return (
             <motion.div
+              layout
               key={service.title}
               variants={cardAnim}
-              className="glass rounded-2xl overflow-hidden"
+              onClick={() => setExpandedIndex(isExpanded ? null : i)}
+              className={`soft-card p-4 flex flex-col items-center text-center cursor-pointer relative overflow-hidden ${isExpanded ? "col-span-2 row-span-2 z-10" : ""}`}
             >
-              <button
-                onClick={() => setExpandedIndex(isExpanded ? null : i)}
-                className="w-full p-4 flex items-center gap-3 text-left"
-              >
-                <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm">{service.title}</h3>
-                  <p className="text-xs text-muted-foreground">{service.short}</p>
-                </div>
-                <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                </motion.div>
-              </button>
+              <div className={`soft-icon-box mb-3 transition-all duration-300 ${isExpanded ? "scale-110 bg-primary/10" : "group-hover:scale-105"}`}>
+                <Icon className={`w-6 h-6 ${isExpanded ? "text-primary" : "text-muted-foreground"}`} />
+              </div>
+
+              <h3 className="font-bold text-sm mb-1 leading-tight">{service.title}</h3>
+              {!isExpanded && <p className="text-[10px] text-muted-foreground line-clamp-2 leading-relaxed">{service.short}</p>}
+
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="w-full text-left mt-4 pt-4 border-t border-dashed border-gray-200 dark:border-gray-700"
                   >
-                    <div className="px-4 pb-4 pt-0">
-                      <p className="text-sm text-muted-foreground mb-3">{service.details}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold gradient-text">{service.pricing}</span>
-                        <button
-                          onClick={() => onNavigate("contact")}
-                          className="text-xs gradient-bg text-primary-foreground px-4 py-1.5 rounded-lg font-medium hover:opacity-90 transition-opacity"
-                        >
-                          Get Quote
-                        </button>
-                      </div>
+                    <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{service.details}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-primary">{service.pricing}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onNavigate("contact");
+                        }}
+                        className="px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-black text-xs font-bold shadow-lg"
+                      >
+                        Start Project
+                      </button>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {!isExpanded && (
+                <ChevronDown className="w-4 h-4 text-muted-foreground/30 absolute bottom-2 right-2" />
+              )}
             </motion.div>
           );
         })}
