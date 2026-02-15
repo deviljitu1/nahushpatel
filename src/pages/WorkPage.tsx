@@ -289,7 +289,7 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
         {/* Bottom info overlay (Instagram style) */}
         <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-24 md:pb-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px]">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent p-[2px]">
               <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
                 <span className="text-xs font-bold text-white">NP</span>
               </div>
@@ -610,18 +610,20 @@ const WorkPage = () => {
 
 
 
-  return (
-    <div className={`relative pt-14 mx-auto ${activeSection === 'videos' || activeSection === 'creatives' ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg lg:max-w-4xl min-h-screen'}`}>
+  const isFullscreen = activeSection === 'videos' || activeSection === 'creatives';
 
-      {/* Header - Variable Padding based on section */}
-      <div className={`${activeSection === 'videos' || activeSection === 'creatives' ? 'fixed top-0 left-0 right-0 z-30 px-5 pt-2 bg-gradient-to-b from-black/80 to-transparent pointer-events-none' : ''}`}>
-        <div className={activeSection === 'videos' || activeSection === 'creatives' ? 'pointer-events-auto max-w-lg mx-auto flex flex-col items-center' : ''}>
+  return (
+    <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg lg:max-w-4xl min-h-screen pt-2'}`}>
+
+      {/* Section Toggle - Always visible */}
+      <div className={`${isFullscreen ? 'absolute top-0 left-0 right-0 z-50 px-5 pt-3 pb-2 bg-gradient-to-b from-black/90 via-black/60 to-transparent' : 'mb-4'}`}>
+        <div className={isFullscreen ? 'max-w-lg mx-auto' : ''}>
 
           {/* Back Button for Creative Carousel */}
           {activeSection === 'creatives' && creativeMode === 'carousel' && (
             <button
               onClick={() => setCreativeMode('wall')}
-              className="mb-2 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit self-start"
+              className="mb-2 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit"
             >
               <ArrowLeft className="w-4 h-4" /> Back to Gallery
             </button>
@@ -640,31 +642,30 @@ const WorkPage = () => {
             </>
           )}
 
-          {/* Section Toggle */}
-          <div className={`flex gap-2 overflow-x-auto pb-2 scrollbar-none ${activeSection === 'videos' || activeSection === 'creatives' ? 'mt-2' : 'mb-4'}`}>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             <button
               onClick={() => setActiveSection("projects")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
-                ? "gradient-bg text-primary-foreground"
-                : "glass text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
+                ? "gradient-bg text-primary-foreground shadow-lg"
+                : isFullscreen ? "bg-white/10 backdrop-blur-md text-white/70 hover:text-white" : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
               <TrendingUp className="w-3.5 h-3.5" /> Projects
             </button>
             <button
               onClick={() => setActiveSection("videos")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "videos"
-                ? "bg-white/20 text-white backdrop-blur-md"
-                : "glass text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "videos"
+                ? "bg-white/20 text-white backdrop-blur-md shadow-lg"
+                : isFullscreen ? "bg-white/10 backdrop-blur-md text-white/70 hover:text-white" : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
               <Film className="w-3.5 h-3.5" /> Video Portfolio
             </button>
             <button
               onClick={() => setActiveSection("creatives")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "creatives"
-                ? "gradient-bg text-primary-foreground"
-                : "glass text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "creatives"
+                ? "gradient-bg text-primary-foreground shadow-lg"
+                : isFullscreen ? "bg-white/10 backdrop-blur-md text-white/70 hover:text-white" : "glass text-muted-foreground hover:text-foreground"
                 }`}
             >
               <Wrench className="w-3.5 h-3.5" /> Creatives
