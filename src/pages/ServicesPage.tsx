@@ -21,21 +21,21 @@ const services = [
   {
     icon: Megaphone,
     title: "Google Ads & Meta Ads",
-    short: "High ROAS ad campaigns",
+    short: "High ROAS campaigns",
     details: "Strategic paid campaigns on Google, Facebook, and Instagram. Full funnel setup with retargeting, lookalike audiences, and conversion tracking.",
     pricing: "Starting from ₹8,000/mo + ad spend",
   },
   {
     icon: Zap,
     title: "Marketing Automation",
-    short: "n8n, Zapier & workflow magic",
+    short: "n8n, Zapier & workflows",
     details: "Automate lead capture, nurture sequences, CRM updates, and reporting. Save 20+ hours/week with intelligent automation workflows.",
     pricing: "Starting from ₹12,000",
   },
   {
     icon: GitBranch,
     title: "Funnel Building",
-    short: "Convert visitors into customers",
+    short: "Convert visitors to customers",
     details: "End-to-end sales funnels — lead magnets, webinar funnels, tripwire offers, and upsell sequences designed to maximize customer lifetime value.",
     pricing: "Starting from ₹20,000",
   },
@@ -65,7 +65,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
-    <div className="px-5 pt-14 max-w-lg lg:max-w-4xl mx-auto">
+    <div className="px-5 pt-8 max-w-lg lg:max-w-4xl mx-auto">
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -73,9 +73,9 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
       >
         My <span className="gradient-text">Services</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-8 text-center">Tap to explore specialized services</p>
+      <p className="text-xs text-muted-foreground mb-6">Tap to explore specialized services</p>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 gap-5 px-2 pb-8">
+      <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-3 lg:grid-cols-3 gap-4 px-1 pb-8">
         {services.map((service, i) => {
           const Icon = service.icon;
           const isExpanded = expandedIndex === i;
@@ -85,14 +85,14 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
               key={service.title}
               variants={cardAnim}
               onClick={() => setExpandedIndex(isExpanded ? null : i)}
-              className={`soft-card p-4 flex flex-col items-center text-center cursor-pointer relative overflow-hidden ${isExpanded ? "col-span-2 row-span-2 z-10" : ""}`}
+              className={`soft-card p-4 flex flex-col items-center text-center cursor-pointer relative overflow-hidden transition-all duration-300 ${isExpanded ? "col-span-3 z-10" : ""}`}
             >
-              <div className={`soft-icon-box mb-3 transition-all duration-300 ${isExpanded ? "scale-110 bg-primary/10" : "group-hover:scale-105"}`}>
-                <Icon className={`w-6 h-6 ${isExpanded ? "text-primary" : "text-muted-foreground"}`} />
+              <div className={`soft-icon-box mb-2.5 transition-all duration-300 ${isExpanded ? "scale-110 bg-primary/10" : ""}`}>
+                <Icon className={`w-5 h-5 ${isExpanded ? "text-primary" : "text-muted-foreground"}`} />
               </div>
 
-              <h3 className="font-bold text-sm mb-1 leading-tight">{service.title}</h3>
-              {!isExpanded && <p className="text-[10px] text-muted-foreground line-clamp-2 leading-relaxed">{service.short}</p>}
+              <h3 className="font-bold text-xs mb-0.5 leading-tight">{service.title}</h3>
+              {!isExpanded && <p className="text-[9px] text-muted-foreground line-clamp-2 leading-relaxed">{service.short}</p>}
 
               <AnimatePresence>
                 {isExpanded && (
@@ -100,9 +100,9 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="w-full text-left mt-4 pt-4 border-t border-dashed border-gray-200 dark:border-gray-700"
+                    className="w-full text-left mt-3 pt-3 border-t border-dashed border-border"
                   >
-                    <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{service.details}</p>
+                    <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{service.details}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-primary">{service.pricing}</span>
                       <button
@@ -110,7 +110,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
                           e.stopPropagation();
                           onNavigate("contact");
                         }}
-                        className="px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-black text-xs font-bold shadow-lg"
+                        className="px-4 py-1.5 rounded-xl gradient-bg text-primary-foreground text-xs font-bold shadow-md"
                       >
                         Start Project
                       </button>
@@ -120,7 +120,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
               </AnimatePresence>
 
               {!isExpanded && (
-                <ChevronDown className="w-4 h-4 text-muted-foreground/30 absolute bottom-2 right-2" />
+                <ChevronDown className="w-3 h-3 text-muted-foreground/30 absolute bottom-1.5 right-1.5" />
               )}
             </motion.div>
           );
@@ -132,21 +132,19 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-12 flex items-center justify-center gap-4"
+        className="mt-8 flex items-center justify-center gap-4"
       >
         <ScheduleDialog>
           <button className="relative group">
             <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping duration-[2000ms]" />
-            <div className="relative p-4 rounded-full gradient-bg shadow-xl glow-primary animate-ring group-hover:scale-110 transition-transform">
-              <Phone className="w-6 h-6 text-white" />
+            <div className="relative p-3.5 rounded-full gradient-bg shadow-xl glow-primary animate-ring group-hover:scale-110 transition-transform">
+              <Phone className="w-5 h-5 text-white" />
             </div>
           </button>
         </ScheduleDialog>
 
         <ScheduleDialog>
-          <button
-            className="text-foreground text-lg font-bold hover:opacity-80 transition-opacity"
-          >
+          <button className="text-foreground text-base font-bold hover:opacity-80 transition-opacity">
             Book a Call
           </button>
         </ScheduleDialog>

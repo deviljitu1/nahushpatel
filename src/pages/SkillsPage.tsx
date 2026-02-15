@@ -73,7 +73,7 @@ const item = {
 
 const SkillsPage = () => {
   return (
-    <div className="px-5 pt-14 max-w-lg lg:max-w-4xl mx-auto">
+    <div className="px-5 pt-8 max-w-lg lg:max-w-4xl mx-auto">
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -81,16 +81,16 @@ const SkillsPage = () => {
       >
         My <span className="gradient-text">Skills</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-6">Expertise & experience</p>
+      <p className="text-xs text-muted-foreground mb-6">Expertise & experience</p>
 
-      {/* Skills Grid - side by side on desktop */}
-      <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+      {/* Skills in soft cards - side by side on desktop */}
+      <div className="lg:grid lg:grid-cols-2 lg:gap-5">
         {/* Marketing Skills */}
-        <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
-          <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
+        <motion.div variants={container} initial="hidden" animate="show" className="mb-5">
+          <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
             Marketing
           </motion.h2>
-          <motion.div variants={item} className="glass rounded-2xl p-4">
+          <motion.div variants={item} className="soft-card p-4">
             {marketingSkills.map((s) => (
               <AnimatedBar key={s.name} {...s} />
             ))}
@@ -98,11 +98,11 @@ const SkillsPage = () => {
         </motion.div>
 
         {/* Tech Skills */}
-        <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
-          <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
+        <motion.div variants={container} initial="hidden" animate="show" className="mb-5">
+          <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
             Tech
           </motion.h2>
-          <motion.div variants={item} className="glass rounded-2xl p-4">
+          <motion.div variants={item} className="soft-card p-4">
             {techSkills.map((s) => (
               <AnimatedBar key={s.name} {...s} />
             ))}
@@ -110,14 +110,14 @@ const SkillsPage = () => {
         </motion.div>
       </div>
 
-      {/* Tools Grid */}
-      <motion.div variants={container} initial="hidden" animate="show" className="mb-6">
-        <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
+      {/* Tools Grid - 3 col pill tags */}
+      <motion.div variants={container} initial="hidden" animate="show" className="mb-5">
+        <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
           Tools I Use
         </motion.h2>
         <motion.div variants={item} className="flex flex-wrap gap-2">
           {tools.map((tool) => (
-            <span key={tool} className="glass text-xs px-3 py-1.5 rounded-lg font-medium">
+            <span key={tool} className="soft-card text-[10px] px-3 py-1.5 font-medium !rounded-xl !shadow-[3px_3px_8px_rgba(0,0,0,0.06),-3px_-3px_8px_rgba(255,255,255,0.8)]">
               {tool}
             </span>
           ))}
@@ -126,18 +126,18 @@ const SkillsPage = () => {
 
       {/* Timeline */}
       <motion.div variants={container} initial="hidden" animate="show">
-        <motion.h2 variants={item} className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
+        <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
           Experience
         </motion.h2>
         <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
-          {timeline.map((t, i) => (
-            <motion.div key={t.year} variants={item} className="glass rounded-2xl p-4 flex gap-3">
-              <div className="gradient-bg text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-lg h-fit">
+          {timeline.map((t) => (
+            <motion.div key={t.year} variants={item} className="soft-card p-4 flex gap-3">
+              <div className="gradient-bg text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-xl h-fit shadow-md">
                 {t.year}
               </div>
               <div>
                 <h3 className="text-sm font-semibold">{t.title}</h3>
-                <p className="text-xs text-muted-foreground">{t.description}</p>
+                <p className="text-[10px] text-muted-foreground">{t.description}</p>
               </div>
             </motion.div>
           ))}
