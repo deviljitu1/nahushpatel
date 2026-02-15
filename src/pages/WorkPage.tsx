@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "SEO", "Paid Ads", "Web Dev", "Automation", "Social Media"];
@@ -168,11 +168,12 @@ const videoPortfolio = [
   },
 ];
 
-const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number]; isActive: boolean }) => {
+const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)[number]; isActive: boolean; onEnded?: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (isActive) {
@@ -214,6 +215,13 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
           muted={false}
           playsInline
           preload="metadata"
+          onEnded={onEnded}
+          onTimeUpdate={() => {
+            if (videoRef.current) {
+              const p = (videoRef.current.currentTime / videoRef.current.duration) * 100;
+              setProgress(p);
+            }
+          }}
         />
 
         {/* Play/Pause overlay - Minimal */}
@@ -342,6 +350,14 @@ const ReelCard = ({ video, isActive }: { video: (typeof videoPortfolio)[number];
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Custom Timeline Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-20">
+        <div
+          className="h-full bg-primary transition-all duration-100 ease-linear"
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </div>
   );
@@ -590,7 +606,43 @@ const WorkPage = () => {
   const [creativeMode, setCreativeMode] = useState<"wall" | "carousel">("wall");
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
+
+  const scrollToIndex = (index: number) => {
+    if (!containerRef.current) return;
+    const child = containerRef.current.children[index] as HTMLElement;
+    child?.scrollIntoView({ behavior: 'smooth' });
+    const child = containerRef.current.children[index] as HTMLElement;
+    child?.scrollIntoView({ behavior: 'smooth' });
+    setActiveVideoIndex(index);
+  };
+
+  // Auto-scroll effect when index changes programmatically
+  useEffect(() => {
+    if (containerRef.current && activeSection === 'videos') {
+      const child = containerRef.current.children[activeVideoIndex] as HTMLElement;
+      child?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [activeVideoIndex, activeSection]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeSection !== "videos") return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        scrollToIndex(Math.min(activeVideoIndex + 1, videoPortfolio.length - 1));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        scrollToIndex(Math.max(activeVideoIndex - 1, 0));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeSection, activeVideoIndex]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
@@ -645,27 +697,27 @@ const WorkPage = () => {
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             <button
               onClick={() => setActiveSection("projects")}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "projects"
-                ? "gradient-bg text-primary-foreground shadow-lg"
-                : isFullscreen ? "bg-white/10 backdrop-blur-md text-white/70 hover:text-white" : "glass text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeSection === "projects"
+                ? "bg-primary text-primary-foreground border-primary-foreground/20"
+                : isFullscreen ? "bg-white/10 text-white/70 border-white/5 hover:bg-white/20" : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"
                 }`}
             >
               <TrendingUp className="w-3.5 h-3.5" /> Projects
             </button>
             <button
               onClick={() => setActiveSection("videos")}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "videos"
-                ? "bg-white/20 text-white backdrop-blur-md shadow-lg"
-                : isFullscreen ? "bg-white/10 backdrop-blur-md text-white/70 hover:text-white" : "glass text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeSection === "videos"
+                ? "bg-white text-black border-white/50"
+                : isFullscreen ? "bg-white/10 text-white/70 border-white/5 hover:bg-white/20" : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"
                 }`}
             >
               <Film className="w-3.5 h-3.5" /> Video Portfolio
             </button>
             <button
               onClick={() => setActiveSection("creatives")}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${activeSection === "creatives"
-                ? "gradient-bg text-primary-foreground shadow-lg"
-                : isFullscreen ? "bg-white/10 backdrop-blur-md text-white/70 hover:text-white" : "glass text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeSection === "creatives"
+                ? "bg-primary text-primary-foreground border-primary-foreground/20"
+                : isFullscreen ? "bg-white/10 text-white/70 border-white/5 hover:bg-white/20" : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"
                 }`}
             >
               <Wrench className="w-3.5 h-3.5" /> Creatives
@@ -690,9 +742,9 @@ const WorkPage = () => {
                 <button
                   key={tag}
                   onClick={() => setActiveFilter(tag)}
-                  className={`px-5 py-2 rounded-xl text-xs font-bold tracking-wide transition-all shadow-lg ${activeFilter === tag
-                    ? "gradient-bg text-primary-foreground"
-                    : "glass text-muted-foreground hover:text-foreground"}`}
+                  className={`px-5 py-2 rounded-xl text-xs font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] ${activeFilter === tag
+                    ? "bg-slate-800 dark:bg-white text-white dark:text-black border-slate-600 dark:border-slate-300"
+                    : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
                 >
                   {tag}
                 </button>
@@ -707,7 +759,7 @@ const WorkPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   onClick={() => setSelectedProject(project)}
-                  className="glass rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99]"
+                  className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 border-b-[4px] border-b-slate-200 dark:border-b-slate-800 rounded-2xl p-5 cursor-pointer hover:border-b-primary/50 dark:hover:border-b-primary/50 transition-all active:border-b-0 active:translate-y-[4px]"
                 >
                   <div className="flex items-start gap-3">
                     <div className="text-3xl">{project.image}</div>
@@ -740,7 +792,9 @@ const WorkPage = () => {
           >
             {/* Desktop: centered phone-frame container */}
             <div
-              className="w-full h-full lg:w-[400px] lg:h-[85vh] lg:rounded-3xl lg:overflow-hidden lg:border-2 lg:border-white/10 lg:shadow-2xl snap-y snap-mandatory overflow-y-auto scrollbar-none relative"
+              ref={containerRef}
+              className="w-full h-full lg:w-[450px] lg:h-[90vh] lg:rounded-3xl lg:overflow-hidden lg:border-2 lg:border-white/10 lg:shadow-2xl snap-y snap-mandatory overflow-y-auto scrollbar-none relative focus:outline-none"
+              tabIndex={0}
               onScroll={handleScroll}
             >
               {videoPortfolio.map((video, index) => (
@@ -748,33 +802,72 @@ const WorkPage = () => {
                   key={video.id}
                   className="w-full h-[100dvh] lg:h-full snap-start snap-always relative"
                 >
-                  <ReelCard video={video} isActive={activeVideoIndex === index} />
+                  <ReelCard
+                    video={video}
+                    isActive={activeVideoIndex === index}
+                    onEnded={() => {
+                      if (index < videoPortfolio.length - 1) {
+                        // Small timeout to ensure seamless transition feel
+                        setTimeout(() => {
+                          setActiveVideoIndex(index + 1);
+                        }, 100);
+                      } else {
+                        // Loop back to start if desired, or stop
+                        setActiveVideoIndex(0);
+                      }
+                    }}
+                  />
                 </div>
               ))}
               <div className="h-1 w-full snap-align-none" />
             </div>
 
             {/* Desktop side info */}
-            <div className="hidden lg:flex flex-col gap-4 ml-8 max-w-xs">
-              <h2 className="text-2xl font-bold text-white">Video Portfolio</h2>
-              <p className="text-sm text-white/60 leading-relaxed">
-                Scroll through my reels, motion graphics, and AI-generated videos. Tap to play/pause.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-2">
+            <div className="hidden lg:flex flex-col gap-6 ml-12 max-w-sm h-[80vh] justify-center">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">Video Portfolio</h2>
+                <p className="text-sm text-white/60 leading-relaxed">
+                  Scroll or use arrow keys to navigate.
+                </p>
+              </div>
+
+              {/* Navigation Arrows */}
+              <div className="flex gap-4">
+                <button
+                  onClick={() => scrollToIndex(Math.max(activeVideoIndex - 1, 0))}
+                  disabled={activeVideoIndex === 0}
+                  className="p-3 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all border border-white/10 active:scale-95"
+                >
+                  <ArrowUp className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => scrollToIndex(Math.min(activeVideoIndex + 1, videoPortfolio.length - 1))}
+                  disabled={activeVideoIndex === videoPortfolio.length - 1}
+                  className="p-3 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all border border-white/10 active:scale-95"
+                >
+                  <ArrowDown className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="grid gap-3 overflow-y-auto pr-2 scrollbar-none mask-gradient-b">
                 {videoPortfolio.map((v, i) => (
                   <button
                     key={v.id}
-                    onClick={() => {
-                      const container = document.querySelector('.snap-y');
-                      if (container) {
-                        const child = container.children[i] as HTMLElement;
-                        child?.scrollIntoView({ behavior: 'smooth' });
-                      }
-                      setActiveVideoIndex(i);
-                    }}
-                    className={`text-xs px-3 py-1.5 rounded-full transition-all ${activeVideoIndex === i ? 'bg-white text-black font-semibold' : 'bg-white/10 text-white/70 hover:bg-white/20'}`}
+                    onClick={() => scrollToIndex(i)}
+                    className={`w-full text-left p-4 rounded-xl transition-all border-b-[3px] active:border-b-0 active:translate-y-[3px] flex items-center justify-between group ${activeVideoIndex === i
+                      ? 'bg-white text-black border-slate-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                      : 'bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white hover:border-white/20'
+                      }`}
                   >
-                    {v.title}
+                    <div>
+                      <span className={`block font-bold text-sm ${activeVideoIndex === i ? 'text-black' : 'text-white'}`}>{v.title}</span>
+                      <span className={`text-[10px] ${activeVideoIndex === i ? 'text-black/60' : 'text-white/40'}`}>{v.category}</span>
+                    </div>
+                    {activeVideoIndex === i && (
+                      <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center">
+                        <Play className="w-3 h-3 fill-white ml-0.5" />
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>

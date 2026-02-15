@@ -45,7 +45,7 @@ function AnimatedBar({ level, name }: { level: number; name: string }) {
   }, [level]);
 
   return (
-    <div ref={ref} className="mb-3">
+    <div ref={ref} className="mb-6">
       <div className="flex justify-between text-xs mb-1">
         <span className="font-medium">{name}</span>
         <span className="text-muted-foreground">{level}%</span>
