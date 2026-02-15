@@ -134,7 +134,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-12 flex items-center justify-center gap-6"
+        className="mt-12 flex items-center justify-center gap-4"
       >
         <ScheduleDialog>
           <button className="relative group">
@@ -147,7 +147,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
 
         <ScheduleDialog>
           <button
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-2xl font-semibold text-sm hover:opacity-90 transition-opacity glow-primary"
+            className="text-foreground text-lg font-bold hover:opacity-80 transition-opacity"
           >
             Book a Call
           </button>
