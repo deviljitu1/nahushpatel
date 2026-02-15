@@ -147,7 +147,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
 
         <ScheduleDialog>
           <button
-            className="gradient-bg text-primary-foreground px-8 py-4 rounded-2xl font-semibold text-sm hover:opacity-90 transition-opacity glow-primary"
+            className="bg-primary text-primary-foreground px-8 py-4 rounded-2xl font-semibold text-sm hover:opacity-90 transition-opacity glow-primary"
           >
             Book a Call
           </button>
