@@ -920,107 +920,97 @@ const WorkPage = () => {
             </div>
           </motion.div>
         )}
-        {/* Frame & Artwork */}
-        <div className="relative bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer z-10">
-          <div className="relative overflow-hidden aspect-[4/5] bg-gray-100">
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover filter sepia-[0.2] contrast-105 group-hover:sepia-0 transition-all duration-500"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-          </div>
+      </AnimatePresence>
 
-          {/* Plaque / Label */}
-          <div className="mt-4 text-center">
-            <h3 className="text-black font-serif text-lg font-bold tracking-tight">{item.title}</h3>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{item.category}</p>
-          </div>
-        </div>
-
-        {/* Floor Reflection (Subtle) */}
-        <div className="absolute -bottom-12 left-0 right-0 h-10 bg-gradient-to-b from-white/10 to-transparent transform scale-y-[-1] opacity-20 blur-sm pointer-events-none" />
-      </motion.div>
-      ))}
-
-      {/* Spacer for end of gallery */}
-      <div className="w-10 shrink-0" />
-    </div>
-  </>
-)}
-      </motion.div >
-        )}
-    </AnimatePresence >
-
-  {/* Project Detail Modal */ }
-  < Dialog open = {!!selectedProject} onOpenChange = {() => setSelectedProject(null)}>
-    <DialogContent className="glass rounded-2xl max-w-md mx-auto max-h-[80vh] overflow-y-auto border-border">
-      {selectedProject && (
-        <>
-          <DialogHeader>
-            <div className="text-4xl mb-2">{selectedProject.image}</div>
-            <DialogTitle className="text-lg">{selectedProject.title}</DialogTitle>
-            <DialogDescription className="text-primary font-medium text-sm">
-              {selectedProject.result}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 mt-2">
-            <div>
-              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Problem</h4>
-              <p className="text-sm">{selectedProject.problem}</p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Solution</h4>
-              <p className="text-sm">{selectedProject.solution}</p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Tools Used</h4>
-              <div className="flex flex-wrap gap-1.5">
-                {selectedProject.tools.map((tool) => (
-                  <span key={tool} className="text-xs px-2.5 py-1 rounded-lg bg-secondary text-secondary-foreground">
-                    <Wrench className="w-3 h-3 inline mr-1" />{tool}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Results</h4>
-              <div className="grid grid-cols-3 gap-2">
-                {selectedProject.metrics.map((m) => (
-                  <div key={m.label} className="text-center p-2 rounded-xl bg-secondary/50">
-                    <div className="text-lg font-bold gradient-text">{m.value}</div>
-                    <div className="text-[10px] text-muted-foreground">{m.label}</div>
+      {/* Project Detail Dialog */}
+      <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
+        <DialogContent className="bg-white dark:bg-slate-900 border-none text-foreground max-w-lg lg:max-w-2xl mx-auto p-0 overflow-hidden shadow-2xl rounded-3xl">
+          {selectedProject && (
+            <>
+              <div className="relative h-64 overflow-hidden">
+                <img src={selectedProject.coverImage} alt={selectedProject.title} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                <div className="absolute bottom-5 left-6 right-6">
+                  <h2 className="text-2xl font-bold text-white mb-2">{selectedProject.title}</h2>
+                  <div className="flex gap-2">
+                    {selectedProject.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold text-white border border-white/10">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                ))}
+                </div>
+              </div>
+              <div className="p-6 md:p-8 max-h-[60vh] overflow-y-auto">
+                <div className="flex items-center gap-3 mb-6 bg-green-50 dark:bg-green-900/10 p-4 rounded-2xl border border-green-100 dark:border-green-900/30">
+                  <div className="p-2 bg-green-500 rounded-full text-white">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs font-bold uppercase text-green-600 dark:text-green-400 tracking-wider">Key Result</span>
+                    <span className="text-lg font-bold text-foreground">{selectedProject.result}</span>
+                  </div>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2 mb-8">
+                  <div>
+                    <h3 className="font-bold text-sm text-foreground mb-2 flex items-center gap-2">
+                      <span className="w-1 h-4 bg-primary rounded-full" /> Problem
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{selectedProject.problem}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-foreground mb-2 flex items-center gap-2">
+                      <span className="w-1 h-4 bg-green-500 rounded-full" /> Solution
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{selectedProject.solution}</p>
+                  </div>
+                </div>
+
+                <div className="mb-8">
+                  <h3 className="font-bold text-sm text-foreground mb-3">Tech Stack & Tools</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.tools.map(tool => (
+                      <span key={tool} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium text-muted-foreground">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800 pt-6">
+                  {selectedProject.metrics.map((metric, i) => (
+                    <div key={i} className="text-center">
+                      <div className="text-xl md:text-2xl font-bold text-foreground mb-1">{metric.value}</div>
+                      <div className="text-[10px] uppercase font-bold text-muted-foreground">{metric.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Creative Detail Modal (Lightbox) */}
+      <Dialog open={!!selectedCreative} onOpenChange={() => setSelectedCreative(null)}>
+        <DialogContent className="bg-black/95 border-none text-white max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
+          {selectedCreative && (
+            <div className="relative">
+              <img src={selectedCreative.image} alt={selectedCreative.title} className="w-full h-auto max-h-[60vh] object-contain bg-black/50" />
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">{selectedCreative.category}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-2 font-serif tracking-tight">{selectedCreative.title}</h3>
+                <p className="text-sm text-gray-300 leading-relaxed font-light">{selectedCreative.description}</p>
               </div>
             </div>
-          </div>
-        </>
-      )}
-    </DialogContent>
-  </Dialog >
-
-  {/* Creative Detail Modal (Lightbox) */ }
-  < Dialog open = {!!selectedCreative} onOpenChange = {() => setSelectedCreative(null)}>
-    <DialogContent className="bg-black/95 border-none text-white max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
-      {selectedCreative && (
-        <div className="relative">
-          <img src={selectedCreative.image} alt={selectedCreative.title} className="w-full h-auto max-h-[60vh] object-contain bg-black/50" />
-          <div className="p-5">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">{selectedCreative.category}</span>
-            </div>
-            <h3 className="text-xl font-bold mb-2 font-serif tracking-tight">{selectedCreative.title}</h3>
-            <p className="text-sm text-gray-300 leading-relaxed font-light">{selectedCreative.description}</p>
-          </div>
-        </div>
-      )}
-    </DialogContent>
-  </Dialog >
-    </div >
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 
 export default WorkPage;
-```
