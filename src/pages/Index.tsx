@@ -73,50 +73,15 @@ const Index = () => {
       </div>
 
       {/* Dark Header */}
-      {activeTab === "home" && (
-        <header className="fixed top-0 left-0 right-0 z-40 h-20 px-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary to-orange-400 p-[2px] shadow-lg shadow-primary/20">
-              <div className="w-full h-full rounded-2xl bg-slate-950 flex items-center justify-center font-bold text-white text-lg">
-                J
-              </div>
-            </div>
-            <div>
-              <h1 className="text-white font-bold text-lg leading-none">Jitu</h1>
-              <p className="text-[10px] text-slate-400 font-medium tracking-wide">Digital Specialist</p>
-            </div>
-          </div>
-          {/* Pill indicator */}
-          <div className="hidden md:flex items-center gap-1.5 bg-white/10 backdrop-blur-md rounded-full px-4 py-2 border border-white/5">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-[11px] text-white/70 font-medium">Available for hire</span>
-          </div>
-        </header>
-      )}
-
-      {/* Main Content: Curved Sheet */}
-      <div className="relative z-10 mt-20 flex flex-col h-[calc(100vh-5rem)]">
-
-        {/* Wave / S-Curve SVG */}
-        <svg viewBox="0 0 1440 60" className="w-full h-8 md:h-12 relative z-20 block" preserveAspectRatio="none">
-          <defs>
-            <radialGradient id="curve-gradient" cx="50%" cy="100%" r="100%" fx="50%" fy="100%">
-              <stop offset="0%" stopColor="#FDA136" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#0f172a" stopOpacity="1" />
-            </radialGradient>
-          </defs>
-          <path
-            d="M0,60 L0,20 Q360,0 720,20 Q1080,40 1440,20 L1440,60 Z"
-            className="fill-slate-50 dark:fill-[url(#curve-gradient)]"
-          />
-        </svg>
+      {/* Main Content: Full Screen Sheet */}
+      <div className="relative z-10 flex flex-col h-screen">
 
         {/* Glass Sheet Container */}
         <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex-1 bg-slate-50 dark:bg-slate-900 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col relative -mt-px"
+          className="flex-1 bg-slate-50 dark:bg-slate-900 overflow-hidden flex flex-col relative"
         >
           {/* Work Tab Custom Gradient Background */}
           {/* Custom Gradient Background */}

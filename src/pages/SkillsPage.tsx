@@ -117,7 +117,7 @@ const SkillsPage = () => {
         </motion.h2>
         <motion.div variants={item} className="flex flex-wrap gap-2">
           {tools.map((tool) => (
-            <span key={tool} className="soft-card text-[10px] px-3 py-1.5 font-medium !rounded-xl !shadow-[3px_3px_8px_rgba(0,0,0,0.06),-3px_-3px_8px_rgba(255,255,255,0.8)]">
+            <span key={tool} className="soft-card text-[10px] px-3 py-1.5 font-medium !rounded-xl !shadow-[2px_2px_8px_rgba(0,0,0,0.04),-2px_-2px_8px_rgba(255,255,255,0.4)]">
               {tool}
             </span>
           ))}
