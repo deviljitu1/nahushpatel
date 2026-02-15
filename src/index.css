@@ -12,19 +12,19 @@
     --card-foreground: 240 10% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 10%;
-    --primary: 260 67% 58%;
+    --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 14% 92%;
     --secondary-foreground: 240 10% 10%;
     --muted: 220 14% 94%;
     --muted-foreground: 220 8% 46%;
-    --accent: 200 80% 55%;
+    --accent: 16 85% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 88%;
     --input: 220 13% 88%;
-    --ring: 260 67% 58%;
+    --ring: 24 95% 53%;
     --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
@@ -34,10 +34,10 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 24 95% 53%;
 
-    --gradient-start: 260 67% 58%;
-    --gradient-end: 200 80% 55%;
+    --gradient-start: 24 95% 53%;
+    --gradient-end: 16 85% 45%;
     --glass-bg: 0 0% 100% / 0.7;
     --glass-border: 0 0% 100% / 0.2;
   }
@@ -49,19 +49,19 @@
     --card-foreground: 0 0% 95%;
     --popover: 240 12% 10%;
     --popover-foreground: 0 0% 95%;
-    --primary: 260 67% 62%;
+    --primary: 24 95% 56%;
     --primary-foreground: 0 0% 100%;
     --secondary: 240 10% 16%;
     --secondary-foreground: 0 0% 95%;
     --muted: 240 10% 16%;
     --muted-foreground: 220 8% 56%;
-    --accent: 200 80% 60%;
+    --accent: 16 85% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 95%;
     --border: 240 8% 18%;
     --input: 240 8% 18%;
-    --ring: 260 67% 62%;
+    --ring: 24 95% 56%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -70,10 +70,10 @@
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 24 95% 56%;
 
-    --gradient-start: 260 67% 62%;
-    --gradient-end: 200 80% 60%;
+    --gradient-start: 24 95% 56%;
+    --gradient-end: 16 85% 50%;
     --glass-bg: 240 15% 10% / 0.6;
     --glass-border: 0 0% 100% / 0.08;
   }

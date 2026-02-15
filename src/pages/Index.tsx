@@ -68,14 +68,14 @@ const Index = () => {
       {/* Background Gradient Orbs */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-20%] w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full mix-blend-screen" />
-        <div className="absolute top-[10%] right-[-10%] w-[400px] h-[400px] bg-blue-600/10 blur-[100px] rounded-full mix-blend-screen" />
+        <div className="absolute top-[10%] right-[-10%] w-[400px] h-[400px] bg-orange-600/10 blur-[100px] rounded-full mix-blend-screen" />
         <div className="absolute inset-0 z-[1] opacity-5 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
       {/* Dark Header */}
       <header className="fixed top-0 left-0 right-0 z-40 h-20 px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary to-blue-500 p-[2px] shadow-lg shadow-primary/20">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary to-orange-400 p-[2px] shadow-lg shadow-primary/20">
             <div className="w-full h-full rounded-2xl bg-slate-950 flex items-center justify-center font-bold text-white text-lg">
               J
             </div>
