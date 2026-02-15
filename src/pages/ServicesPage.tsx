@@ -134,13 +134,22 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-8 text-center"
+        className="mt-12 flex items-center justify-center gap-6"
       >
         <ScheduleDialog>
+          <button className="relative group">
+            <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping duration-[2000ms]" />
+            <div className="relative p-4 rounded-full gradient-bg shadow-xl glow-primary animate-ring group-hover:scale-110 transition-transform">
+              <Phone className="w-6 h-6 text-white" />
+            </div>
+          </button>
+        </ScheduleDialog>
+
+        <ScheduleDialog>
           <button
-            className="gradient-bg text-primary-foreground px-8 py-3 rounded-2xl font-semibold text-sm flex items-center gap-2 mx-auto glow-primary hover:opacity-90 transition-opacity"
+            className="gradient-bg text-primary-foreground px-8 py-4 rounded-2xl font-semibold text-sm hover:opacity-90 transition-opacity glow-primary"
           >
-            <Phone className="w-4 h-4" /> Book a Call
+            Book a Call
           </button>
         </ScheduleDialog>
       </motion.div>
