@@ -129,18 +129,55 @@ const SkillsPage = () => {
         <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
           Experience
         </motion.h2>
-        <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
-          {timeline.map((t) => (
-            <motion.div key={t.year} variants={item} className="soft-card p-4 flex gap-3">
-              <div className="gradient-bg text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-xl h-fit shadow-md">
-                {t.year}
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold">{t.title}</h3>
-                <p className="text-[10px] text-muted-foreground">{t.description}</p>
-              </div>
-            </motion.div>
-          ))}
+        <div className="relative mt-4 mb-12">
+          {/* Timeline Connector Line */}
+          {/* Desktop Line */}
+          <div className="hidden lg:block absolute top-[18px] left-[5%] right-[5%] h-[2px] bg-slate-200 dark:bg-slate-800">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: "100%" }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="h-full bg-primary shadow-[0_0_10px_rgba(253,161,54,0.5)]"
+            />
+          </div>
+
+          {/* Mobile Line */}
+          <div className="lg:hidden absolute left-[19px] top-4 bottom-4 w-[2px] bg-slate-200 dark:bg-slate-800">
+            <motion.div
+              initial={{ height: 0 }}
+              whileInView={{ height: "100%" }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="w-full bg-primary shadow-[0_0_10px_rgba(253,161,54,0.5)]"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-4">
+            {[...timeline].reverse().map((t, i) => (
+              <motion.div
+                key={t.year}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2 }}
+                className="relative pl-12 lg:pl-0 lg:pt-12 lg:text-center group"
+              >
+                {/* Node Dot */}
+                <div className="absolute left-2 lg:left-1/2 lg:-translate-x-1/2 top-1 lg:top-2 w-6 h-6 rounded-full bg-background border-2 border-primary z-10 flex items-center justify-center shadow-[0_0_15px_rgba(253,161,54,0.4)] group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-2 h-2 rounded-full bg-primary" />
+                </div>
+
+                {/* Content Card */}
+                <div className="glass p-4 rounded-2xl relative group-hover:-translate-y-1 transition-transform duration-300 lg:min-h-[140px] flex flex-col justify-center">
+                  {/* Year Badge */}
+                  <span className="absolute -top-3 left-4 lg:left-1/2 lg:-translate-x-1/2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                    {t.year}
+                  </span>
+
+                  <h3 className="text-sm font-bold mt-2">{t.title}</h3>
+                  <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">{t.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.div>
     </div>
