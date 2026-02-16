@@ -761,9 +761,9 @@ const WorkPage = () => {
                 <button
                   key={sub}
                   onClick={() => setSocialSubTab(sub)}
-                  className={`px-4 py-1.5 rounded-full text-[10px] font-bold transition-all border ${socialSubTab === sub
-                    ? 'bg-primary/10 text-primary border-primary/20'
-                    : 'bg-transparent text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                  className={`px-5 py-2 rounded-full text-xs font-bold transition-all border shadow-sm ${socialSubTab === sub
+                    ? 'bg-primary text-primary-foreground border-primary scale-105 shadow-md'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'}`}
                 >
                   {sub}
                 </button>
