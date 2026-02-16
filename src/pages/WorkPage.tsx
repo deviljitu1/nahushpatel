@@ -719,17 +719,7 @@ const WorkPage = () => {
                   But full screen video portfolio usually hides the main nav.
                   Let's show a minimal back button or the sub-tabs.
               */}
-            {isFullscreen && (
-              <button
-                onClick={() => {
-                  // Go back to main view or simply reset subtab
-                  setSocialSubTab('All');
-                }}
-                className="px-4 py-2 rounded-xl bg-white/10 text-white backdrop-blur-sm border border-white/10 text-xs font-bold"
-              >
-                ← Back to Case Studies
-              </button>
-            )}
+
           </div>
 
           {/* Social Media Sub-Tabs (Only visible if Social Media is active and NOT fullscreen video, or overlaid?) 
@@ -1113,6 +1103,18 @@ const WorkPage = () => {
           )}
         </DialogContent>
       </Dialog>
+      {/* Floating Back Button for Mobile Accessibility */}
+      {isFullscreen && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          onClick={() => setSocialSubTab('All')}
+          className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Case Studies
+        </motion.button>
+      )}
     </div>
   );
 };
