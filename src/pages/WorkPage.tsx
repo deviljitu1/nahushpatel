@@ -1137,7 +1137,7 @@ const WorkPage = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => setSocialSubTab('All')}
-          className="fixed bottom-24 right-4 z-[9999] px-5 py-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
+          className="fixed bottom-20 right-4 z-[9999] px-5 py-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
           style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }} // Ensure visibility on iOS
         >
           <ArrowLeft className="w-4 h-4" /> Back to Case Studies
