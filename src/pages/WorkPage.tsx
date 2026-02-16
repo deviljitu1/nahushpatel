@@ -722,6 +722,25 @@ const WorkPage = () => {
 
           </div>
 
+          {/* Top Right Navigation for Fullscreen Modes */}
+          {isFullscreen && (
+            <div className="absolute top-3 right-5 z-[60] flex gap-2">
+              {['Video Portfolio', 'Creatives', 'Paid Ads'].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setSocialSubTab(tab)}
+                  className={`px-3 py-1.5 rounded-full text-[10px] font-bold backdrop-blur-md border transition-all shadow-lg ${socialSubTab === tab
+                    ? 'bg-white text-black border-white scale-105'
+                    : 'bg-black/40 text-white/70 border-white/10 hover:bg-black/60 hover:text-white'
+                    }`}
+                >
+                  {tab === 'Video Portfolio' ? 'Reels' : tab === 'Paid Ads' ? 'Ads' : tab}
+                </button>
+              ))}
+            </div>
+          )}
+
+
           {/* Social Media Sub-Tabs (Only visible if Social Media is active and NOT fullscreen video, or overlaid?) 
                Actually, if we want them to switch between All/Video/Creative, we should show this bar.
            */}
