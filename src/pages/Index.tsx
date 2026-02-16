@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
 import HomePage from "@/pages/HomePage";
-import WorkPage from "@/pages/WorkPage";
-import ServicesPage from "@/pages/ServicesPage";
-import SkillsPage from "@/pages/SkillsPage";
-import ContactPage from "@/pages/ContactPage";
 import { useTheme } from "@/hooks/use-theme";
+
+// Lazy load secondary pages
+const WorkPage = lazy(() => import("@/pages/WorkPage"));
+const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
+const SkillsPage = lazy(() => import("@/pages/SkillsPage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
 
 const tabs = ["home", "work", "services", "skills", "contact"] as const;
 type Tab = (typeof tabs)[number];
@@ -38,6 +40,27 @@ const Index = () => {
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // Prefetch other pages after initial load to improve navigation speed
+  useEffect(() => {
+    const prefetchTimer = setTimeout(() => {
+      const prefetch = async () => {
+        try {
+          await Promise.all([
+            import("@/pages/WorkPage"),
+            import("@/pages/ServicesPage"),
+            import("@/pages/SkillsPage"),
+            import("@/pages/ContactPage"),
+          ]);
+        } catch (error) {
+          console.error("Prefetch failed:", error);
+        }
+      };
+      prefetch();
+    }, 2500); // Start prefetching 2.5s after mount
+
+    return () => clearTimeout(prefetchTimer);
   }, []);
 
   const handleTabChange = (tab: Tab) => {
@@ -101,7 +124,13 @@ const Index = () => {
                 exit="exit"
                 className="min-h-full"
               >
-                {renderPage()}
+                <Suspense fallback={
+                  <div className="flex h-[80vh] items-center justify-center">
+                    <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                  </div>
+                }>
+                  {renderPage()}
+                </Suspense>
               </motion.div>
             </AnimatePresence>
           </div>
