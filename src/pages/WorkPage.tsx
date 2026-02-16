@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -723,8 +724,13 @@ const WorkPage = () => {
           </div>
 
           {/* Top Right Navigation for Fullscreen Modes */}
-          {isFullscreen && (
-            <div className="absolute top-3 right-5 z-[60] flex gap-2">
+          {isFullscreen && createPortal(
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-4 right-4 z-[9999] flex gap-2"
+            >
               {['Video Portfolio', 'Creatives', 'Paid Ads'].map((tab) => (
                 <button
                   key={tab}
@@ -737,7 +743,8 @@ const WorkPage = () => {
                   {tab === 'Video Portfolio' ? 'Reels' : tab === 'Paid Ads' ? 'Ads' : tab}
                 </button>
               ))}
-            </div>
+            </motion.div>,
+            document.body
           )}
 
 
@@ -1123,16 +1130,19 @@ const WorkPage = () => {
         </DialogContent>
       </Dialog>
       {/* Floating Back Button for Mobile Accessibility */}
-      {isFullscreen && (
+      {/* Floating Back Button for Mobile Accessibility */}
+      {isFullscreen && createPortal(
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => setSocialSubTab('All')}
-          className="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
+          className="fixed bottom-24 right-4 z-[9999] px-5 py-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
+          style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }} // Ensure visibility on iOS
         >
           <ArrowLeft className="w-4 h-4" /> Back to Case Studies
-        </motion.button>
+        </motion.button>,
+        document.body
       )}
     </div>
   );
