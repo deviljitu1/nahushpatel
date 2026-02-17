@@ -6,24 +6,24 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 240 10% 10%;
+    --background: 210 20% 96%;
+    --foreground: 220 15% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 10%;
+    --card-foreground: 220 15% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
+    --popover-foreground: 220 15% 12%;
     --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 14% 92%;
-    --secondary-foreground: 240 10% 10%;
+    --secondary-foreground: 220 15% 12%;
     --muted: 220 14% 94%;
-    --muted-foreground: 220 8% 46%;
+    --muted-foreground: 220 8% 50%;
     --accent: 16 85% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
     --ring: 24 95% 53%;
     --radius: 1rem;
 
@@ -38,32 +38,32 @@
 
     --gradient-start: 24 95% 53%;
     --gradient-end: 16 85% 45%;
-    --glass-bg: 0 0% 100% / 0.7;
-    --glass-border: 0 0% 100% / 0.2;
+    --glass-bg: 0 0% 100% / 0.75;
+    --glass-border: 0 0% 100% / 0.25;
   }
 
   .dark {
-    --background: 240 15% 6%;
-    --foreground: 0 0% 95%;
-    --card: 240 12% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 240 12% 10%;
-    --popover-foreground: 0 0% 95%;
+    --background: 222 20% 7%;
+    --foreground: 210 20% 95%;
+    --card: 222 16% 11%;
+    --card-foreground: 210 20% 95%;
+    --popover: 222 16% 11%;
+    --popover-foreground: 210 20% 95%;
     --primary: 24 95% 56%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 10% 16%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 240 10% 16%;
+    --secondary: 222 14% 15%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 222 14% 15%;
     --muted-foreground: 220 8% 56%;
     --accent: 16 85% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 95%;
-    --border: 240 8% 18%;
-    --input: 240 8% 18%;
+    --border: 222 12% 16%;
+    --input: 222 12% 16%;
     --ring: 24 95% 56%;
 
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 222 16% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -74,7 +74,7 @@
 
     --gradient-start: 24 95% 56%;
     --gradient-end: 16 85% 50%;
-    --glass-bg: 240 15% 10% / 0.6;
+    --glass-bg: 222 20% 8% / 0.65;
     --glass-border: 0 0% 100% / 0.08;
   }
 }
@@ -129,9 +129,7 @@
 
   .scrollbar-none {
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
   }
 
   .scrollbar-none::-webkit-scrollbar {
@@ -140,69 +138,56 @@
 
   /* Soft UI / Neumorphism Utilities */
   .soft-card {
-    @apply bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-white/5;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
+    @apply bg-card rounded-3xl border border-border;
+    box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.08), -6px -6px 16px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .dark .soft-card {
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.05);
+    box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.35), -4px -4px 12px rgba(255, 255, 255, 0.04);
   }
 
   .soft-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.12), -8px -8px 20px rgba(255, 255, 255, 0.9);
+    transform: translateY(-3px);
+    box-shadow: 10px 10px 24px rgba(0, 0, 0, 0.1), -10px -10px 24px rgba(255, 255, 255, 0.8);
+  }
+
+  .dark .soft-card:hover {
+    box-shadow: 10px 10px 24px rgba(0, 0, 0, 0.4), -6px -6px 16px rgba(255, 255, 255, 0.05);
   }
 
   .soft-icon-box {
-    @apply w-14 h-14 rounded-2xl flex items-center justify-center bg-gray-50 dark:bg-slate-700;
-    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center bg-muted;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.06), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
   }
 
   .dark .soft-icon-box {
-    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2), inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.25), inset -2px -2px 5px rgba(255, 255, 255, 0.04);
   }
 
   .concave-card {
-    @apply bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-5;
-    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    @apply bg-gradient-to-br from-muted to-secondary rounded-3xl p-5;
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.7);
   }
 
   .dark .concave-card {
-    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.35), inset -4px -4px 8px rgba(255, 255, 255, 0.04);
+  }
+
+  /* Section label */
+  .section-label {
+    @apply text-[10px] font-bold text-muted-foreground/60 uppercase tracking-[0.2em] mb-4;
   }
 }
 
 @keyframes ring {
-
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-
-  10% {
-    transform: rotate(15deg);
-  }
-
-  20% {
-    transform: rotate(-15deg);
-  }
-
-  30% {
-    transform: rotate(10deg);
-  }
-
-  40% {
-    transform: rotate(-10deg);
-  }
-
-  50% {
-    transform: rotate(5deg);
-  }
-
-  60% {
-    transform: rotate(-5deg);
-  }
+  0%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(15deg); }
+  20% { transform: rotate(-15deg); }
+  30% { transform: rotate(10deg); }
+  40% { transform: rotate(-10deg); }
+  50% { transform: rotate(5deg); }
+  60% { transform: rotate(-5deg); }
 }
 
 .animate-ring {
@@ -219,6 +204,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: hsl(var(--muted-foreground) / 0.2);
   border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
 }

@@ -422,182 +422,7 @@ const creativeItems = [
 
 
 
-const SeasonBackground = ({ season }: { season: 'summer' | 'winter' | 'rainy' | 'autumn' }) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Audio Context Management
-  useEffect(() => {
-    // Create new audio instance if needed
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0; // Start silent
-    }
-
-    // Smooth transition
-    const fadeOut = setInterval(() => {
-      if (audioRef.current && audioRef.current.volume > 0.05) {
-        audioRef.current.volume -= 0.05;
-      } else {
-        clearInterval(fadeOut);
-        if (audioRef.current) {
-          audioRef.current.pause();
-          // audioRef.current.src = SOUNDS[season];
-          // Attempt to play (browser may block without interaction)
-          const playPromise = audioRef.current.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.log("Audio autoplay prevented:", error);
-            });
-          }
-
-          // Fade In
-          const fadeIn = setInterval(() => {
-            if (audioRef.current && audioRef.current.volume < 0.3) {
-              audioRef.current.volume += 0.05;
-            } else {
-              clearInterval(fadeIn);
-            }
-          }, 200);
-        }
-      }
-    }, 100);
-
-    return () => {
-      if (fadeOut) clearInterval(fadeOut);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, [season]);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[40]">
-      {season === 'summer' && (
-        <>
-          <div className="absolute top-[-20%] right-[-20%] w-[600px] h-[600px] bg-yellow-400/20 blur-[100px] rounded-full animate-pulse z-[-1]" />
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: -20, opacity: [0, 1, 0] }}
-              transition={{ duration: 4, repeat: Infinity, delay: i * 0.8 }}
-              className="absolute w-2 h-2 bg-yellow-200/60 rounded-full blur-[2px]"
-              style={{ top: `${20 + Math.random() * 60}%`, left: `${Math.random() * 100}%` }}
-            />
-          ))}
-        </>
-      )}
-
-      {season === 'winter' && (
-        <>
-          <div className="absolute inset-0 bg-slate-900/10 z-[-1]" />
-          {[...Array(40)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: -20, x: Math.random() * 100, opacity: 0 }}
-              animate={{
-                y: '100vh',
-                x: Math.random() * 100 + (Math.random() * 200 - 100),
-                rotate: 360,
-                opacity: [0, 0.8, 0]
-              }}
-              transition={{
-                duration: 8 + Math.random() * 5,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-                ease: "linear"
-              }}
-              className="absolute w-2 h-2 bg-white/90 rounded-full blur-[1px]"
-              style={{ left: `${Math.random() * 100}%` }}
-            />
-          ))}
-        </>
-      )}
-
-      {season === 'autumn' && (
-        <>
-          <div className="absolute inset-0 bg-orange-900/5 z-[-1]" />
-          {[...Array(25)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: -20, x: Math.random() * 100, rotate: 0, opacity: 0 }}
-              animate={{
-                y: '100vh',
-                x: `calc(${Math.random() * 100}% + ${Math.random() * 400 - 200}px)`,
-                rotate: 720,
-                opacity: [0, 1, 0]
-              }}
-              transition={{
-                duration: 10 + Math.random() * 5,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-                ease: "linear"
-              }}
-              className={`absolute w-3 h-3 rounded-sm ${['bg-red-500/60', 'bg-orange-500/60', 'bg-yellow-600/60'][Math.floor(Math.random() * 3)]}`}
-              style={{ left: `${Math.random() * 100}%` }}
-            />
-          ))}
-        </>
-      )}
-
-      {season === 'rainy' && (
-        <>
-          <div className="absolute inset-0 bg-slate-950/40 transition-colors duration-[2000ms] z-[-1]" />
-
-          {/* Lightning */}
-          <motion.div
-            animate={{ opacity: [0, 0, 0, 0.4, 0, 0, 0.1, 0] }}
-            transition={{ duration: 4, repeat: Infinity, repeatDelay: Math.random() * 3 }}
-            className="absolute inset-0 bg-blue-100/10 z-[-1] mix-blend-overlay"
-          />
-
-          {/* Heavy Rain Drops - BIGGER & FASTER */}
-          {[...Array(60)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: -100, opacity: 0 }}
-              animate={{ y: '120vh', opacity: [0.6, 0.8, 0.6] }}
-              transition={{
-                duration: 0.4 + Math.random() * 0.2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "linear"
-              }}
-              className="absolute w-[2px] h-24 bg-blue-200/50 -skew-x-6"
-              style={{ left: `${Math.random() * 100}%` }}
-            />
-          ))}
-
-          {/* Water Splashes on Ground */}
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={`splash-${i}`}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: [0, 1.5], opacity: [0.8, 0] }}
-              transition={{
-                duration: 0.3,
-                repeat: Infinity,
-                delay: Math.random() * 2
-              }}
-              className="absolute bottom-0 w-8 h-2 bg-blue-300/30 rounded-full blur-sm"
-              style={{ left: `${Math.random() * 100}%` }}
-            />
-          ))}
-
-          {/* Flood Water */}
-          <motion.div
-            initial={{ height: "0px" }}
-            animate={{ height: ["15px", "25px", "15px"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-900/80 to-blue-500/20 backdrop-blur-sm border-t border-blue-300/30 z-[50]"
-          />
-        </>
-      )}
-    </div>
-  );
-};
+// SeasonBackground removed — was unused and added unnecessary complexity
 
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -672,7 +497,7 @@ const WorkPage = () => {
   const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
-    <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-5 max-w-lg lg:max-w-4xl min-h-screen pt-2'}`}>
+    <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-4xl min-h-screen pt-4'}`}>
 
       {/* Section Toggle - Always visible */}
       <div className={`${isFullscreen ? 'absolute top-0 left-0 right-0 z-50 px-5 pt-3 pb-2 bg-gradient-to-b from-black/90 via-black/60 to-transparent' : 'mb-8'}`}>
@@ -693,11 +518,11 @@ const WorkPage = () => {
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-2xl font-bold mb-1"
+                className="text-3xl font-bold mb-1 tracking-tight"
               >
                 My <span className="gradient-text">Work</span>
               </motion.h1>
-              <p className="text-sm mb-6 text-muted-foreground">Case studies & creative work</p>
+              <p className="text-sm mb-8 text-muted-foreground">Case studies & creative work</p>
             </>
           )}
 
@@ -791,7 +616,7 @@ const WorkPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   onClick={() => setSelectedProject(project)}
-                  className="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 border-b-[4px] border-b-slate-200 dark:border-b-slate-800 rounded-3xl overflow-hidden cursor-pointer hover:border-b-primary/50 dark:hover:border-b-primary/50 transition-all active:border-b-0 active:translate-y-[4px]"
+                  className="group soft-card overflow-hidden cursor-pointer !p-0"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img

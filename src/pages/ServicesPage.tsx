@@ -65,17 +65,17 @@ const ServiceCard = ({ service, onNavigate }: { service: any; onNavigate: (tab: 
     <motion.div
       variants={cardAnim}
       onClick={() => setIsExpanded(!isExpanded)}
-      className={`bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 border-b-[4px] ${isExpanded ? 'border-b-primary' : 'border-b-slate-200 dark:border-b-slate-800'} rounded-2xl p-5 cursor-pointer hover:border-b-primary/50 transition-all active:border-b-0 active:translate-y-[4px]`}
+      className={`soft-card p-5 cursor-pointer transition-all ${isExpanded ? 'border-primary/20' : ''}`}
     >
       <div className="flex items-start gap-4">
-        <div className={`p-3 rounded-xl transition-colors ${isExpanded ? "bg-primary/10 text-primary" : "bg-slate-100 dark:bg-slate-800 text-muted-foreground"}`}>
-          <Icon className="w-6 h-6" />
+        <div className={`soft-icon-box !w-12 !h-12 !rounded-xl transition-colors ${isExpanded ? "!bg-primary/10" : ""}`}>
+          <Icon className={`w-5 h-5 ${isExpanded ? "text-primary" : "text-muted-foreground"}`} />
         </div>
-        <div className="flex-1">
-          <h3 className="font-bold text-sm mb-1">{service.title}</h3>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-sm mb-0.5">{service.title}</h3>
           <p className="text-[11px] text-muted-foreground leading-relaxed">{service.short}</p>
         </div>
-        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-300 shrink-0 mt-1 ${isExpanded ? "rotate-180 text-primary" : ""}`} />
       </div>
 
       <AnimatePresence>
@@ -86,16 +86,16 @@ const ServiceCard = ({ service, onNavigate }: { service: any; onNavigate: (tab: 
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="pt-4 mt-4 border-t border-border">
               <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{service.details}</p>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-primary">{service.pricing}</span>
+                <span className="text-sm font-bold gradient-text">{service.pricing}</span>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     onNavigate("contact");
                   }}
-                  className="px-5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-lg hover:shadow-xl transition-shadow"
+                  className="px-5 py-2 rounded-xl gradient-bg text-primary-foreground text-xs font-bold shadow-lg hover:shadow-xl transition-shadow"
                 >
                   Start Project
                 </button>
@@ -113,20 +113,18 @@ interface ServicesPageProps {
 }
 
 const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
   return (
-    <div className="px-5 pt-8 max-w-lg lg:max-w-4xl mx-auto">
+    <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto">
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-bold mb-1"
+        className="text-3xl font-bold mb-1 tracking-tight"
       >
         My <span className="gradient-text">Services</span>
       </motion.h1>
-      <p className="text-xs text-muted-foreground mb-6">Tap to explore specialized services</p>
+      <p className="text-sm text-muted-foreground mb-8">Tap to explore specialized services</p>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col gap-4 pb-24">
+      <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col gap-4 pb-8 lg:grid lg:grid-cols-2">
         {services.map((service, i) => (
           <ServiceCard key={i} service={service} onNavigate={onNavigate} />
         ))}
@@ -137,19 +135,19 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-8 flex items-center justify-center gap-4"
+        className="py-10 flex items-center justify-center gap-4"
       >
         <ScheduleDialog>
           <button className="relative group">
-            <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping duration-[2000ms]" />
-            <div className="relative p-3.5 rounded-full gradient-bg shadow-xl glow-primary animate-ring group-hover:scale-110 transition-transform">
-              <Phone className="w-5 h-5 text-white" />
+            <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
+            <div className="relative p-3.5 rounded-full gradient-bg shadow-xl animate-ring group-hover:scale-110 transition-transform" style={{ boxShadow: '0 8px 24px hsl(24 95% 53% / 0.3)' }}>
+              <Phone className="w-5 h-5 text-primary-foreground" />
             </div>
           </button>
         </ScheduleDialog>
 
         <ScheduleDialog>
-          <button className="text-foreground text-base font-bold hover:opacity-80 transition-opacity">
+          <button className="text-foreground text-base font-bold hover:text-primary transition-colors">
             Book a Call
           </button>
         </ScheduleDialog>
