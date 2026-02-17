@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { ScheduleDialog } from "@/components/ScheduleDialog";
+import emailjs from "@emailjs/browser";
 
 const container = {
   hidden: {},
@@ -18,11 +19,38 @@ const item = {
 const ContactPage = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Message sent! 🎉", description: "I'll get back to you soon." });
-    setForm({ name: "", email: "", message: "" });
+    setIsSending(true);
+
+    try {
+      await emailjs.send(
+        'service_sn3a5ge',
+        'template_contact',
+        {
+          to_name: "Nahush",
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+          reply_to: form.email,
+        },
+        'qGG6dTm9vd4dN-yxW'
+      );
+
+      toast({ title: "Message sent! 🎉", description: "I'll get back to you soon." });
+      setForm({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      toast({
+        title: "Failed to send message",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -75,9 +103,10 @@ const ContactPage = () => {
           <motion.div variants={item}>
             <button
               type="submit"
-              className="w-full gradient-bg text-primary-foreground py-3 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 transition-all"
+              disabled={isSending}
+              className="w-full gradient-bg text-primary-foreground py-3 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 transition-all disabled:opacity-50"
             >
-              <Send className="w-4 h-4" /> Send Message
+              <Send className="w-4 h-4" /> {isSending ? "Sending..." : "Send Message"}
             </button>
           </motion.div>
         </motion.form>
