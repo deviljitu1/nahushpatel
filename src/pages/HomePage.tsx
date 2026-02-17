@@ -54,58 +54,58 @@ interface HomePageProps {
 
 const HomePage = ({ onNavigate }: HomePageProps) => {
   return (
-    <div className="px-5 pt-8 max-w-lg lg:max-w-4xl mx-auto">
-
+    <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto">
       {/* Hero Section */}
-      <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-10">
-        <motion.div variants={item} className="mb-5 inline-block relative">
-          <div className="w-24 h-24 rounded-3xl gradient-bg p-[2px] mx-auto shadow-lg shadow-primary/20">
-            <div className="w-full h-full rounded-3xl bg-white dark:bg-slate-800 flex items-center justify-center text-3xl font-bold gradient-text">
+      <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-12">
+        <motion.div variants={item} className="mb-6 inline-block relative">
+          <div className="w-28 h-28 rounded-[2rem] gradient-bg p-[2.5px] mx-auto shadow-xl" style={{ boxShadow: '0 12px 40px hsl(24 95% 53% / 0.25)' }}>
+            <div className="w-full h-full rounded-[1.85rem] bg-card flex items-center justify-center text-4xl font-bold gradient-text">
               J
             </div>
           </div>
           <motion.div
-            className="absolute -bottom-1 -right-1 w-7 h-7 rounded-xl gradient-bg flex items-center justify-center shadow-md"
+            className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl gradient-bg flex items-center justify-center shadow-lg"
             animate={{ scale: [1, 1.15, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
           >
-            <Sparkles className="w-3.5 h-3.5 text-primary-foreground" />
+            <Sparkles className="w-4 h-4 text-primary-foreground" />
           </motion.div>
         </motion.div>
 
-        <motion.h1 variants={item} className="text-2xl font-bold mb-1">
+        <motion.h1 variants={item} className="text-3xl font-bold mb-1.5 tracking-tight">
           Hey, I'm <span className="gradient-text">Jitu</span>
         </motion.h1>
         <motion.p variants={item} className="text-sm font-medium text-muted-foreground mb-1">
           Digital Marketer & Web Developer
         </motion.p>
-        <motion.p variants={item} className="text-xs text-muted-foreground/70 max-w-xs mx-auto leading-relaxed">
+        <motion.p variants={item} className="text-xs text-muted-foreground/60 max-w-[280px] mx-auto leading-relaxed">
           I build high-converting websites & automated growth systems
         </motion.p>
 
         {/* CTA Buttons */}
-        <motion.div variants={item} className="flex gap-3 justify-center mt-6">
+        <motion.div variants={item} className="flex gap-3 justify-center mt-7">
           <button
             onClick={() => onNavigate("contact")}
-            className="group px-5 py-2.5 rounded-2xl gradient-bg text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+            className="group px-6 py-3 rounded-2xl gradient-bg text-primary-foreground font-semibold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+            style={{ boxShadow: '0 8px 24px hsl(24 95% 53% / 0.3)' }}
           >
             Hire Me <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
           <button
             onClick={() => onNavigate("work")}
-            className="px-5 py-2.5 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center gap-2 hover:-translate-y-0.5 transition-all duration-300"
+            className="px-6 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
           >
-            <Eye className="w-4 h-4" /> View Work
+            <Eye className="w-4 h-4 text-primary" /> View Work
           </button>
         </motion.div>
       </motion.div>
 
-      {/* Stats - 2x2 grid with neumorphic icon boxes */}
+      {/* Stats */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10"
       >
         {stats.map((stat) => (
           <StatCard key={stat.label} stat={stat} />
@@ -127,15 +127,15 @@ const clients = [
 
 const ClientMarquee = () => {
   return (
-    <div className="soft-card p-5 mb-8">
-      <h2 className="text-center text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mb-5">
+    <div className="soft-card p-6 mb-10">
+      <h2 className="section-label text-center mb-5">
         Trusted By
       </h2>
-      <div className="relative flex overflow-hidden group select-none">
-        <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-white dark:from-slate-800 to-transparent pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-white dark:from-slate-800 to-transparent pointer-events-none" />
+      <div className="relative flex overflow-hidden select-none">
+        <div className="absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r from-card to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l from-card to-transparent pointer-events-none" />
 
-        <div className="flex animate-marquee whitespace-nowrap gap-8 min-w-full shrink-0 items-center px-2">
+        <div className="flex animate-marquee whitespace-nowrap gap-10 min-w-full shrink-0 items-center px-2">
           {[...clients, ...clients, ...clients, ...clients].map((client, i) => (
             <a
               key={i}
@@ -144,11 +144,11 @@ const ClientMarquee = () => {
               rel="noopener noreferrer"
               className="flex items-center justify-center min-w-[100px] transition-all duration-500 hover:scale-110 transform cursor-pointer"
             >
-              <img src={client.logo} alt={client.name} className="h-8 w-auto object-contain drop-shadow-sm" />
+              <img src={client.logo} alt={client.name} className="h-9 w-auto object-contain drop-shadow-sm opacity-70 hover:opacity-100 transition-opacity" />
             </a>
           ))}
         </div>
-        <div className="flex animate-marquee whitespace-nowrap gap-8 min-w-full shrink-0 items-center px-2" aria-hidden="true">
+        <div className="flex animate-marquee whitespace-nowrap gap-10 min-w-full shrink-0 items-center px-2" aria-hidden="true">
           {[...clients, ...clients, ...clients, ...clients].map((client, i) => (
             <a
               key={`dup-${i}`}
@@ -157,7 +157,7 @@ const ClientMarquee = () => {
               rel="noopener noreferrer"
               className="flex items-center justify-center min-w-[100px] transition-all duration-500 hover:scale-110 transform cursor-pointer"
             >
-              <img src={client.logo} alt={client.name} className="h-8 w-auto object-contain drop-shadow-sm" />
+              <img src={client.logo} alt={client.name} className="h-9 w-auto object-contain drop-shadow-sm opacity-70 hover:opacity-100 transition-opacity" />
             </a>
           ))}
         </div>
@@ -173,16 +173,16 @@ function StatCard({ stat }: { stat: (typeof stats)[number] }) {
     <motion.div
       variants={item}
       ref={ref}
-      className="soft-card p-4 flex flex-col items-center justify-center text-center cursor-pointer group"
+      className="soft-card p-5 flex flex-col items-center justify-center text-center cursor-pointer group"
     >
-      <div className="soft-icon-box mb-2.5 group-hover:scale-110 transition-transform duration-300">
+      <div className="soft-icon-box mb-3 group-hover:scale-110 transition-transform duration-300">
         <Icon className="w-5 h-5 text-primary" />
       </div>
-      <div className="text-xl font-bold text-foreground">
+      <div className="text-2xl font-bold text-foreground tracking-tight">
         {count}
         <span className="text-primary">{stat.suffix}</span>
       </div>
-      <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider mt-0.5">{stat.label}</p>
+      <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1">{stat.label}</p>
     </motion.div>
   );
 }

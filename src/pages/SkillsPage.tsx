@@ -45,17 +45,17 @@ function AnimatedBar({ level, name }: { level: number; name: string }) {
   }, [level]);
 
   return (
-    <div ref={ref} className="mb-6">
-      <div className="flex justify-between text-xs mb-1">
-        <span className="font-medium">{name}</span>
-        <span className="text-muted-foreground">{level}%</span>
+    <div ref={ref} className="mb-5 last:mb-0">
+      <div className="flex justify-between text-xs mb-1.5">
+        <span className="font-semibold text-foreground">{name}</span>
+        <span className="text-muted-foreground font-medium">{level}%</span>
       </div>
-      <div className="h-2 rounded-full bg-secondary overflow-hidden">
+      <div className="h-2.5 rounded-full bg-secondary overflow-hidden">
         <motion.div
           className="h-full rounded-full gradient-bg"
           initial={{ width: 0 }}
           animate={{ width: `${width}%` }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         />
       </div>
     </div>
@@ -73,36 +73,30 @@ const item = {
 
 const SkillsPage = () => {
   return (
-    <div className="px-5 pt-8 max-w-lg lg:max-w-4xl mx-auto">
+    <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto pb-8">
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-bold mb-1"
+        className="text-3xl font-bold mb-1 tracking-tight"
       >
         My <span className="gradient-text">Skills</span>
       </motion.h1>
-      <p className="text-xs text-muted-foreground mb-6">Expertise & experience</p>
+      <p className="text-sm text-muted-foreground mb-8">Expertise & experience</p>
 
-      {/* Skills in soft cards - side by side on desktop */}
-      <div className="lg:grid lg:grid-cols-2 lg:gap-5">
-        {/* Marketing Skills */}
-        <motion.div variants={container} initial="hidden" animate="show" className="mb-5">
-          <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
-            Marketing
-          </motion.h2>
-          <motion.div variants={item} className="soft-card p-4">
+      {/* Skills in soft cards */}
+      <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+        <motion.div variants={container} initial="hidden" animate="show" className="mb-6 lg:mb-0">
+          <motion.h2 variants={item} className="section-label">Marketing</motion.h2>
+          <motion.div variants={item} className="soft-card p-5">
             {marketingSkills.map((s) => (
               <AnimatedBar key={s.name} {...s} />
             ))}
           </motion.div>
         </motion.div>
 
-        {/* Tech Skills */}
-        <motion.div variants={container} initial="hidden" animate="show" className="mb-5">
-          <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
-            Tech
-          </motion.h2>
-          <motion.div variants={item} className="soft-card p-4">
+        <motion.div variants={container} initial="hidden" animate="show" className="mb-6 lg:mb-0">
+          <motion.h2 variants={item} className="section-label">Tech</motion.h2>
+          <motion.div variants={item} className="soft-card p-5">
             {techSkills.map((s) => (
               <AnimatedBar key={s.name} {...s} />
             ))}
@@ -110,14 +104,12 @@ const SkillsPage = () => {
         </motion.div>
       </div>
 
-      {/* Tools Grid - 3 col pill tags */}
-      <motion.div variants={container} initial="hidden" animate="show" className="mb-5">
-        <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
-          Tools I Use
-        </motion.h2>
-        <motion.div variants={item} className="flex flex-wrap gap-3">
+      {/* Tools Grid */}
+      <motion.div variants={container} initial="hidden" animate="show" className="mt-8 mb-8">
+        <motion.h2 variants={item} className="section-label">Tools I Use</motion.h2>
+        <motion.div variants={item} className="flex flex-wrap gap-2.5">
           {tools.map((tool) => (
-            <span key={tool} className="bg-white dark:bg-slate-800 border border-b-[3px] border-slate-200 dark:border-slate-700 active:border-b-0 active:translate-y-[3px] transition-all rounded-xl px-3 py-1.5 text-[10px] font-bold text-muted-foreground hover:text-primary cursor-default">
+            <span key={tool} className="soft-card !rounded-xl px-4 py-2 text-[11px] font-bold text-muted-foreground hover:text-primary hover:border-primary/20 cursor-default transition-colors">
               {tool}
             </span>
           ))}
@@ -126,28 +118,25 @@ const SkillsPage = () => {
 
       {/* Timeline */}
       <motion.div variants={container} initial="hidden" animate="show">
-        <motion.h2 variants={item} className="text-[10px] font-bold mb-3 text-muted-foreground/60 uppercase tracking-widest">
-          Experience
-        </motion.h2>
+        <motion.h2 variants={item} className="section-label">Experience</motion.h2>
         <div className="relative mt-4 mb-12">
-          {/* Timeline Connector Line */}
           {/* Desktop Line */}
-          <div className="hidden lg:block absolute top-[18px] left-[5%] right-[5%] h-[2px] bg-slate-200 dark:bg-slate-800">
+          <div className="hidden lg:block absolute top-[18px] left-[5%] right-[5%] h-[2px] bg-border">
             <motion.div
               initial={{ width: 0 }}
               whileInView={{ width: "100%" }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="h-full bg-primary shadow-[0_0_10px_rgba(253,161,54,0.5)]"
+              className="h-full gradient-bg"
             />
           </div>
 
           {/* Mobile Line */}
-          <div className="lg:hidden absolute left-[19px] top-4 bottom-4 w-[2px] bg-slate-200 dark:bg-slate-800">
+          <div className="lg:hidden absolute left-[19px] top-4 bottom-4 w-[2px] bg-border">
             <motion.div
               initial={{ height: 0 }}
               whileInView={{ height: "100%" }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="w-full bg-primary shadow-[0_0_10px_rgba(253,161,54,0.5)]"
+              className="w-full gradient-bg"
             />
           </div>
 
@@ -161,19 +150,17 @@ const SkillsPage = () => {
                 className="relative pl-12 lg:pl-0 lg:pt-12 lg:text-center group"
               >
                 {/* Node Dot */}
-                <div className="absolute left-2 lg:left-1/2 lg:-translate-x-1/2 top-1 lg:top-2 w-6 h-6 rounded-full bg-background border-2 border-primary z-10 flex items-center justify-center shadow-[0_0_15px_rgba(253,161,54,0.4)] group-hover:scale-110 transition-transform duration-300">
+                <div className="absolute left-2 lg:left-1/2 lg:-translate-x-1/2 top-1 lg:top-2 w-6 h-6 rounded-full bg-background border-2 border-primary z-10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300" style={{ boxShadow: '0 0 12px hsl(24 95% 53% / 0.3)' }}>
                   <div className="w-2 h-2 rounded-full bg-primary" />
                 </div>
 
                 {/* Content Card */}
-                <div className="glass p-4 rounded-2xl relative group-hover:-translate-y-1 transition-transform duration-300 lg:min-h-[140px] flex flex-col justify-center">
-                  {/* Year Badge */}
-                  <span className="absolute -top-3 left-4 lg:left-1/2 lg:-translate-x-1/2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                <div className="soft-card p-4 relative group-hover:-translate-y-1 transition-transform duration-300 lg:min-h-[140px] flex flex-col justify-center">
+                  <span className="absolute -top-3 left-4 lg:left-1/2 lg:-translate-x-1/2 gradient-bg text-primary-foreground text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md">
                     {t.year}
                   </span>
-
                   <h3 className="text-sm font-bold mt-2">{t.title}</h3>
-                  <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">{t.description}</p>
+                  <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t.description}</p>
                 </div>
               </motion.div>
             ))}
