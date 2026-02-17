@@ -28,7 +28,7 @@ const ContactPage = () => {
     try {
       await emailjs.send(
         'service_sn3a5ge',
-        'template_contact',
+        'template_thpk97o',
         {
           to_name: "Nahush",
           from_name: form.name,
