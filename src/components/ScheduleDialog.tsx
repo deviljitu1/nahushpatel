@@ -51,15 +51,14 @@ export function ScheduleDialog({ children }: ScheduleDialogProps) {
         setIsSubmitting(true);
 
         try {
-            // Send email using EmailJS
-            // NOTE: You need to create a Service and Template in EmailJS dashboard
-            // Use 'service_default' as Service ID (or create one)
-            // Use 'template_default' as Template ID (or create one)
-            // Ensure your template accepts {{date}}, {{time}}, {{email}}, {{phone}}
+            // EmailJS Configuration
+            const SERVICE_ID = 'service_sn3a5ge';
+            const TEMPLATE_ID = 'template_thpk97o'; // IMPORTANT: Ensure this matches your EmailJS Template ID
+            const PUBLIC_KEY = 'qGG6dTm9vd4dN-yxW';
 
             const templateParams = {
                 to_name: "Nahush",
-                from_name: email, // or name if you collect it
+                from_name: email,
                 message: `Meeting requested for ${format(date, "PPP")} at ${time}. Phone: ${phone}`,
                 date: format(date, "PPP"),
                 time: time,
@@ -69,15 +68,15 @@ export function ScheduleDialog({ children }: ScheduleDialogProps) {
             };
 
             await emailjs.send(
-                'service_sn3a5ge', // Replace with your actual Service ID from EmailJS
-                'template_contact', // Replace with your actual Template ID from EmailJS 
+                SERVICE_ID,
+                TEMPLATE_ID,
                 templateParams,
-                'qGG6dTm9vd4dN-yxW' // Your Public Key
+                PUBLIC_KEY
             );
 
             toast({
                 title: "Request Sent Successfully! 🎉",
-                description: `Thanks! i'll confirm via email shortly.`,
+                description: `Thanks! I'll confirm via email shortly.`,
             });
 
             setOpen(false);
@@ -90,9 +89,10 @@ export function ScheduleDialog({ children }: ScheduleDialogProps) {
 
         } catch (error) {
             console.error("EmailJS Error:", error);
+            const errorMessage = (error as any)?.text || "Something went wrong. Please try again.";
             toast({
                 title: "Failed to send request",
-                description: "Something went wrong. Please try again or contact me directly.",
+                description: `Error: ${errorMessage}. Check console for details.`,
                 variant: "destructive",
             });
         } finally {
