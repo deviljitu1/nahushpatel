@@ -86,28 +86,29 @@ function AnimatedBar({ level, name }: { level: number; name: string }) {
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.06 } },
+  show: { transition: { staggerChildren: 0.08 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 15 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  hidden: { opacity: 0, y: 20, scale: 0.97 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 const SkillsPage = () => {
   return (
     <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto pb-8">
       <motion.h1
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         className="text-3xl font-bold mb-1 tracking-tight"
       >
-        Skills &amp; <span className="gradient-text">Experience</span>
+        Skills &amp; <span className="text-shimmer">Experience</span>
       </motion.h1>
       <p className="text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
 
       {/* Skills in soft cards */}
       <div className="lg:grid lg:grid-cols-2 lg:gap-6">
-        <motion.div variants={container} initial="hidden" animate="show" className="mb-6 lg:mb-0">
+        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-6 lg:mb-0">
           <motion.h2 variants={item} className="section-label">Marketing &amp; Growth</motion.h2>
           <motion.div variants={item} className="soft-card p-5">
             {marketingSkills.map((s) => (
@@ -116,7 +117,7 @@ const SkillsPage = () => {
           </motion.div>
         </motion.div>
 
-        <motion.div variants={container} initial="hidden" animate="show" className="mb-6 lg:mb-0">
+        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-6 lg:mb-0">
           <motion.h2 variants={item} className="section-label">Tech &amp; Development</motion.h2>
           <motion.div variants={item} className="soft-card p-5">
             {techSkills.map((s) => (
@@ -127,19 +128,21 @@ const SkillsPage = () => {
       </div>
 
       {/* Tools Grid */}
-      <motion.div variants={container} initial="hidden" animate="show" className="mt-8 mb-8">
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mt-8 mb-8">
         <motion.h2 variants={item} className="section-label">Tools &amp; Platforms</motion.h2>
         <motion.div variants={item} className="flex flex-wrap gap-2.5">
           {tools.map((tool) => (
-            <span key={tool} className="soft-card !rounded-xl px-4 py-2 text-[11px] font-bold text-muted-foreground hover:text-primary hover:border-primary/20 cursor-default transition-colors">
+            <motion.span key={tool} variants={item} className="soft-card !rounded-xl px-4 py-2 text-[11px] font-bold text-muted-foreground hover:text-primary hover:border-primary/20 cursor-default transition-colors"
+              whileHover={{ scale: 1.08, y: -2 }}
+            >
               {tool}
-            </span>
+            </motion.span>
           ))}
         </motion.div>
       </motion.div>
 
       {/* Timeline */}
-      <motion.div variants={container} initial="hidden" animate="show">
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.1 }}>
         <motion.h2 variants={item} className="section-label">Work Experience</motion.h2>
         <div className="relative mt-4 mb-12">
           {/* Desktop Line */}
