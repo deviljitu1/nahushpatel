@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Eye, TrendingUp, Users, DollarSign, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Eye, TrendingUp, Users, DollarSign, Sparkles, X } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
 const stats = [
@@ -53,20 +53,29 @@ interface HomePageProps {
 }
 
 const HomePage = ({ onNavigate }: HomePageProps) => {
+  const [zoomOpen, setZoomOpen] = useState(false);
+
   return (
     <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto">
       {/* Hero Section */}
       <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-12">
         <motion.div variants={item} className="mb-6 inline-block relative">
-          <div className="w-28 h-28 rounded-[2rem] gradient-bg p-[2.5px] mx-auto shadow-xl" style={{ boxShadow: '0 12px 40px hsl(24 95% 53% / 0.25)' }}>
-            <div className="w-full h-full rounded-[1.85rem] overflow-hidden bg-card">
-              <img
-                src="/Nahush Patel.jpg"
-                alt="Nahush Patel"
-                className="w-full h-full object-cover object-top"
-              />
+          {/* Clickable profile photo */}
+          <button
+            onClick={() => setZoomOpen(true)}
+            className="block focus:outline-none group"
+            aria-label="View profile photo"
+          >
+            <div className="w-28 h-28 rounded-[2rem] gradient-bg p-[2.5px] mx-auto shadow-xl transition-transform duration-300 group-hover:scale-105" style={{ boxShadow: '0 12px 40px hsl(24 95% 53% / 0.25)' }}>
+              <div className="w-full h-full rounded-[1.85rem] overflow-hidden bg-card">
+                <img
+                  src="/Nahush Patel.jpg"
+                  alt="Nahush Patel"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
             </div>
-          </div>
+          </button>
           <motion.div
             className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl gradient-bg flex items-center justify-center shadow-lg"
             animate={{ scale: [1, 1.15, 1] }}
@@ -75,6 +84,50 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
             <Sparkles className="w-4 h-4 text-primary-foreground" />
           </motion.div>
         </motion.div>
+
+        {/* Zoom Lightbox */}
+        <AnimatePresence>
+          {zoomOpen && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setZoomOpen(false)}
+            >
+              {/* Blurred backdrop */}
+              <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+
+              {/* Image */}
+              <motion.div
+                className="relative z-10 max-w-xs w-full mx-6"
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.6, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="rounded-3xl overflow-hidden shadow-2xl gradient-bg p-[3px]" style={{ boxShadow: '0 24px 64px hsl(24 95% 53% / 0.4)' }}>
+                  <img
+                    src="/Nahush Patel.jpg"
+                    alt="Nahush Patel"
+                    className="w-full h-auto rounded-[22px] object-cover object-top block"
+                  />
+                </div>
+
+                {/* Close button */}
+                <button
+                  onClick={() => setZoomOpen(false)}
+                  className="absolute -top-3 -right-3 w-9 h-9 rounded-full gradient-bg flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                  aria-label="Close"
+                >
+                  <X className="w-4 h-4 text-primary-foreground" />
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <motion.h1 variants={item} className="text-3xl font-bold mb-1.5 tracking-tight">
           Hey, I'm <span className="gradient-text">Jitu</span>
