@@ -47,7 +47,7 @@ const Index = () => {
         import("@/pages/ServicesPage"),
         import("@/pages/SkillsPage"),
         import("@/pages/ContactPage"),
-      ]).catch(() => {});
+      ]).catch(() => { });
     }, 2500);
     return () => clearTimeout(prefetchTimer);
   }, []);
@@ -91,7 +91,7 @@ const Index = () => {
           className="flex-1 overflow-hidden flex flex-col relative"
         >
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto scrollbar-none pb-24 relative z-10">
+          <div className="flex-1 overflow-y-auto scrollbar-none pb-28 relative z-10" style={{ WebkitOverflowScrolling: "touch" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}

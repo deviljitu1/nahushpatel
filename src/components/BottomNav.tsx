@@ -18,9 +18,11 @@ interface BottomNavProps {
 
 const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavProps) => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-[env(safe-area-inset-bottom,12px)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-[100] px-3 sm:px-4"
+      style={{ paddingBottom: "max(env(safe-area-inset-bottom, 0px), 8px)" }}
+    >
       <div
-        className="rounded-2xl mx-auto max-w-md px-1.5 h-[68px] flex items-center justify-between relative backdrop-blur-2xl border border-border/50 shadow-2xl"
+        className="rounded-2xl mx-auto max-w-md px-1 h-[62px] sm:h-[68px] flex items-center justify-between relative backdrop-blur-2xl border border-border/50 shadow-2xl"
         style={{
           background: "hsl(var(--card) / 0.85)",
           boxShadow: "0 -4px 32px rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.08)",

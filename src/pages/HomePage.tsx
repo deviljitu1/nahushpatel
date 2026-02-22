@@ -193,7 +193,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
             >
               <ProfileCube
                 imageSrc="/Nahush Patel.jpg"
-                size={128}
+                size={typeof window !== "undefined" && window.innerWidth < 380 ? 96 : 112}
                 onFaceClick={() => setZoomOpen(true)}
               />
             </div>
@@ -241,40 +241,42 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           {/* Meta chips */}
-          <motion.div variants={item} className="flex items-center justify-center gap-3 text-[11px] text-muted-foreground/70 mb-3 flex-wrap">
-            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> Raipur, India</span>
+          <motion.div variants={item} className="flex items-center justify-center gap-2 text-[11px] text-muted-foreground/70 mb-3 flex-wrap px-2">
+            <span className="flex items-center gap-1"><MapPin className="w-3 h-3 shrink-0" /> Raipur, India</span>
+            <span className="w-1 h-1 rounded-full bg-border hidden xs:block" />
+            <span className="hidden sm:flex items-center gap-1"><Mail className="w-3 h-3 shrink-0" /> nahushpatel2@gmail.com</span>
             <span className="w-1 h-1 rounded-full bg-border" />
-            <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> nahushpatel2@gmail.com</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
-            <span className="flex items-center gap-1"><Briefcase className="w-3 h-3" /> Freelance / Full-time</span>
+            <span className="flex items-center gap-1"><Briefcase className="w-3 h-3 shrink-0" /> Freelance / Full-time</span>
           </motion.div>
 
-          <motion.p variants={item} className="text-xs text-muted-foreground/60 max-w-[300px] mx-auto leading-relaxed mb-7">
+          <motion.p variants={item} className="text-xs text-muted-foreground/60 max-w-[280px] mx-auto leading-relaxed mb-6 px-4">
             I craft high-converting digital experiences — from ads that sell to automations that scale.
           </motion.p>
 
-          {/* CTAs */}
-          <motion.div variants={item} className="flex gap-3 justify-center flex-wrap">
+          {/* CTAs — full width on mobile, inline on sm+ */}
+          <motion.div variants={item} className="flex flex-col xs:flex-row gap-2.5 xs:gap-3 justify-center items-stretch xs:items-center px-4 xs:px-0">
             <button
               onClick={() => onNavigate("contact")}
-              className="group px-6 py-3 rounded-2xl gradient-bg text-primary-foreground font-semibold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+              className="group w-full xs:w-auto px-6 py-3 rounded-2xl gradient-bg text-primary-foreground font-semibold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
               style={{ boxShadow: "0 8px 24px hsl(24 95% 53% / 0.35)" }}
             >
               Hire Me <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
-            <button
-              onClick={() => onNavigate("work")}
-              className="px-6 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
-            >
-              <Eye className="w-4 h-4 text-primary" /> View Work
-            </button>
-            <a
-              href="/resume.pdf"
-              download="Nahush_Patel_Resume.pdf"
-              className="px-6 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
-            >
-              <Download className="w-4 h-4 text-primary" /> Resume
-            </a>
+            <div className="flex gap-2.5 xs:gap-3">
+              <button
+                onClick={() => onNavigate("work")}
+                className="flex-1 xs:flex-none px-5 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
+              >
+                <Eye className="w-4 h-4 text-primary" /> Work
+              </button>
+              <a
+                href="/resume.pdf"
+                download="Nahush_Patel_Resume.pdf"
+                className="flex-1 xs:flex-none px-5 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
+              >
+                <Download className="w-4 h-4 text-primary" /> CV
+              </a>
+            </div>
           </motion.div>
         </motion.div>
 
