@@ -123,19 +123,19 @@ const ContactPage = () => {
           >
             <h2 className="section-label">Connect</h2>
             <motion.div variants={item} className="grid grid-cols-2 gap-3">
-              <a href="https://wa.me/919109XXX690" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
+              <a href="https://wa.me/917875783498" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <MessageCircle className="w-4 h-4 text-green-500" />
                 </div>
                 WhatsApp
               </a>
-              <a href="https://linkedin.com/in/nahushpatel" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
+              <a href="https://www.linkedin.com/in/nahush-patel/" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <Linkedin className="w-4 h-4 text-blue-500" />
                 </div>
                 LinkedIn
               </a>
-              <a href="https://github.com/nahushpatel" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
+              <a href="https://github.com/deviljitu1" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <Github className="w-4 h-4 text-foreground" />
                 </div>
