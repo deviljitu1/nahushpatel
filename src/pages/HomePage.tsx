@@ -61,7 +61,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           <div className="w-28 h-28 rounded-[2rem] gradient-bg p-[2.5px] mx-auto shadow-xl" style={{ boxShadow: '0 12px 40px hsl(24 95% 53% / 0.25)' }}>
             <div className="w-full h-full rounded-[1.85rem] overflow-hidden bg-card">
               <img
-                src="/Nahush Patel.webp"
+                src="/Nahush Patel.jpg"
                 alt="Nahush Patel"
                 className="w-full h-full object-cover object-top"
               />
