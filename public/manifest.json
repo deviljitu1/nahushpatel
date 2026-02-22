@@ -1,10 +1,11 @@
 {
-  "name": "Jitu — Digital Marketer & Web Developer",
-  "short_name": "Jitu",
+  "name": "Nahush Patel — Digital Marketer & Web Developer",
+  "short_name": "Nahush",
+  "description": "Portfolio of Nahush Patel — Digital Marketing Strategist & Web Developer based in Raipur, India.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f0f17",
-  "theme_color": "#7c3aed",
+  "background_color": "#f8f9fb",
+  "theme_color": "#f97316",
   "icons": [
     {
       "src": "/favicon.ico",
