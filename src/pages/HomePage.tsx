@@ -59,8 +59,12 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
       <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-12">
         <motion.div variants={item} className="mb-6 inline-block relative">
           <div className="w-28 h-28 rounded-[2rem] gradient-bg p-[2.5px] mx-auto shadow-xl" style={{ boxShadow: '0 12px 40px hsl(24 95% 53% / 0.25)' }}>
-            <div className="w-full h-full rounded-[1.85rem] bg-card flex items-center justify-center text-4xl font-bold gradient-text">
-              J
+            <div className="w-full h-full rounded-[1.85rem] overflow-hidden bg-card">
+              <img
+                src="/Nahush Patel.webp"
+                alt="Nahush Patel"
+                className="w-full h-full object-cover object-top"
+              />
             </div>
           </div>
           <motion.div
