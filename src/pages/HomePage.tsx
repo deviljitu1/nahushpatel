@@ -4,6 +4,8 @@ import {
   Sparkles, X, MapPin, Mail, Briefcase, Code2, Megaphone, Zap, Download
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import ProfileCube from "@/components/ProfileCube";
+
 
 /* ─── Data ─────────────────────────────────────────────────────────── */
 const stats = [
@@ -134,36 +136,41 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
       {/* ── Hero ──────────────────────────────────────────────── */}
       <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-10">
 
-        {/* Profile photo */}
-        <motion.div variants={item} className="mb-5 inline-block relative">
-          <button
-            onClick={() => setZoomOpen(true)}
-            className="block focus:outline-none group"
-            aria-label="View profile photo"
+        {/* 3D Profile Cube */}
+        <motion.div variants={item} className="mb-7 inline-block relative">
+          {/* Outer glow ring */}
+          <div
+            className="relative"
+            style={{
+              filter: "drop-shadow(0 20px 48px hsl(24 95% 53% / 0.35))",
+            }}
           >
-            <div
-              className="w-28 h-28 rounded-[2rem] gradient-bg p-[3px] mx-auto shadow-xl transition-transform duration-300 group-hover:scale-105"
-              style={{ boxShadow: "0 16px 48px hsl(24 95% 53% / 0.3)" }}
-            >
-              <div className="w-full h-full rounded-[1.75rem] overflow-hidden bg-card">
-                <img
-                  src="/Nahush Patel.jpg"
-                  alt="Nahush Patel"
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-            </div>
-          </button>
+            <ProfileCube
+              imageSrc="/Nahush Patel.jpg"
+              size={128}
+              onFaceClick={() => setZoomOpen(true)}
+            />
+          </div>
 
           {/* Pulse badge */}
           <motion.div
-            className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl gradient-bg flex items-center justify-center shadow-lg"
+            className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl gradient-bg flex items-center justify-center shadow-lg z-10"
             animate={{ scale: [1, 1.18, 1] }}
             transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
             title="Available for Hire"
           >
             <Sparkles className="w-4 h-4 text-primary-foreground" />
           </motion.div>
+
+          {/* Drag hint */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+            className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] text-muted-foreground/50 font-medium select-none pointer-events-none"
+          >
+            drag to rotate
+          </motion.p>
         </motion.div>
 
         {/* Open to Work */}
