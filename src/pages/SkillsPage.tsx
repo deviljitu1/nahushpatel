@@ -2,31 +2,53 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const marketingSkills = [
-  { name: "SEO", level: 92 },
+  { name: "SEO & SEM", level: 92 },
   { name: "Google Ads", level: 88 },
-  { name: "Meta Ads", level: 85 },
-  { name: "Analytics", level: 90 },
+  { name: "Meta Ads (Facebook / Instagram)", level: 85 },
+  { name: "Analytics (GA4 / GSC)", level: 90 },
+  { name: "Email Marketing", level: 80 },
 ];
 
 const techSkills = [
-  { name: "React", level: 87 },
-  { name: "WordPress", level: 82 },
-  { name: "Python", level: 75 },
-  { name: "n8n / Automation", level: 90 },
-  { name: "APIs & Integrations", level: 85 },
+  { name: "React / Next.js", level: 87 },
+  { name: "WordPress & WooCommerce", level: 84 },
+  { name: "Python (automation & scripting)", level: 75 },
+  { name: "n8n / Zapier Automation", level: 90 },
+  { name: "REST APIs & Integrations", level: 85 },
 ];
 
 const tools = [
-  "Google Ads", "Meta Ads", "Ahrefs", "GA4", "React", "WordPress",
-  "Python", "n8n", "Zapier", "Figma", "Canva", "Hotjar",
-  "GSC", "Semrush", "ClickFunnels", "Notion",
+  "Google Ads", "Meta Ads Manager", "Ahrefs", "SEMrush", "GA4",
+  "Google Search Console", "React", "WordPress", "Python", "n8n",
+  "Zapier", "Figma", "Canva", "Hotjar", "ClickFunnels",
+  "Notion", "Webflow", "Mailchimp",
 ];
 
 const timeline = [
-  { year: "2024", title: "Freelance Growth Partner", description: "Full-stack marketing & dev for 20+ clients" },
-  { year: "2023", title: "Marketing Automation Lead", description: "Built automated lead gen systems at scale" },
-  { year: "2022", title: "SEO & Ads Specialist", description: "Managed ₹50L+ in ad spend across verticals" },
-  { year: "2021", title: "Web Developer", description: "Started building custom websites for local businesses" },
+  {
+    year: "2025",
+    title: "Freelance Growth Partner",
+    company: "Self-Employed",
+    description: "Full-stack digital marketing & web development for 30+ clients across India. Delivered ₹2M+ in revenue growth.",
+  },
+  {
+    year: "2024",
+    title: "Marketing Automation Lead",
+    company: "Freelance",
+    description: "Architected automated lead generation systems using n8n & Zapier. Saved clients 20+ hours/week on manual tasks.",
+  },
+  {
+    year: "2023",
+    title: "SEO & Paid Ads Specialist",
+    company: "Freelance",
+    description: "Managed ₹50L+ in ad spend across Google & Meta. Achieved average ROAS of 4.2x for e-commerce clients.",
+  },
+  {
+    year: "2022",
+    title: "Web Developer",
+    company: "Freelance",
+    description: "Built high-performance websites & landing pages for local businesses in Raipur. Focused on speed & conversions.",
+  },
 ];
 
 function AnimatedBar({ level, name }: { level: number; name: string }) {
@@ -79,14 +101,14 @@ const SkillsPage = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-3xl font-bold mb-1 tracking-tight"
       >
-        My <span className="gradient-text">Skills</span>
+        Skills &amp; <span className="gradient-text">Experience</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-8">Expertise & experience</p>
+      <p className="text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
 
       {/* Skills in soft cards */}
       <div className="lg:grid lg:grid-cols-2 lg:gap-6">
         <motion.div variants={container} initial="hidden" animate="show" className="mb-6 lg:mb-0">
-          <motion.h2 variants={item} className="section-label">Marketing</motion.h2>
+          <motion.h2 variants={item} className="section-label">Marketing &amp; Growth</motion.h2>
           <motion.div variants={item} className="soft-card p-5">
             {marketingSkills.map((s) => (
               <AnimatedBar key={s.name} {...s} />
@@ -95,7 +117,7 @@ const SkillsPage = () => {
         </motion.div>
 
         <motion.div variants={container} initial="hidden" animate="show" className="mb-6 lg:mb-0">
-          <motion.h2 variants={item} className="section-label">Tech</motion.h2>
+          <motion.h2 variants={item} className="section-label">Tech &amp; Development</motion.h2>
           <motion.div variants={item} className="soft-card p-5">
             {techSkills.map((s) => (
               <AnimatedBar key={s.name} {...s} />
@@ -106,7 +128,7 @@ const SkillsPage = () => {
 
       {/* Tools Grid */}
       <motion.div variants={container} initial="hidden" animate="show" className="mt-8 mb-8">
-        <motion.h2 variants={item} className="section-label">Tools I Use</motion.h2>
+        <motion.h2 variants={item} className="section-label">Tools &amp; Platforms</motion.h2>
         <motion.div variants={item} className="flex flex-wrap gap-2.5">
           {tools.map((tool) => (
             <span key={tool} className="soft-card !rounded-xl px-4 py-2 text-[11px] font-bold text-muted-foreground hover:text-primary hover:border-primary/20 cursor-default transition-colors">
@@ -118,7 +140,7 @@ const SkillsPage = () => {
 
       {/* Timeline */}
       <motion.div variants={container} initial="hidden" animate="show">
-        <motion.h2 variants={item} className="section-label">Experience</motion.h2>
+        <motion.h2 variants={item} className="section-label">Work Experience</motion.h2>
         <div className="relative mt-4 mb-12">
           {/* Desktop Line */}
           <div className="hidden lg:block absolute top-[18px] left-[5%] right-[5%] h-[2px] bg-border">
@@ -155,12 +177,13 @@ const SkillsPage = () => {
                 </div>
 
                 {/* Content Card */}
-                <div className="soft-card p-4 relative group-hover:-translate-y-1 transition-transform duration-300 lg:min-h-[140px] flex flex-col justify-center">
+                <div className="soft-card p-4 relative group-hover:-translate-y-1 transition-transform duration-300 lg:min-h-[160px] flex flex-col justify-center">
                   <span className="absolute -top-3 left-4 lg:left-1/2 lg:-translate-x-1/2 gradient-bg text-primary-foreground text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md">
                     {t.year}
                   </span>
                   <h3 className="text-sm font-bold mt-2">{t.title}</h3>
-                  <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t.description}</p>
+                  <p className="text-[10px] font-semibold text-primary/80 mb-1">{t.company}</p>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">{t.description}</p>
                 </div>
               </motion.div>
             ))}

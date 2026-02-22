@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Eye, TrendingUp, Users, DollarSign, Sparkles, X } from "lucide-react";
+import { ArrowRight, Eye, TrendingUp, Users, DollarSign, Sparkles, X, Briefcase, MapPin, Mail } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
 const stats = [
@@ -76,10 +76,12 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
               </div>
             </div>
           </button>
+          {/* Available for hire badge */}
           <motion.div
             className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl gradient-bg flex items-center justify-center shadow-lg"
             animate={{ scale: [1, 1.15, 1] }}
             transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+            title="Available for Hire"
           >
             <Sparkles className="w-4 h-4 text-primary-foreground" />
           </motion.div>
@@ -96,10 +98,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
               transition={{ duration: 0.25 }}
               onClick={() => setZoomOpen(false)}
             >
-              {/* Blurred backdrop */}
               <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
-
-              {/* Image */}
               <motion.div
                 className="relative z-10 max-w-xs w-full mx-6"
                 initial={{ scale: 0.6, opacity: 0 }}
@@ -115,8 +114,6 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
                     className="w-full h-auto rounded-[22px] object-cover object-top block"
                   />
                 </div>
-
-                {/* Close button */}
                 <button
                   onClick={() => setZoomOpen(false)}
                   className="absolute -top-3 -right-3 w-9 h-9 rounded-full gradient-bg flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
@@ -129,18 +126,34 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           )}
         </AnimatePresence>
 
+        {/* Open to Work badge */}
+        <motion.div variants={item} className="flex justify-center mb-4">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/25 text-green-600 dark:text-green-400 text-[11px] font-bold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            Open to Work
+          </span>
+        </motion.div>
+
         <motion.h1 variants={item} className="text-3xl font-bold mb-1.5 tracking-tight">
-          Hey, I'm <span className="gradient-text">Jitu</span>
+          Hi, I'm <span className="gradient-text">Nahush Patel</span>
         </motion.h1>
-        <motion.p variants={item} className="text-sm font-medium text-muted-foreground mb-1">
-          Digital Marketer & Web Developer
+        <motion.p variants={item} className="text-sm font-semibold text-muted-foreground mb-1">
+          Digital Marketing Strategist &amp; Web Developer
         </motion.p>
-        <motion.p variants={item} className="text-xs text-muted-foreground/60 max-w-[280px] mx-auto leading-relaxed">
-          I build high-converting websites & automated growth systems
+
+        {/* Meta info row */}
+        <motion.div variants={item} className="flex items-center justify-center gap-4 text-[11px] text-muted-foreground/70 mt-1.5 mb-3 flex-wrap">
+          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> Raipur, CG, India</span>
+          <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> nahushpatel2@gmail.com</span>
+          <span className="flex items-center gap-1"><Briefcase className="w-3 h-3" /> Freelance / Full-time</span>
+        </motion.div>
+
+        <motion.p variants={item} className="text-xs text-muted-foreground/60 max-w-[300px] mx-auto leading-relaxed">
+          I build high-converting websites &amp; automated digital growth systems that drive real business results.
         </motion.p>
 
         {/* CTA Buttons */}
-        <motion.div variants={item} className="flex gap-3 justify-center mt-7">
+        <motion.div variants={item} className="flex gap-3 justify-center mt-7 flex-wrap">
           <button
             onClick={() => onNavigate("contact")}
             className="group px-6 py-3 rounded-2xl gradient-bg text-primary-foreground font-semibold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"

@@ -62,7 +62,7 @@ const ContactPage = () => {
       >
         Get in <span className="gradient-text">Touch</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-8">Let's build something great together</p>
+      <p className="text-sm text-muted-foreground mb-8">Let's build something great together — I'm open to freelance, contract &amp; full-time roles.</p>
 
       <div className="lg:grid lg:grid-cols-2 lg:gap-10">
         <motion.form
@@ -122,30 +122,30 @@ const ContactPage = () => {
           >
             <h2 className="section-label">Connect</h2>
             <motion.div variants={item} className="grid grid-cols-2 gap-3">
-              <a href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold">
+              <a href="https://wa.me/919109XXX690" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <MessageCircle className="w-4 h-4 text-green-500" />
                 </div>
                 WhatsApp
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold">
+              <a href="https://linkedin.com/in/nahushpatel" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <Linkedin className="w-4 h-4 text-blue-500" />
                 </div>
                 LinkedIn
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold">
+              <a href="https://github.com/nahushpatel" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <Github className="w-4 h-4 text-foreground" />
                 </div>
                 GitHub
               </a>
-              <button className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold text-left">
+              <a href="/resume.pdf" download="Nahush_Patel_Resume.pdf" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all text-left">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <Download className="w-4 h-4 text-primary" />
                 </div>
                 Resume
-              </button>
+              </a>
             </motion.div>
           </motion.div>
 
