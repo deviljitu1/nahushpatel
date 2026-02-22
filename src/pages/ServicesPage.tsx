@@ -63,10 +63,10 @@ const services = [
   },
 ];
 
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
+const container = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
 const cardAnim = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  hidden: { opacity: 0, y: 24, scale: 0.97 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 const ServiceCard = ({ service, onNavigate }: { service: typeof services[number]; onNavigate: (tab: string) => void }) => {
@@ -145,18 +145,20 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
   return (
     <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto">
       <motion.h1
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         className="text-3xl font-bold mb-1 tracking-tight"
       >
-        My <span className="gradient-text">Services</span>
+        My <span className="text-shimmer">Services</span>
       </motion.h1>
       <p className="text-sm text-muted-foreground mb-8">Tap any card to see full details &amp; pricing</p>
 
       <motion.div
         variants={container}
         initial="hidden"
-        animate="show"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
         className="flex flex-col gap-4 pb-6 lg:grid lg:grid-cols-2"
       >
         {services.map((service, i) => (

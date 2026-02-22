@@ -109,8 +109,9 @@ function useTypewriter(words: string[], speed = 80, pause = 1800) {
 }
 
 /* ─── Variants ──────────────────────────────────────────────────────── */
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
-const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
+const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+const item = { hidden: { opacity: 0, y: 24, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" as const } } };
+const fadeUp = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } } };
 
 /* ─── Props ─────────────────────────────────────────────────────────── */
 interface HomePageProps {
@@ -175,7 +176,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
 
         {/* Name */}
         <motion.h1 variants={item} className="text-3xl font-bold mb-1 tracking-tight">
-          Hi, I'm <span className="gradient-text">Nahush Patel</span>
+          Hi, I'm <span className="text-shimmer">Nahush Patel</span>
         </motion.h1>
 
         {/* Typewriter role */}
@@ -228,10 +229,11 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
       <motion.div
         variants={container}
         initial="hidden"
-        animate="show"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
         className="mb-10"
       >
-        <motion.h2 variants={item} className="section-label text-center mb-4">What I Do</motion.h2>
+        <motion.h2 variants={fadeUp} className="section-label text-center mb-4">What I Do</motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {whatIDo.map((w) => {
             const Icon = w.icon;
@@ -255,7 +257,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
       </motion.div>
 
       {/* ── Stats ────────────────────────────────────────────── */}
-      <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
         {stats.map((stat) => (
           <StatCard key={stat.label} stat={stat} />
         ))}
