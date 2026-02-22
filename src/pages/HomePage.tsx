@@ -241,15 +241,15 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           {/* Meta chips */}
-          <motion.div variants={item} className="flex items-center justify-center gap-2 text-[11px] text-muted-foreground/70 mb-3 flex-wrap px-2">
-            <span className="flex items-center gap-1"><MapPin className="w-3 h-3 shrink-0" /> Raipur, India</span>
-            <span className="w-1 h-1 rounded-full bg-border hidden xs:block" />
-            <span className="hidden sm:flex items-center gap-1"><Mail className="w-3 h-3 shrink-0" /> nahushpatel2@gmail.com</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
-            <span className="flex items-center gap-1"><Briefcase className="w-3 h-3 shrink-0" /> Freelance / Full-time</span>
+          <motion.div variants={item} className="flex items-center justify-center gap-2 text-[12px] text-muted-foreground mb-3 flex-wrap px-2">
+            <span className="flex items-center gap-1 font-medium"><MapPin className="w-3 h-3 shrink-0 text-primary" /> Raipur, India</span>
+            <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+            <span className="hidden sm:flex items-center gap-1 font-medium"><Mail className="w-3 h-3 shrink-0 text-primary" /> nahushpatel2@gmail.com</span>
+            <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+            <span className="flex items-center gap-1 font-medium"><Briefcase className="w-3 h-3 shrink-0 text-primary" /> Freelance / Full-time</span>
           </motion.div>
 
-          <motion.p variants={item} className="text-xs text-muted-foreground/60 max-w-[280px] mx-auto leading-relaxed mb-6 px-4">
+          <motion.p variants={item} className="text-[13px] font-medium text-muted-foreground max-w-[290px] mx-auto leading-relaxed mb-6 px-4">
             I craft high-converting digital experiences — from ads that sell to automations that scale.
           </motion.p>
 
