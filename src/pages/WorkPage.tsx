@@ -115,7 +115,7 @@ const projects = [
     coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
     problem: "Manual lead collection, no nurture sequences.",
     solution: "Built n8n workflows with WhatsApp + email automation.",
-    tools: ["n8n", "WhatsApp API", "Google Sheets", "Zapier"],
+    tools: ["n8n", "WhatsApp API", "Google Sheets", "Make.com"],
     metrics: [
       { label: "Leads/Month", value: "500+" },
       { label: "Response Time", value: "<5 min" },

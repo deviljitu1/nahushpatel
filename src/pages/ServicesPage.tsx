@@ -37,10 +37,10 @@ const services = [
   {
     icon: Zap,
     title: "Marketing Automation",
-    short: "n8n, Zapier & AI workflows",
+    short: "n8n & AI workflows",
     badge: "Time Saver",
     details: "Automate lead capture, nurture sequences, CRM updates, and reporting. Save 20+ hours/week with intelligent automation workflows.",
-    highlights: ["n8n & Zapier workflows", "CRM & email automation", "AI-powered pipelines"],
+    highlights: ["n8n automation workflows", "CRM & email automation", "AI-powered pipelines"],
     pricing: "Starting ₹12,000",
   },
   {

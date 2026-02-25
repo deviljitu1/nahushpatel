@@ -14,14 +14,14 @@ const techSkills = [
   { name: "React / Next.js", level: 87 },
   { name: "WordPress & WooCommerce", level: 84 },
   { name: "HTML / CSS", level: 90 },
-  { name: "n8n / Zapier Automation", level: 90 },
+  { name: "n8n Automation", level: 90 },
   { name: "REST APIs & Integrations", level: 85 },
 ];
 
 const tools = [
   "Google Ads", "Meta Ads Manager", "Ahrefs", "SEMrush", "GA4",
   "Google Search Console", "React", "WordPress", "HTML / CSS", "n8n",
-  "Zapier", "Figma", "Canva", "Hotjar", "ClickFunnels",
+  "Figma", "Canva", "Hotjar", "ClickFunnels",
   "Notion", "Webflow", "Mailchimp",
 ];
 
@@ -56,7 +56,8 @@ const certifications = [
     date: "Nov 2025",
     skills: "SEO · Google Ads · Social Media Marketing",
     color: "from-orange-400 to-rose-500",
-    link: null,
+    logo: "/brands/1764514156604.jpg",
+    link: "/brands/1764514156604.jpg",
   },
   {
     title: "Google Hackathon",
@@ -267,9 +268,19 @@ const SkillsPage = () => {
               whileHover={{ y: -3 }}
               className="soft-card p-4 flex items-start gap-3 group"
             >
-              <div className={`w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br ${cert.color} flex items-center justify-center shadow-sm`}>
-                <Award className="w-4 h-4 text-white" />
-              </div>
+              {cert.logo ? (
+                <div className="w-9 h-9 shrink-0 rounded-xl overflow-hidden border border-border shadow-sm bg-white flex items-center justify-center">
+                  <img
+                    src={cert.logo}
+                    alt={cert.issuer}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className={`w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br ${cert.color} flex items-center justify-center shadow-sm`}>
+                  <Award className="w-4 h-4 text-white" />
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <h3 className="text-xs font-bold leading-tight mb-0.5">{cert.title}</h3>
                 <p className="text-[10px] font-semibold text-primary/80">{cert.issuer}</p>
@@ -282,7 +293,7 @@ const SkillsPage = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-[10px] font-bold text-primary hover:underline group/link"
                   >
-                    Verify Credential
+                    {cert.logo ? "View Certificate" : "Verify Credential"}
                     <ExternalLink className="w-2.5 h-2.5 opacity-60 group-hover/link:opacity-100 transition-opacity" />
                   </a>
                 )}
@@ -299,11 +310,14 @@ const SkillsPage = () => {
         </motion.h2>
         <div className="grid gap-3 sm:grid-cols-3">
           {volunteering.map((v, i) => (
-            <motion.div
+            <motion.a
               key={v.org}
+              href={v.link}
+              target="_blank"
+              rel="noopener noreferrer"
               variants={item}
               whileHover={{ y: -4, scale: 1.01 }}
-              className="soft-card p-4 flex flex-col gap-3 group"
+              className="soft-card p-4 flex flex-col gap-3 group cursor-pointer"
             >
               {/* Logo */}
               <div className="h-10 flex items-center">
@@ -320,21 +334,16 @@ const SkillsPage = () => {
               </div>
 
               <div>
-                <a
-                  href={v.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold hover:text-primary transition-colors flex items-center gap-1 group/link w-fit"
-                >
+                <p className="text-xs font-bold flex items-center gap-1 group-hover:text-primary transition-colors">
                   {v.org}
-                  <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                </a>
+                  <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-60 transition-opacity" />
+                </p>
                 <p className="text-[10px] font-semibold text-primary/80 mt-0.5">{v.role}</p>
                 <p className="text-[10px] text-muted-foreground">{v.period}</p>
               </div>
 
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 border border-rose-500/20 w-fit">{v.cause}</span>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </motion.div>

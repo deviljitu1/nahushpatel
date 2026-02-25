@@ -34,7 +34,7 @@ const whatIDo = [
   {
     icon: Zap,
     title: "Automation",
-    desc: "n8n & Zapier workflows that save 20+ hours a week.",
+    desc: "n8n workflows & AI automations that save 20+ hours a week.",
     color: "text-purple-500",
     bg: "bg-purple-500/10",
   },
