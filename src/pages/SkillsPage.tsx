@@ -1,21 +1,26 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 import { Award, Heart, ExternalLink } from "lucide-react";
 
 const marketingSkills = [
-  { name: "SEO & SEM", level: 92 },
-  { name: "Google Ads", level: 88 },
-  { name: "Meta Ads (Facebook / Instagram)", level: 85 },
-  { name: "Analytics (GA4 / GSC)", level: 90 },
-  { name: "Email Marketing", level: 80 },
+  { name: "SEO & SEM", tier: "expert" },
+  { name: "Google Ads", tier: "expert" },
+  { name: "Meta Ads (FB / IG)", tier: "expert" },
+  { name: "Analytics (GA4 / GSC)", tier: "expert" },
+  { name: "Email Marketing", tier: "proficient" },
+  { name: "Content Strategy", tier: "proficient" },
+  { name: "Funnel Building", tier: "proficient" },
+  { name: "CRO", tier: "skilled" },
 ];
 
 const techSkills = [
-  { name: "React / Next.js", level: 87 },
-  { name: "WordPress & WooCommerce", level: 84 },
-  { name: "HTML / CSS", level: 90 },
-  { name: "n8n Automation", level: 90 },
-  { name: "REST APIs & Integrations", level: 85 },
+  { name: "React / Next.js", tier: "expert" },
+  { name: "WordPress & WooCommerce", tier: "expert" },
+  { name: "HTML / CSS", tier: "expert" },
+  { name: "n8n Automation", tier: "expert" },
+  { name: "REST APIs & Integrations", tier: "proficient" },
+  { name: "Figma / UI Design", tier: "proficient" },
+  { name: "Node.js", tier: "skilled" },
+  { name: "Webflow", tier: "skilled" },
 ];
 
 const tools = [
@@ -123,36 +128,26 @@ const volunteering = [
   },
 ];
 
-function AnimatedBar({ level, name }: { level: number; name: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
+const tierConfig = {
+  expert: { label: "Expert", dot: "bg-emerald-500", bg: "bg-emerald-500/8", border: "border-emerald-500/20", text: "text-emerald-600 dark:text-emerald-400" },
+  proficient: { label: "Proficient", dot: "bg-blue-500", bg: "bg-blue-500/8", border: "border-blue-500/20", text: "text-blue-600 dark:text-blue-400" },
+  skilled: { label: "Skilled", dot: "bg-orange-400", bg: "bg-orange-500/8", border: "border-orange-400/20", text: "text-orange-500" },
+} as const;
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setWidth(level); },
-      { threshold: 0.5 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [level]);
-
+function SkillChip({ name, tier }: { name: string; tier: keyof typeof tierConfig }) {
+  const t = tierConfig[tier];
   return (
-    <div ref={ref} className="mb-5 last:mb-0">
-      <div className="flex justify-between text-xs mb-1.5">
-        <span className="font-semibold text-foreground">{name}</span>
-        <span className="text-muted-foreground font-medium">{level}%</span>
-      </div>
-      <div className="h-2.5 rounded-full bg-secondary overflow-hidden">
-        <motion.div
-          className="h-full rounded-full gradient-bg"
-          initial={{ width: 0 }}
-          animate={{ width: `${width}%` }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        />
-      </div>
-    </div>
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, scale: 0.8, y: 10 },
+        show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
+      }}
+      whileHover={{ y: -3, scale: 1.05 }}
+      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl border cursor-default transition-shadow hover:shadow-md ${t.bg} ${t.border}`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${t.dot}`} />
+      <span className="text-xs font-semibold text-foreground">{name}</span>
+    </motion.div>
   );
 }
 
@@ -178,26 +173,39 @@ const SkillsPage = () => {
       </motion.h1>
       <p className="text-xs sm:text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
 
-      {/* Skills in soft cards */}
+      {/* ── Skills chip grid ─── */}
       <div className="lg:grid lg:grid-cols-2 lg:gap-6">
         <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-6 lg:mb-0">
           <motion.h2 variants={item} className="section-label">Marketing &amp; Growth</motion.h2>
-          <motion.div variants={item} className="soft-card p-5">
+          <motion.div variants={container} className="soft-card p-5 flex flex-wrap gap-2.5">
             {marketingSkills.map((s) => (
-              <AnimatedBar key={s.name} {...s} />
+              <SkillChip key={s.name} name={s.name} tier={s.tier as keyof typeof tierConfig} />
             ))}
           </motion.div>
         </motion.div>
 
         <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-6 lg:mb-0">
           <motion.h2 variants={item} className="section-label">Tech &amp; Development</motion.h2>
-          <motion.div variants={item} className="soft-card p-5">
+          <motion.div variants={container} className="soft-card p-5 flex flex-wrap gap-2.5">
             {techSkills.map((s) => (
-              <AnimatedBar key={s.name} {...s} />
+              <SkillChip key={s.name} name={s.name} tier={s.tier as keyof typeof tierConfig} />
             ))}
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Legend */}
+      <motion.div
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        className="flex gap-4 mt-3 mb-2 flex-wrap"
+      >
+        {(Object.entries(tierConfig) as [keyof typeof tierConfig, typeof tierConfig[keyof typeof tierConfig]][]).map(([key, t]) => (
+          <span key={key} className="flex items-center gap-1.5 text-[10px] font-semibold text-muted-foreground">
+            <span className={`w-1.5 h-1.5 rounded-full ${t.dot}`} />
+            {t.label}
+          </span>
+        ))}
+      </motion.div>
 
       {/* Tools Grid */}
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mt-8 mb-8">
