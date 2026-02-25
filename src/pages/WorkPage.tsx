@@ -550,11 +550,15 @@ const WorkPage = () => {
 
     const handleWheel = (e: WheelEvent) => {
       if (!(activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio')) return;
+
+      // Ignore tiny trackpad momentum / micro-scrolls
+      if (Math.abs(e.deltaY) < 50) return;
       if (wheelCooldown.blocked) return;
 
       e.preventDefault();
       wheelCooldown.blocked = true;
-      setTimeout(() => { wheelCooldown.blocked = false; }, 650);
+      // Long enough for the scroll animation to finish before allowing next reel
+      setTimeout(() => { wheelCooldown.blocked = false; }, 900);
 
       if (e.deltaY > 0) {
         scrollToIndex(Math.min(activeVideoIndex + 1, videoPortfolio.length - 1));
