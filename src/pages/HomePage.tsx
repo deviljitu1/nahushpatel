@@ -3,10 +3,8 @@ import {
   ArrowRight, Eye, TrendingUp, Users, DollarSign,
   Sparkles, X, MapPin, Mail, Briefcase, Code2, Megaphone, Zap, Download
 } from "lucide-react";
-import { useEffect, useState, useRef, lazy, Suspense } from "react";
+import { useEffect, useState, useRef } from "react";
 import ProfileCube from "@/components/ProfileCube";
-
-const Spline = lazy(() => import("@splinetool/react-spline"));
 
 /* ─── Data ─────────────────────────────────────────────────────────── */
 const stats = [
@@ -124,23 +122,6 @@ interface HomePageProps {
 /* ─── Component ─────────────────────────────────────────────────────── */
 const HomePage = ({ onNavigate }: HomePageProps) => {
   const [zoomOpen, setZoomOpen] = useState(false);
-  // Spline is deferred: only load on desktop after page is idle
-  const [showSpline, setShowSpline] = useState(false);
-
-  useEffect(() => {
-    // Skip on mobile — saves ~500 KB WebGL runtime
-    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-    if (!isDesktop) return;
-
-    // Wait until browser is idle, then load Spline
-    const load = () => setTimeout(() => setShowSpline(true), 1200);
-    if ("requestIdleCallback" in window) {
-      (window as any).requestIdleCallback(load, { timeout: 3000 });
-    } else {
-      load();
-    }
-  }, []);
-
   const typed = useTypewriter([
     "Digital Marketer",
     "Web Developer",
@@ -151,34 +132,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
   return (
     <div className="relative px-5 pt-10 max-w-lg lg:max-w-4xl mx-auto">
 
-      {/* ── Spline 3D Background — desktop only, deferred ────────── */}
-      {showSpline && (
-        <div
-          className="pointer-events-none select-none"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 0,
-            opacity: 0.42,
-            // GPU compositing layer — prevents repaints on page content
-            willChange: "opacity",
-            contain: "strict",
-          }}
-        >
-          <Suspense fallback={null}>
-            <Spline scene="https://prod.spline.design/k6kWzBnzDN3zy1cf/scene.splinecode" />
-          </Suspense>
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to bottom, hsl(var(--background) / 0.55) 0%, hsl(var(--background) / 0.25) 40%, hsl(var(--background) / 0.7) 100%)",
-            }}
-          />
-        </div>
-      )}
-
-      {/* ── All page content (above Spline) ──────────────────────── */}
+      {/* ── All page content ──────────────────────────────────── */}
       <div className="relative z-10">
         <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-10">
 

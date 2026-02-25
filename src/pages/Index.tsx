@@ -76,11 +76,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden font-sans selection:bg-primary/30">
-      {/* Subtle background orbs */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-15%] left-[-15%] w-[500px] h-[500px] bg-primary/8 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-accent/6 blur-[100px] rounded-full" />
-      </div>
+      {/* Grid background */}
+      <div className="grid-bg" />
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col h-screen">
