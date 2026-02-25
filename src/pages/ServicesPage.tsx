@@ -85,14 +85,14 @@ const ServiceCard = ({ service, onNavigate }: { service: typeof services[number]
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-            <h3 className="font-bold text-sm">{service.title}</h3>
+            <h3 className="font-bold text-sm lg:text-base">{service.title}</h3>
             {service.badge && (
               <span className="text-[9px] font-bold px-2 py-0.5 rounded-full gradient-bg text-primary-foreground">
                 {service.badge}
               </span>
             )}
           </div>
-          <p className="text-[11px] text-muted-foreground leading-relaxed">{service.short}</p>
+          <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{service.short}</p>
         </div>
         <ChevronDown
           className={`w-4 h-4 text-muted-foreground transition-transform duration-300 shrink-0 mt-1 ${isExpanded ? "rotate-180 text-primary" : ""}`}
@@ -108,12 +108,12 @@ const ServiceCard = ({ service, onNavigate }: { service: typeof services[number]
             className="overflow-hidden"
           >
             <div className="pt-4 mt-4 border-t border-border">
-              <p className="text-[12px] text-muted-foreground mb-3 leading-relaxed">{service.details}</p>
+              <p className="text-xs lg:text-sm text-muted-foreground mb-3 leading-relaxed">{service.details}</p>
 
               {/* Highlights */}
               <ul className="space-y-1.5 mb-4">
                 {service.highlights.map((h) => (
-                  <li key={h} className="flex items-center gap-2 text-[11px] text-foreground">
+                  <li key={h} className="flex items-center gap-2 text-xs lg:text-sm text-foreground">
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
                     {h}
                   </li>
@@ -148,11 +148,11 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-3xl font-bold mb-1 tracking-tight"
+        className="text-3xl lg:text-4xl font-bold mb-1 tracking-tight"
       >
         My <span className="text-shimmer">Services</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-8">Tap any card to see full details &amp; pricing</p>
+      <p className="text-xs sm:text-sm text-muted-foreground mb-8">Tap any card to see full details &amp; pricing</p>
 
       <motion.div
         variants={container}
@@ -176,7 +176,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         {/* BG glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 pointer-events-none rounded-3xl" />
         <p className="text-xs text-muted-foreground mb-1 uppercase tracking-widest font-semibold">Not sure where to start?</p>
-        <h3 className="text-lg font-bold mb-3">Let's talk &amp; figure it out together</h3>
+        <h3 className="text-lg lg:text-xl font-bold mb-3">Let's talk &amp; figure it out together</h3>
 
         <div className="flex items-center justify-center gap-4">
           <ScheduleDialog>

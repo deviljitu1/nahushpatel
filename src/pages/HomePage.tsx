@@ -182,13 +182,13 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           {/* Name */}
-          <motion.h1 variants={item} className="text-3xl font-bold mb-1 tracking-tight">
+          <motion.h1 variants={item} className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-1 tracking-tight">
             Hi, I'm <span className="text-shimmer">Nahush Patel</span>
           </motion.h1>
 
           {/* Typewriter role */}
-          <motion.div variants={item} className="h-6 flex items-center justify-center mb-2">
-            <span className="text-sm font-semibold text-primary">
+          <motion.div variants={item} className="h-7 flex items-center justify-center mb-2">
+            <span className="text-sm sm:text-base lg:text-lg font-semibold text-primary">
               {typed}
               <span className="animate-blink ml-0.5 font-normal text-primary/60">|</span>
             </span>
@@ -203,7 +203,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
             <span className="flex items-center gap-1 font-medium"><Briefcase className="w-3 h-3 shrink-0 text-primary" /> Freelance / Full-time</span>
           </motion.div>
 
-          <motion.p variants={item} className="text-[13px] font-medium text-muted-foreground max-w-[290px] mx-auto leading-relaxed mb-6 px-4">
+          <motion.p variants={item} className="text-sm sm:text-base text-muted-foreground max-w-sm lg:max-w-md mx-auto leading-relaxed mb-6 px-4">
             I craft high-converting digital experiences — from ads that sell to automations that scale.
           </motion.p>
 
@@ -256,8 +256,8 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
                     <Icon className={`w-5 h-5 ${w.color}`} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm mb-0.5">{w.title}</h3>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">{w.desc}</p>
+                    <h3 className="font-bold text-sm lg:text-base mb-0.5">{w.title}</h3>
+                    <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{w.desc}</p>
                   </div>
                 </motion.div>
               );
@@ -333,10 +333,10 @@ function StatCard({ stat }: { stat: (typeof stats)[number] }) {
       <div className="soft-icon-box mb-3 group-hover:scale-110 transition-transform duration-300">
         <Icon className="w-5 h-5 text-primary" />
       </div>
-      <div className="text-2xl font-bold text-foreground tracking-tight">
+      <div className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
         {count}<span className="text-primary">{stat.suffix}</span>
       </div>
-      <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1">{stat.label}</p>
+      <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1">{stat.label}</p>
     </motion.div>
   );
 }

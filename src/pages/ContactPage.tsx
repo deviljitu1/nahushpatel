@@ -59,11 +59,11 @@ const ContactPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-3xl font-bold mb-1 tracking-tight"
+        className="text-3xl lg:text-4xl font-bold mb-1 tracking-tight"
       >
         Get in <span className="text-shimmer">Touch</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-8">Let's build something great together — I'm open to freelance, contract &amp; full-time roles.</p>
+      <p className="text-xs sm:text-sm text-muted-foreground mb-8">Let's build something great together — I'm open to freelance, contract &amp; full-time roles.</p>
 
       <div className="lg:grid lg:grid-cols-2 lg:gap-10">
         <motion.form
@@ -123,7 +123,7 @@ const ContactPage = () => {
           >
             <h2 className="section-label">Connect</h2>
             <motion.div variants={item} className="grid grid-cols-2 gap-3">
-              <a href="https://wa.me/917875783498" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs font-semibold hover:-translate-y-0.5 transition-all">
+              <a href="https://wa.me/917875783498" target="_blank" rel="noopener noreferrer" className="soft-card p-3.5 flex items-center gap-3 text-xs lg:text-sm font-semibold hover:-translate-y-0.5 transition-all">
                 <div className="soft-icon-box !w-10 !h-10 !rounded-xl">
                   <MessageCircle className="w-4 h-4 text-green-500" />
                 </div>
@@ -161,8 +161,8 @@ const ContactPage = () => {
               <div className="soft-icon-box mx-auto mb-3">
                 <Calendar className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="font-bold text-sm mb-1">Schedule a Meeting</h3>
-              <p className="text-[11px] text-muted-foreground mb-4">Pick a time that works for you</p>
+              <h3 className="font-bold text-sm lg:text-base mb-1">Schedule a Meeting</h3>
+              <p className="text-xs lg:text-sm text-muted-foreground mb-4">Pick a time that works for you</p>
               <ScheduleDialog>
                 <button className="text-xs gradient-bg text-primary-foreground px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
                   Schedule Meeting

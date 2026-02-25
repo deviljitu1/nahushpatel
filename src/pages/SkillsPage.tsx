@@ -172,11 +172,11 @@ const SkillsPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-3xl font-bold mb-1 tracking-tight"
+        className="text-3xl lg:text-4xl font-bold mb-1 tracking-tight"
       >
         Skills &amp; <span className="text-shimmer">Experience</span>
       </motion.h1>
-      <p className="text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
+      <p className="text-xs sm:text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
 
       {/* Skills in soft cards */}
       <div className="lg:grid lg:grid-cols-2 lg:gap-6">
