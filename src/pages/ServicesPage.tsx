@@ -159,7 +159,7 @@ const ServicesPage = ({ onNavigate }: ServicesPageProps) => {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.1 }}
-        className="flex flex-col gap-4 pb-6 lg:grid lg:grid-cols-2"
+        className="flex flex-col gap-4 pb-6 lg:grid lg:grid-cols-2 lg:items-start"
       >
         {services.map((service, i) => (
           <ServiceCard key={i} service={service} onNavigate={onNavigate} />
