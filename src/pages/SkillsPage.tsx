@@ -12,14 +12,14 @@ const marketingSkills = [
 const techSkills = [
   { name: "React / Next.js", level: 87 },
   { name: "WordPress & WooCommerce", level: 84 },
-  { name: "Python (automation & scripting)", level: 75 },
+  { name: "HTML / CSS", level: 90 },
   { name: "n8n / Zapier Automation", level: 90 },
   { name: "REST APIs & Integrations", level: 85 },
 ];
 
 const tools = [
   "Google Ads", "Meta Ads Manager", "Ahrefs", "SEMrush", "GA4",
-  "Google Search Console", "React", "WordPress", "Python", "n8n",
+  "Google Search Console", "React", "WordPress", "HTML / CSS", "n8n",
   "Zapier", "Figma", "Canva", "Hotjar", "ClickFunnels",
   "Notion", "Webflow", "Mailchimp",
 ];
