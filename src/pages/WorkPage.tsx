@@ -544,6 +544,29 @@ const WorkPage = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeFilter, socialSubTab, activeVideoIndex]);
 
+  // Mouse wheel navigation for reels on desktop
+  useEffect(() => {
+    const wheelCooldown = { blocked: false };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (!(activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio')) return;
+      if (wheelCooldown.blocked) return;
+
+      e.preventDefault();
+      wheelCooldown.blocked = true;
+      setTimeout(() => { wheelCooldown.blocked = false; }, 650);
+
+      if (e.deltaY > 0) {
+        scrollToIndex(Math.min(activeVideoIndex + 1, videoPortfolio.length - 1));
+      } else {
+        scrollToIndex(Math.max(activeVideoIndex - 1, 0));
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [activeFilter, socialSubTab, activeVideoIndex]);
+
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (isAutoScrolling.current) return;
 
