@@ -1,27 +1,33 @@
 import { motion } from "framer-motion";
 import { Award, Heart, ExternalLink } from "lucide-react";
 
-const marketingSkills = [
-  { name: "SEO & SEM", tier: "expert" },
-  { name: "Google Ads", tier: "expert" },
-  { name: "Meta Ads (FB / IG)", tier: "expert" },
-  { name: "Analytics (GA4 / GSC)", tier: "expert" },
-  { name: "Email Marketing", tier: "proficient" },
-  { name: "Content Strategy", tier: "proficient" },
-  { name: "Funnel Building", tier: "proficient" },
-  { name: "CRO", tier: "skilled" },
+const allSkills = [
+  // Marketing
+  { name: "SEO & SEM", emoji: "🔍", tier: "Expert", cat: "Marketing" },
+  { name: "Google Ads", emoji: "📢", tier: "Expert", cat: "Marketing" },
+  { name: "Meta Ads", emoji: "📱", tier: "Expert", cat: "Marketing" },
+  { name: "Analytics (GA4)", emoji: "📊", tier: "Expert", cat: "Marketing" },
+  { name: "Email Marketing", emoji: "📧", tier: "Proficient", cat: "Marketing" },
+  { name: "Content Strategy", emoji: "✍️", tier: "Proficient", cat: "Marketing" },
+  { name: "Funnel Building", emoji: "🎯", tier: "Proficient", cat: "Marketing" },
+  { name: "CRO", emoji: "📈", tier: "Skilled", cat: "Marketing" },
+  // Tech
+  { name: "React / Next.js", emoji: "⚛️", tier: "Expert", cat: "Tech" },
+  { name: "WordPress", emoji: "🌐", tier: "Expert", cat: "Tech" },
+  { name: "HTML / CSS", emoji: "🎨", tier: "Expert", cat: "Tech" },
+  { name: "n8n Automation", emoji: "⚡", tier: "Expert", cat: "Tech" },
+  { name: "REST APIs", emoji: "🔗", tier: "Proficient", cat: "Tech" },
+  { name: "Figma / UI Design", emoji: "🖌️", tier: "Proficient", cat: "Tech" },
+  { name: "Node.js", emoji: "🟢", tier: "Skilled", cat: "Tech" },
+  { name: "Webflow", emoji: "💻", tier: "Skilled", cat: "Tech" },
 ];
 
-const techSkills = [
-  { name: "React / Next.js", tier: "expert" },
-  { name: "WordPress & WooCommerce", tier: "expert" },
-  { name: "HTML / CSS", tier: "expert" },
-  { name: "n8n Automation", tier: "expert" },
-  { name: "REST APIs & Integrations", tier: "proficient" },
-  { name: "Figma / UI Design", tier: "proficient" },
-  { name: "Node.js", tier: "skilled" },
-  { name: "Webflow", tier: "skilled" },
-];
+const tierBadge: Record<string, string> = {
+  Expert: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
+  Proficient: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20",
+  Skilled: "bg-orange-500/10 text-orange-500 border border-orange-400/20",
+};
+
 
 const tools = [
   "Google Ads", "Meta Ads Manager", "Ahrefs", "SEMrush", "GA4",
@@ -128,28 +134,11 @@ const volunteering = [
   },
 ];
 
-const tierConfig = {
-  expert: { label: "Expert", dot: "bg-emerald-500", bg: "bg-emerald-500/8", border: "border-emerald-500/20", text: "text-emerald-600 dark:text-emerald-400" },
-  proficient: { label: "Proficient", dot: "bg-blue-500", bg: "bg-blue-500/8", border: "border-blue-500/20", text: "text-blue-600 dark:text-blue-400" },
-  skilled: { label: "Skilled", dot: "bg-orange-400", bg: "bg-orange-500/8", border: "border-orange-400/20", text: "text-orange-500" },
-} as const;
+const cardAnim = {
+  hidden: { opacity: 0, y: 16, scale: 0.94 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
 
-function SkillChip({ name, tier }: { name: string; tier: keyof typeof tierConfig }) {
-  const t = tierConfig[tier];
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, scale: 0.8, y: 10 },
-        show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
-      }}
-      whileHover={{ y: -3, scale: 1.05 }}
-      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl border cursor-default transition-shadow hover:shadow-md ${t.bg} ${t.border}`}
-    >
-      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${t.dot}`} />
-      <span className="text-xs font-semibold text-foreground">{name}</span>
-    </motion.div>
-  );
-}
 
 const container = {
   hidden: {},
@@ -173,38 +162,37 @@ const SkillsPage = () => {
       </motion.h1>
       <p className="text-xs sm:text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
 
-      {/* ── Skills chip grid ─── */}
-      <div className="lg:grid lg:grid-cols-2 lg:gap-6">
-        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-6 lg:mb-0">
-          <motion.h2 variants={item} className="section-label">Marketing &amp; Growth</motion.h2>
-          <motion.div variants={container} className="soft-card p-5 flex flex-wrap gap-2.5">
-            {marketingSkills.map((s) => (
-              <SkillChip key={s.name} name={s.name} tier={s.tier as keyof typeof tierConfig} />
-            ))}
-          </motion.div>
-        </motion.div>
-
-        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-6 lg:mb-0">
-          <motion.h2 variants={item} className="section-label">Tech &amp; Development</motion.h2>
-          <motion.div variants={container} className="soft-card p-5 flex flex-wrap gap-2.5">
-            {techSkills.map((s) => (
-              <SkillChip key={s.name} name={s.name} tier={s.tier as keyof typeof tierConfig} />
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Legend */}
+      {/* ── Skill icon card grid ── */}
       <motion.div
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="flex gap-4 mt-3 mb-2 flex-wrap"
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
+        className="mb-8"
       >
-        {(Object.entries(tierConfig) as [keyof typeof tierConfig, typeof tierConfig[keyof typeof tierConfig]][]).map(([key, t]) => (
-          <span key={key} className="flex items-center gap-1.5 text-[10px] font-semibold text-muted-foreground">
-            <span className={`w-1.5 h-1.5 rounded-full ${t.dot}`} />
-            {t.label}
-          </span>
-        ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {allSkills.map((s) => (
+            <motion.div
+              key={s.name}
+              variants={cardAnim}
+              whileHover={{ y: -5, scale: 1.03 }}
+              className="soft-card p-4 flex flex-col items-start gap-2 cursor-default group"
+            >
+              {/* Emoji */}
+              <span className="text-3xl leading-none group-hover:scale-110 transition-transform duration-300 select-none">
+                {s.emoji}
+              </span>
+              {/* Category dot */}
+              <div className="flex-1">
+                <p className="text-xs font-bold text-foreground leading-snug mt-1">{s.name}</p>
+                <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wide mt-0.5">{s.cat}</p>
+              </div>
+              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${tierBadge[s.tier]}`}>
+                {s.tier}
+              </span>
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
 
       {/* Tools Grid */}
