@@ -88,6 +88,19 @@
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Space Grotesk', 'Inter', sans-serif;
   }
+
+  /* Desktop: slightly larger base so all rem-based text scales up */
+  @media (min-width: 1024px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 18px;
+    }
+  }
 }
 
 @layer utilities {
