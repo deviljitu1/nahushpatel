@@ -1,10 +1,80 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown, Code2, ExternalLink, Globe } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const filters = ["All", "Social Media", "SEO", "Web Dev", "Automation"];
+
+// Real web development projects from nahushpatel.in
+const webDevProjects = [
+  {
+    id: 1,
+    title: "Project Kisan",
+    badge: "🏆 Hackathon",
+    status: "In Progress",
+    description: "An AI-powered farming assistant built for Google Hackathon 2025. Assists farmers with soil analysis, irrigation advice, crop planning, and organic solutions using Gemini AI.",
+    tags: ["React", "Gemini AI", "Vercel"],
+    color: "from-green-500 to-emerald-700",
+    link: "https://project-kisan-ai-farming-assistant-fawn.vercel.app/",
+    coverImage: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    title: "LinkPost AI",
+    badge: "🤖 AI Tool",
+    status: "Live",
+    description: "An AI-powered LinkedIn post generator built with React and OpenAI/Gemini API. Helps craft engaging, SEO-optimized posts with just a click.",
+    tags: ["React", "OpenAI", "Netlify"],
+    color: "from-blue-500 to-indigo-700",
+    link: "https://linkpostai.netlify.app/",
+    coverImage: "https://images.unsplash.com/photo-1611944212129-29977ae1398c?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    title: "Tindog",
+    badge: "🐶 Landing Page",
+    status: "Live",
+    description: "A responsive Tinder-like landing page for dogs, built with Bootstrap 5. Features responsive navigation, pricing cards, and testimonial sections.",
+    tags: ["HTML", "CSS", "Bootstrap 5"],
+    color: "from-amber-500 to-orange-600",
+    link: "https://deviljitu1.github.io/Tindog/",
+    coverImage: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    title: "Personal Portfolio",
+    badge: "🌐 Portfolio",
+    status: "Live",
+    description: "A responsive personal portfolio website showcasing projects, skills and experience. Built with modern web technologies and optimized for performance.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    color: "from-purple-500 to-violet-700",
+    link: "https://nahushpatel.in/",
+    coverImage: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 5,
+    title: "Poetree",
+    badge: "✍️ Blog",
+    status: "Live",
+    description: "A minimalist poetry blog with elegant typography and smooth animations. Built with HTML, CSS and JavaScript for a serene reading experience.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    color: "from-rose-400 to-pink-600",
+    link: "https://poetreebird.netlify.app/",
+    coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 6,
+    title: "Calm Mind AI",
+    badge: "🧠 Wellness",
+    status: "Live",
+    description: "An AI-powered mental wellness web app designed to help emotionally vulnerable individuals with guided support, breathing exercises, and curated resources.",
+    tags: ["React", "AI", "Netlify"],
+    color: "from-teal-400 to-cyan-600",
+    link: "https://calmmindai.netlify.app/",
+    coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop",
+  },
+];
 
 const projects = [
   {
@@ -494,7 +564,7 @@ const WorkPage = () => {
 
 
 
-  const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
+  const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads') && activeFilter !== 'Web Dev';
 
   return (
     <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-4xl min-h-screen pt-4'}`}>
@@ -600,7 +670,7 @@ const WorkPage = () => {
 
       <AnimatePresence mode="wait">
         {/* VIEW 1: PROJECTS (Case Studies) */}
-        {(!isFullscreen) && (
+        {(!isFullscreen) && activeFilter !== "Web Dev" && (
           <motion.div
             key="projects-list"
             initial={{ opacity: 0, y: 20 }}
@@ -861,6 +931,96 @@ const WorkPage = () => {
                     ))}
                   </div>
                 </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* VIEW 5: WEB DEVELOPMENT PROJECTS */}
+        {activeFilter === "Web Dev" && (
+          <motion.div
+            key="web-dev"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="pb-24"
+          >
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold mb-1">
+                Web <span className="gradient-text">Development</span>
+              </h2>
+              <p className="text-sm text-muted-foreground">Live projects built with modern web technologies.</p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+              {webDevProjects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className="group soft-card overflow-hidden cursor-pointer !p-0"
+                >
+                  {/* Cover Image */}
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={project.coverImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-60 mix-blend-multiply`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+
+                    {/* Status badge */}
+                    <div className="absolute top-3 left-3">
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full backdrop-blur-md border border-white/20 text-white ${project.status === 'In Progress'
+                        ? 'bg-amber-500/50'
+                        : 'bg-green-500/50'
+                        }`}>
+                        {project.status === 'In Progress' ? '⚡ In Progress' : '✅ Live'}
+                      </span>
+                    </div>
+
+                    {/* Title overlay */}
+                    <div className="absolute bottom-3 left-4 right-4">
+                      <div className="text-[10px] font-semibold text-white/70 mb-0.5">{project.badge}</div>
+                      <h3 className="font-bold text-lg text-white leading-tight">{project.title}</h3>
+                    </div>
+                  </div>
+
+                  {/* Card body */}
+                  <div className="p-5">
+                    <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                      {project.description}
+                    </p>
+
+                    {/* Tech tags */}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* View project link */}
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-2 text-xs font-bold text-primary hover:underline group/link"
+                    >
+                      <Globe className="w-3.5 h-3.5" />
+                      View Live Project
+                      <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                    </a>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
