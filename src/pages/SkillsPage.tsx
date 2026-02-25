@@ -3,23 +3,23 @@ import { Award, Heart, ExternalLink } from "lucide-react";
 
 const allSkills = [
   // Marketing
-  { name: "SEO & SEM", emoji: "🔍", tier: "Expert", cat: "Marketing" },
-  { name: "Google Ads", emoji: "📢", tier: "Expert", cat: "Marketing" },
-  { name: "Meta Ads", emoji: "📱", tier: "Expert", cat: "Marketing" },
-  { name: "Analytics (GA4)", emoji: "📊", tier: "Expert", cat: "Marketing" },
-  { name: "Email Marketing", emoji: "📧", tier: "Proficient", cat: "Marketing" },
-  { name: "Content Strategy", emoji: "✍️", tier: "Proficient", cat: "Marketing" },
-  { name: "Funnel Building", emoji: "🎯", tier: "Proficient", cat: "Marketing" },
-  { name: "CRO", emoji: "📈", tier: "Skilled", cat: "Marketing" },
+  { name: "SEO & SEM", icon: "https://cdn.simpleicons.org/google/4285F4", isImg: true, tier: "Expert", cat: "Marketing" },
+  { name: "Google Ads", icon: "https://cdn.simpleicons.org/googleads/4285F4", isImg: true, tier: "Expert", cat: "Marketing" },
+  { name: "Meta Ads", icon: "https://cdn.simpleicons.org/meta/0081FB", isImg: true, tier: "Expert", cat: "Marketing" },
+  { name: "Analytics (GA4)", icon: "https://cdn.simpleicons.org/googleanalytics/E37400", isImg: true, tier: "Expert", cat: "Marketing" },
+  { name: "Email Marketing", icon: "https://cdn.simpleicons.org/mailchimp/FFE01B", isImg: true, tier: "Proficient", cat: "Marketing" },
+  { name: "Content Strategy", icon: "✍️", isImg: false, tier: "Proficient", cat: "Marketing" },
+  { name: "Funnel Building", icon: "🎯", isImg: false, tier: "Proficient", cat: "Marketing" },
+  { name: "CRO", icon: "https://cdn.simpleicons.org/hotjar/FD3A5C", isImg: true, tier: "Skilled", cat: "Marketing" },
   // Tech
-  { name: "React / Next.js", emoji: "⚛️", tier: "Expert", cat: "Tech" },
-  { name: "WordPress", emoji: "🌐", tier: "Expert", cat: "Tech" },
-  { name: "HTML / CSS", emoji: "🎨", tier: "Expert", cat: "Tech" },
-  { name: "n8n Automation", emoji: "⚡", tier: "Expert", cat: "Tech" },
-  { name: "REST APIs", emoji: "🔗", tier: "Proficient", cat: "Tech" },
-  { name: "Figma / UI Design", emoji: "🖌️", tier: "Proficient", cat: "Tech" },
-  { name: "Node.js", emoji: "🟢", tier: "Skilled", cat: "Tech" },
-  { name: "Webflow", emoji: "💻", tier: "Skilled", cat: "Tech" },
+  { name: "React / Next.js", icon: "https://cdn.simpleicons.org/react/61DAFB", isImg: true, tier: "Expert", cat: "Tech" },
+  { name: "WordPress", icon: "https://cdn.simpleicons.org/wordpress/21759B", isImg: true, tier: "Expert", cat: "Tech" },
+  { name: "HTML / CSS", icon: "https://cdn.simpleicons.org/html5/E34F26", isImg: true, tier: "Expert", cat: "Tech" },
+  { name: "n8n Automation", icon: "https://cdn.simpleicons.org/n8n/EA4B71", isImg: true, tier: "Expert", cat: "Tech" },
+  { name: "REST APIs", icon: "https://cdn.simpleicons.org/postman/FF6C37", isImg: true, tier: "Proficient", cat: "Tech" },
+  { name: "Figma / UI Design", icon: "https://cdn.simpleicons.org/figma/F24E1E", isImg: true, tier: "Proficient", cat: "Tech" },
+  { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/339933", isImg: true, tier: "Skilled", cat: "Tech" },
+  { name: "Webflow", icon: "https://cdn.simpleicons.org/webflow/4353FF", isImg: true, tier: "Skilled", cat: "Tech" },
 ];
 
 const tierBadge: Record<string, string> = {
@@ -178,10 +178,19 @@ const SkillsPage = () => {
               whileHover={{ y: -5, scale: 1.03 }}
               className="soft-card p-4 flex flex-col items-start gap-2 cursor-default group"
             >
-              {/* Emoji */}
-              <span className="text-3xl leading-none group-hover:scale-110 transition-transform duration-300 select-none">
-                {s.emoji}
-              </span>
+              {/* Icon: real brand logo or emoji */}
+              <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 select-none">
+                {s.isImg ? (
+                  <img
+                    src={s.icon}
+                    alt={s.name}
+                    className="w-7 h-7 object-contain"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="text-3xl leading-none">{s.icon}</span>
+                )}
+              </div>
               {/* Category dot */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-foreground leading-snug mt-1">{s.name}</p>
