@@ -94,6 +94,8 @@ const volunteering = [
     period: "May 2023 – Present",
     cause: "Children",
     emoji: "👧",
+    logo: "https://static.wixstatic.com/media/aedc57_38c3d2bf4a5b4d32bd00b1323116def1~mv2.png/v1/crop/x_0,y_91,w_500,h_295/fill/w_424,h_246,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/FHI%20Logo%202026.png",
+    link: "https://www.flyhigherworld.org/",
   },
   {
     org: "Bhumi",
@@ -101,6 +103,8 @@ const volunteering = [
     period: "Jun 2023 – Present",
     cause: "Children",
     emoji: "📚",
+    logo: "https://www.bhumi.ngo/_next/static/media/BhumiNgoLogo.8431d033.svg",
+    link: "https://www.bhumi.ngo/",
   },
   {
     org: "Blue Cross of India",
@@ -108,6 +112,8 @@ const volunteering = [
     period: "Jun 2023 – Present",
     cause: "Animal Welfare",
     emoji: "🐾",
+    logo: "https://bluecrossofindia.org/images/BCILogoWithWhiteR.png",
+    link: "https://bluecrossofindia.org/",
   },
 ];
 
@@ -280,15 +286,37 @@ const SkillsPage = () => {
             <motion.div
               key={v.org}
               variants={item}
-              whileHover={{ y: -3 }}
-              className="soft-card p-4 flex flex-col gap-2"
+              whileHover={{ y: -4, scale: 1.01 }}
+              className="soft-card p-4 flex flex-col gap-3 group"
             >
-              <span className="text-2xl">{v.emoji}</span>
+              {/* Logo */}
+              <div className="h-10 flex items-center">
+                <img
+                  src={v.logo}
+                  alt={`${v.org} logo`}
+                  className="h-9 w-auto max-w-[120px] object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                    (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+                <span className="text-2xl hidden">{v.emoji}</span>
+              </div>
+
               <div>
-                <h3 className="text-xs font-bold mb-0.5">{v.org}</h3>
-                <p className="text-[10px] font-semibold text-primary/80">{v.role}</p>
+                <a
+                  href={v.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold hover:text-primary transition-colors flex items-center gap-1 group/link w-fit"
+                >
+                  {v.org}
+                  <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                </a>
+                <p className="text-[10px] font-semibold text-primary/80 mt-0.5">{v.role}</p>
                 <p className="text-[10px] text-muted-foreground">{v.period}</p>
               </div>
+
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 border border-rose-500/20 w-fit">{v.cause}</span>
             </motion.div>
           ))}
