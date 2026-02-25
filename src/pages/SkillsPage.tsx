@@ -56,6 +56,7 @@ const certifications = [
     date: "Nov 2025",
     skills: "SEO · Google Ads · Social Media Marketing",
     color: "from-orange-400 to-rose-500",
+    link: null,
   },
   {
     title: "Google Hackathon",
@@ -63,6 +64,7 @@ const certifications = [
     date: "Sep 2025",
     skills: "React.js · Tailwind CSS · AI · API",
     color: "from-blue-400 to-indigo-500",
+    link: "https://certificate.hack2skill.com/user/aidayideasubmission/2025H2S06AID-I05626",
   },
   {
     title: "The Complete Digital Marketing Guide",
@@ -70,6 +72,7 @@ const certifications = [
     date: "Aug 2025",
     skills: "SEO · Google Ads · Meta Ads · Email Marketing · CRO",
     color: "from-purple-400 to-violet-600",
+    link: "https://www.udemy.com/certificate/UC-dd31c43b-66db-45a7-b097-3cb097d471be/",
   },
   {
     title: "Full-Stack Web Development Bootcamp",
@@ -77,6 +80,7 @@ const certifications = [
     date: "Jul 2025",
     skills: "HTML · CSS · JavaScript · React.js · Node.js",
     color: "from-emerald-400 to-teal-600",
+    link: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-556645b6-e0fc-4c27-b990-534177a331b8.pdf",
   },
   {
     title: "Work Smarter with AI",
@@ -84,6 +88,7 @@ const certifications = [
     date: "Nov 2025",
     skills: "AI Tools · Productivity · Design",
     color: "from-cyan-400 to-sky-600",
+    link: "https://www.canva.com/design-school/certification-award/11338f39-7068-46f7-b1ba-2c2e8004be44",
   },
 ];
 
@@ -265,11 +270,22 @@ const SkillsPage = () => {
               <div className={`w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br ${cert.color} flex items-center justify-center shadow-sm`}>
                 <Award className="w-4 h-4 text-white" />
               </div>
-              <div className="min-w-0">
-                <h3 className="text-xs font-bold leading-tight mb-0.5 truncate">{cert.title}</h3>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xs font-bold leading-tight mb-0.5">{cert.title}</h3>
                 <p className="text-[10px] font-semibold text-primary/80">{cert.issuer}</p>
-                <p className="text-[10px] text-muted-foreground mb-1">Issued {cert.date}</p>
-                <p className="text-[10px] text-muted-foreground/70 leading-relaxed">{cert.skills}</p>
+                <p className="text-[10px] text-muted-foreground mb-1.5">Issued {cert.date}</p>
+                <p className="text-[10px] text-muted-foreground/70 leading-relaxed mb-2">{cert.skills}</p>
+                {cert.link && (
+                  <a
+                    href={cert.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold text-primary hover:underline group/link"
+                  >
+                    Verify Credential
+                    <ExternalLink className="w-2.5 h-2.5 opacity-60 group-hover/link:opacity-100 transition-opacity" />
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}
