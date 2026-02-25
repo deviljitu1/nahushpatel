@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { Award, Heart, ExternalLink } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Award, Heart, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 
 const allSkills = [
   // Marketing
@@ -149,7 +150,15 @@ const item = {
   show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
+// How many skills fit in 2 rows for each breakpoint
+// lg: 4 cols → 8, sm: 3 cols → 6, default 2 cols → 4
+// We use the lg value (8) as the JS cutoff since CSS handles the col count.
+const SKILLS_VISIBLE_DEFAULT = 8;
+
 const SkillsPage = () => {
+  const [showAllSkills, setShowAllSkills] = useState(false);
+  const visibleSkills = showAllSkills ? allSkills : allSkills.slice(0, SKILLS_VISIBLE_DEFAULT);
+
   return (
     <div className="px-6 pt-10 max-w-lg lg:max-w-4xl mx-auto pb-8">
       <motion.h1
@@ -168,41 +177,62 @@ const SkillsPage = () => {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.1 }}
-        className="mb-8"
+        className="mb-4"
       >
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {allSkills.map((s) => (
-            <motion.div
-              key={s.name}
-              variants={cardAnim}
-              whileHover={{ y: -5, scale: 1.03 }}
-              className="soft-card p-4 flex flex-col items-start gap-2 cursor-default group"
-            >
-              {/* Icon: real brand logo or emoji */}
-              <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 select-none">
-                {s.isImg ? (
-                  <img
-                    src={s.icon}
-                    alt={s.name}
-                    className="w-7 h-7 object-contain"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span className="text-3xl leading-none">{s.icon}</span>
-                )}
-              </div>
-              {/* Category dot */}
-              <div className="flex-1">
-                <p className="text-xs font-bold text-foreground leading-snug mt-1">{s.name}</p>
-                <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wide mt-0.5">{s.cat}</p>
-              </div>
-              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${tierBadge[s.tier]}`}>
-                {s.tier}
-              </span>
-            </motion.div>
-          ))}
+          <AnimatePresence initial={false}>
+            {visibleSkills.map((s) => (
+              <motion.div
+                key={s.name}
+                variants={cardAnim}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, scale: 0.92, y: 10, transition: { duration: 0.2 } }}
+                whileHover={{ y: -5, scale: 1.03 }}
+                className="soft-card p-4 flex flex-col items-start gap-2 cursor-default group"
+              >
+                {/* Icon: real brand logo or emoji */}
+                <div className="w-8 h-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 select-none">
+                  {s.isImg ? (
+                    <img
+                      src={s.icon}
+                      alt={s.name}
+                      className="w-7 h-7 object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-3xl leading-none">{s.icon}</span>
+                  )}
+                </div>
+                {/* Category dot */}
+                <div className="flex-1">
+                  <p className="text-xs font-bold text-foreground leading-snug mt-1">{s.name}</p>
+                  <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wide mt-0.5">{s.cat}</p>
+                </div>
+                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${tierBadge[s.tier]}`}>
+                  {s.tier}
+                </span>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </motion.div>
+
+      {/* Show More / Show Less button */}
+      <div className="flex justify-center mb-8">
+        <motion.button
+          onClick={() => setShowAllSkills((prev) => !prev)}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="soft-card !rounded-full px-5 py-2 flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-primary hover:border-primary/20 transition-colors cursor-pointer"
+        >
+          {showAllSkills ? (
+            <><ChevronUp className="w-3.5 h-3.5" /> Show Less</>
+          ) : (
+            <><ChevronDown className="w-3.5 h-3.5" /> Show More ({allSkills.length - SKILLS_VISIBLE_DEFAULT} more skills)</>
+          )}
+        </motion.button>
+      </div>
 
       {/* Tools Grid */}
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mt-8 mb-8">
