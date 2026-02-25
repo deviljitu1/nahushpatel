@@ -308,7 +308,7 @@ const SkillsPage = () => {
         <motion.h2 variants={item} className="section-label flex items-center gap-2">
           <Heart className="w-4 h-4 text-rose-500" /> Volunteering
         </motion.h2>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
           {volunteering.map((v, i) => (
             <motion.a
               key={v.org}
@@ -317,14 +317,14 @@ const SkillsPage = () => {
               rel="noopener noreferrer"
               variants={item}
               whileHover={{ y: -4, scale: 1.01 }}
-              className="soft-card p-4 flex flex-col gap-3 group cursor-pointer"
+              className="soft-card p-4 flex flex-row sm:flex-col items-center sm:items-start gap-4 sm:gap-3 group cursor-pointer"
             >
               {/* Logo */}
-              <div className="h-10 flex items-center">
+              <div className="h-10 w-20 shrink-0 flex items-center sm:w-auto">
                 <img
                   src={v.logo}
                   alt={`${v.org} logo`}
-                  className="h-9 w-auto max-w-[120px] object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                  className="h-8 sm:h-9 w-auto max-w-[80px] sm:max-w-[120px] object-contain opacity-80 group-hover:opacity-100 transition-opacity"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                     (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
@@ -333,16 +333,16 @@ const SkillsPage = () => {
                 <span className="text-2xl hidden">{v.emoji}</span>
               </div>
 
-              <div>
+              {/* Info */}
+              <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold flex items-center gap-1 group-hover:text-primary transition-colors">
-                  {v.org}
-                  <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-60 transition-opacity" />
+                  <span className="truncate">{v.org}</span>
+                  <ExternalLink className="w-3 h-3 shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" />
                 </p>
                 <p className="text-[10px] font-semibold text-primary/80 mt-0.5">{v.role}</p>
                 <p className="text-[10px] text-muted-foreground">{v.period}</p>
+                <span className="inline-block mt-1.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 border border-rose-500/20">{v.cause}</span>
               </div>
-
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 border border-rose-500/20 w-fit">{v.cause}</span>
             </motion.a>
           ))}
         </div>
