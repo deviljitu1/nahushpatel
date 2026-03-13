@@ -381,6 +381,7 @@ const WorkPage = () => {
           </div>
 
         </div>
+      </div>
 
       <AnimatePresence mode="wait">
         {/* VIEW 1: PROJECTS (Case Studies) */}
