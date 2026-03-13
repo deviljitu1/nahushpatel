@@ -82,7 +82,7 @@ const WorkPage = () => {
   return (
     <div
       className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen
-          ? "bg-white h-full overflow-hidden"
+          ? "bg-white h-screen overflow-hidden"
           : "mx-auto px-3 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4"
         }`}
     >
@@ -243,7 +243,8 @@ const WorkPage = () => {
       </div>
 
       {/* ── Content Views ── */}
-      <AnimatePresence mode="wait">
+      <main className="flex-1 min-h-0 relative flex flex-col">
+        <AnimatePresence mode="wait">
 
         {/* VIEW 1: Case Studies */}
         {!isFullscreen && activeFilter !== "Web Dev" && (
@@ -314,33 +315,31 @@ const WorkPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex-1 min-h-0 relative bg-black overflow-hidden flex flex-col"
+            className="flex-1 h-full min-h-0 relative bg-black overflow-hidden flex flex-col"
           >
             <div
               ref={containerRef}
               onScroll={handleScroll}
-              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col w-full bg-white"
+              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col w-full bg-black"
               style={{ scrollBehavior: "smooth" }}
             >
-              <div className="flex-1">
-                {videoPortfolio.map((video, i) => (
-                  <ReelCard
-                    key={video.id}
-                    video={video}
-                    isActive={i === activeVideoIndex}
-                    onEnded={() => {
-                      if (i < videoPortfolio.length - 1) {
-                        containerRef.current?.scrollTo({
-                          top: (i + 1) * containerRef.current.clientHeight,
-                          behavior: "smooth",
-                        });
-                      } else {
-                        containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-                      }
-                    }}
-                  />
-                ))}
-              </div>
+              {videoPortfolio.map((video, i) => (
+                <ReelCard
+                  key={video.id}
+                  video={video}
+                  isActive={i === activeVideoIndex}
+                  onEnded={() => {
+                    if (i < videoPortfolio.length - 1) {
+                      containerRef.current?.scrollTo({
+                        top: (i + 1) * containerRef.current.clientHeight,
+                        behavior: "smooth",
+                      });
+                    } else {
+                      containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
+                />
+              ))}
             </div>
 
             {/* Counter pill */}
@@ -642,6 +641,7 @@ const WorkPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
+    </main>
 
       {/* ── Project Detail Dialog ── */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>

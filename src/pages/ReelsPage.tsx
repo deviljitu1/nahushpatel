@@ -479,12 +479,12 @@ const ReelsPage = () => {
   }, [activeIndex, isWheelLocked]);
 
   return (
-    <div className="h-[100dvh] w-full bg-white overflow-hidden relative lg:flex lg:items-center lg:justify-center">
+    <div className="h-[100dvh] w-full bg-black overflow-hidden relative lg:flex lg:items-center lg:justify-center">
       {/* Centered Reel Container */}
       <div 
         ref={containerRef}
         onScroll={handleScroll}
-        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col bg-white lg:bg-transparent z-10"
+        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col bg-black lg:bg-transparent z-10"
         style={{ scrollBehavior: 'smooth' }}
       >
         {videoPortfolio.map((video, i) => (
