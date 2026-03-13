@@ -76,13 +76,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden font-sans selection:bg-primary/30 flex">
-      <div className="hidden lg:block h-screen sticky top-0 left-0 z-[100]">
+    <div className="min-h-screen bg-background relative overflow-x-hidden font-sans selection:bg-primary/30 block lg:flex uppercase-none">
+      <div className="hidden lg:block h-screen sticky top-0 left-0 z-[100] shrink-0">
         <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col flex-1 h-screen">
+      <div className="relative z-10 flex flex-col w-full h-screen">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
