@@ -272,12 +272,12 @@ const WorkPage = () => {
   const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
-    <div className={`relative mx-auto w-full ${isFullscreen ? 'px-0 h-[100dvh] flex flex-col' : 'px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
+    <div className={`relative mx-auto w-full transition-colors duration-500 ${isFullscreen ? 'bg-zinc-950 px-0 h-[100dvh] flex flex-col' : 'px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
 
       {/* Section Header - Persistent & Responsive */}
-      <div className={`z-50 px-5 transition-all duration-500 ${isFullscreen 
-        ? 'sticky top-0 bg-black/40 backdrop-blur-2xl border-b border-white/5 pt-4 pb-6' 
-        : 'mb-8 pt-4'}`}>
+      <div className={`z-50 px-5 transition-all duration-500 rounded-b-[2rem] ${isFullscreen 
+        ? 'sticky top-0 bg-zinc-950/80 backdrop-blur-2xl border-b border-white/5 pt-6 pb-8' 
+        : 'mb-8 pt-6'}`}>
         <div className={isFullscreen ? 'max-w-7xl mx-auto' : 'max-w-full'}>
 
           {/* Back Button for Creative Carousel */}
@@ -294,25 +294,27 @@ const WorkPage = () => {
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`font-bold tracking-tight transition-all duration-300 ${isFullscreen ? 'text-2xl text-white mb-0.5' : 'text-3xl mb-1'}`}
+              className={`font-black tracking-tighter transition-all duration-500 ${isFullscreen ? 'text-3xl text-white mb-1' : 'text-5xl mb-2'}`}
             >
               My <span className="gradient-text">Work</span>
             </motion.h1>
-            <p className={`text-xs transition-opacity duration-300 mb-6 ${isFullscreen ? 'text-white/50 mb-4' : 'text-muted-foreground mb-8'}`}>
+            <p className={`font-medium tracking-tight transition-opacity duration-500 ${isFullscreen ? 'text-sm text-white/50 mb-4' : 'text-base text-muted-foreground mb-10'}`}>
               Case studies & creative work
             </p>
-            <div className={`flex gap-2 overflow-x-auto pb-4 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : '-mx-1 px-1 sm:justify-start lg:justify-center'}`}>
+          </div>
+
+          <div className={`flex gap-2 overflow-x-auto pb-4 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : '-mx-1 px-1 sm:justify-start lg:justify-center'}`}>
             {filters.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setActiveFilter(tag)}
-                className={`px-4 py-2 rounded-xl text-[11px] font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[2px] whitespace-nowrap ${activeFilter === tag
+                className={`px-5 py-2.5 rounded-2xl text-[12px] font-black tracking-widest transition-all border-2 active:scale-95 whitespace-nowrap ${activeFilter === tag
                   ? isFullscreen 
                     ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(251,146,60,0.3)]"
-                    : "bg-transparent text-primary border-primary/20 shadow-none ring-2 ring-primary/10"
+                    : "bg-primary/5 text-primary border-primary/20 shadow-none"
                   : isFullscreen
-                    ? "bg-white/5 text-white/50 border-white/10 hover:text-white hover:bg-white/10"
-                    : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
+                    ? "bg-white/5 text-white/40 border-white/5 hover:text-white hover:bg-white/10"
+                    : "bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary"}`}
               >
                 {tag}
               </button>
@@ -350,7 +352,6 @@ const WorkPage = () => {
           )}
 
         </div>
-      </div>
 
       <AnimatePresence mode="wait">
         {/* VIEW 1: PROJECTS (Case Studies) */}

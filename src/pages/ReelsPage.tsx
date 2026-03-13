@@ -244,6 +244,15 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
           onTimeUpdate={() => { if (videoRef.current) setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100); }}
         />
 
+        {/* Expansion Button - Inside Frame */}
+        <button 
+          onClick={toggleFullscreen}
+          className="absolute bottom-6 right-6 z-30 p-2 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-white hover:bg-black/60 transition-all group shadow-xl"
+          title="Fullscreen"
+        >
+          <Maximize2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+        </button>
+
         <AnimatePresence>
           {!isPlaying && (
             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}
@@ -297,13 +306,6 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
               </div>
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{formatCount(shareCount)}</span>
             </button>
-
-            <button onClick={toggleFullscreen} className="flex flex-col items-center gap-1.5 group">
-              <div className="p-4 rounded-full bg-muted/50 group-hover:bg-primary/10 transition-all">
-                <Maximize2 className="w-6 h-6 text-muted-foreground group-hover:text-primary" />
-              </div>
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Full</span>
-            </button>
           </div>
         </div>
 
@@ -347,13 +349,6 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
                 <Share2 className="w-6 h-6 text-white" />
               </div>
               <span className="text-xs text-white font-medium drop-shadow-md">{formatCount(shareCount)}</span>
-            </button>
-
-            <button onClick={toggleFullscreen} className="flex flex-col items-center gap-1.5 group">
-              <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
-                <Maximize2 className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xs text-white font-medium drop-shadow-md">Full view</span>
             </button>
           </div>
 
