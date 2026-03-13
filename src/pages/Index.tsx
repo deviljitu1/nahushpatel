@@ -5,11 +5,11 @@ import HomePage from "@/pages/HomePage";
 import { useTheme } from "@/hooks/use-theme";
 
 const WorkPage = lazy(() => import("@/pages/WorkPage"));
-const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
+const ReelsPage = lazy(() => import("@/pages/ReelsPage"));
 const SkillsPage = lazy(() => import("@/pages/SkillsPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
 
-const tabs = ["home", "work", "services", "skills", "contact"] as const;
+const tabs = ["home", "work", "reels", "skills", "contact"] as const;
 type Tab = (typeof tabs)[number];
 
 const pageVariants = {
@@ -44,7 +44,7 @@ const Index = () => {
     const prefetchTimer = setTimeout(() => {
       Promise.all([
         import("@/pages/WorkPage"),
-        import("@/pages/ServicesPage"),
+        import("@/pages/ReelsPage"),
         import("@/pages/SkillsPage"),
         import("@/pages/ContactPage"),
       ]).catch(() => { });
@@ -65,8 +65,8 @@ const Index = () => {
         return <HomePage onNavigate={(tab: string) => handleTabChange(tab as Tab)} />;
       case "work":
         return <WorkPage />;
-      case "services":
-        return <ServicesPage onNavigate={(tab: string) => handleTabChange(tab as Tab)} />;
+      case "reels":
+        return <ReelsPage />;
       case "skills":
         return <SkillsPage />;
       case "contact":

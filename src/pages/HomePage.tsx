@@ -235,7 +235,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
         </motion.div>
 
-        {/* ── What I Do ────────────────────────────────────────── */}
+        {/* ── What I Do (Hidden for now) ──────────────────────────────────
         <motion.div
           variants={container}
           initial="hidden"
@@ -265,6 +265,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
             })}
           </div>
         </motion.div>
+        ────────────────────────────────────────────────────────── */}
 
         {/* ── Stats ────────────────────────────────────────────── */}
         <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">

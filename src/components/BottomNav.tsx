@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { Home, Briefcase, Layers, BarChart3, Mail, Sun, Moon } from "lucide-react";
+import { Home, Briefcase, Video, BarChart3, Mail, Sun, Moon } from "lucide-react";
 
 const tabs = [
   { id: "home", label: "Home", icon: Home },
   { id: "work", label: "Work", icon: Briefcase },
-  { id: "services", label: "Services", icon: Layers },
+  { id: "reels", label: "Reels", icon: Video },
   { id: "skills", label: "Skills", icon: BarChart3 },
   { id: "contact", label: "Contact", icon: Mail },
 ] as const;
