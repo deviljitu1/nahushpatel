@@ -169,7 +169,55 @@ const projects = [
   },
 ];
 
-// Video portfolio items — replace URLs with your actual hosted video files
+// Demo comments data per video
+const demoComments: Record<number, Array<{ user: string; avatar: string; text: string; time: string; likes: number }>> = {
+  1: [
+    { user: "priya.sharma", avatar: "PS", text: "The slow-mo on this is insane! 🔥", time: "2h", likes: 24 },
+    { user: "rahul_creates", avatar: "RC", text: "What camera did you use for this?", time: "5h", likes: 12 },
+    { user: "foodie.vibes", avatar: "FV", text: "This made me hungry ngl 😂", time: "1d", likes: 45 },
+    { user: "cinematic.ak", avatar: "CA", text: "Color grading is top notch 👏", time: "1d", likes: 8 },
+  ],
+  2: [
+    { user: "mumbai_diaries", avatar: "MD", text: "This captures the city perfectly!", time: "3h", likes: 67 },
+    { user: "avi.filmmaker", avatar: "AF", text: "Transitions are so smooth brother 🤝", time: "8h", likes: 31 },
+    { user: "deepa.clicks", avatar: "DC", text: "Love the sound design on this one", time: "1d", likes: 19 },
+  ],
+  3: [
+    { user: "aesthetics.co", avatar: "AC", text: "Autumn vibes are unreal 🍂✨", time: "4h", likes: 52 },
+    { user: "travel.with.me", avatar: "TW", text: "Where was this shot?", time: "12h", likes: 15 },
+  ],
+  4: [
+    { user: "photo.raj", avatar: "PR", text: "Golden hour hits different in your edits", time: "1h", likes: 89 },
+    { user: "sunset.lover", avatar: "SL", text: "This is wallpaper worthy! 📱", time: "6h", likes: 34 },
+    { user: "creative.mind", avatar: "CM", text: "Tutorial please! 🙏", time: "2d", likes: 27 },
+  ],
+  5: [
+    { user: "hindi.culture", avatar: "HC", text: "Beautifully captured our heritage 🇮🇳", time: "30m", likes: 156 },
+    { user: "doc.films", avatar: "DF", text: "This deserves way more views", time: "2h", likes: 98 },
+    { user: "ritu.patel", avatar: "RP", text: "Brought tears to my eyes ❤️", time: "5h", likes: 73 },
+    { user: "arjun.stories", avatar: "AS", text: "Share BTS please!", time: "1d", likes: 41 },
+    { user: "india.proud", avatar: "IP", text: "Shared this with my whole family", time: "1d", likes: 62 },
+  ],
+  6: [
+    { user: "film.school", avatar: "FS", text: "Production value is insane 🎬", time: "1h", likes: 201 },
+    { user: "vfx.master", avatar: "VM", text: "VFX breakdown when?", time: "4h", likes: 87 },
+    { user: "director.sanjay", avatar: "DS", text: "Let's collaborate!", time: "8h", likes: 44 },
+  ],
+  7: [
+    { user: "brand.guru", avatar: "BG", text: "Short but impactful 💯", time: "2h", likes: 18 },
+    { user: "social.media.pro", avatar: "SM", text: "Perfect for reels format", time: "6h", likes: 11 },
+  ],
+  8: [
+    { user: "reel.queen", avatar: "RQ", text: "The pacing is *chefs kiss* 👨‍🍳", time: "45m", likes: 76 },
+    { user: "mobile.films", avatar: "MF", text: "Vertical cinema done right!", time: "3h", likes: 54 },
+    { user: "content.king", avatar: "CK", text: "Saved for inspiration 🔖", time: "1d", likes: 39 },
+  ],
+  9: [
+    { user: "widescreen.fan", avatar: "WF", text: "This needs to be on a big screen", time: "1h", likes: 112 },
+    { user: "cinema.lover", avatar: "CL", text: "Reminds me of Deakins' work", time: "5h", likes: 68 },
+  ],
+};
+
 const videoPortfolio = [
   {
     id: 1,
@@ -178,9 +226,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344608/Whisk_qty2idzlzmzkvgzz0iy3itytmznlrtl2ugn30iy_zhzkzd.mp4",
     creator: "@nahushpatel",
     description: "A high-speed culinary motion study focusing on textures and movement. 🍳",
-    likes: "3.2K",
-    comments: "245",
-    shares: "1.1K",
+    likes: 3200,
+    comments: 245,
+    shares: 1100,
     aspectRatio: "16:9",
   },
   {
@@ -190,9 +238,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344582/_scene_1_202511111742_sh8fv_srx10l.mp4",
     creator: "@nahushpatel",
     description: "Capturing the essence of city life through dynamic transitions and sound design. 🏙️",
-    likes: "4.5K",
-    comments: "312",
-    shares: "890",
+    likes: 4500,
+    comments: 312,
+    shares: 890,
     aspectRatio: "16:9",
   },
   {
@@ -202,9 +250,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344554/Nov_17__1228_15s_202511171254_32z0y_oqrmxq.mp4",
     creator: "@nahushpatel",
     description: "A seasonal lifestyle edit with warm tones and cinematic grading. 🍂",
-    likes: "2.8K",
-    comments: "156",
-    shares: "432",
+    likes: 2800,
+    comments: 156,
+    shares: 432,
     aspectRatio: "16:9",
   },
   {
@@ -214,9 +262,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344538/Nov_14__1433_29s_202511141457_ho8je_yimvk9.mp4",
     creator: "@nahushpatel",
     description: "Exploring light and shadow during the most magical hour of the day. ☀️",
-    likes: "5.1K",
-    comments: "423",
-    shares: "1.2K",
+    likes: 5100,
+    comments: 423,
+    shares: 1200,
     aspectRatio: "16:9",
   },
   {
@@ -226,9 +274,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344516/Hindi_sdkg1s.mp4",
     creator: "@nahushpatel",
     description: "A vertical documentary piece exploring Hindi cultural expressions. 🇮🇳",
-    likes: "8.9K",
-    comments: "1.1K",
-    shares: "3.4K",
+    likes: 8900,
+    comments: 1100,
+    shares: 3400,
     aspectRatio: "9:16",
   },
   {
@@ -238,9 +286,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344504/1_npwj0g.mp4",
     creator: "@nahushpatel",
     description: "Full-scale production showcase with high-end camera work and VFX. 🎥",
-    likes: "12K",
-    comments: "2.4K",
-    shares: "5.6K",
+    likes: 12000,
+    comments: 2400,
+    shares: 5600,
     aspectRatio: "16:9",
   },
   {
@@ -250,9 +298,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344468/_duration_8s_202511170013_dbx1h_n7ypbj.mp4",
     creator: "@nahushpatel",
     description: "Short-form content designed for maximum engagement in under 10 seconds. ⚡",
-    likes: "1.5K",
-    comments: "89",
-    shares: "267",
+    likes: 1500,
+    comments: 89,
+    shares: 267,
     aspectRatio: "16:9",
   },
   {
@@ -262,9 +310,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344453/_description_cinematic_202512082302_8oaa_k4drmr.mp4",
     creator: "@nahushpatel",
     description: "Premium cinematic storytelling optimized for mobile scrolling. ✨",
-    likes: "6.7K",
-    comments: "534",
-    shares: "1.8K",
+    likes: 6700,
+    comments: 534,
+    shares: 1800,
     aspectRatio: "9:16",
   },
   {
@@ -274,9 +322,9 @@ const videoPortfolio = [
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344437/_description_cinematic_202511170019_ltn6_paqx05.mp4",
     creator: "@nahushpatel",
     description: "Cinematic wide-ratio showcase for high-resolution displays. 🎞️",
-    likes: "9.2K",
-    comments: "890",
-    shares: "2.1K",
+    likes: 9200,
+    comments: 890,
+    shares: 2100,
     aspectRatio: "16:9",
   },
 ];
