@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { supabase } from "@/integrations/supabase/client";
 import { ReelCard, videoPortfolio } from "@/pages/ReelsPage";
 
-const filters = ["All", "SEO", "Web Dev", "Automation", "Social Media"];
+const filters = ["SEO", "Web Dev", "Automation", "Social Media"];
 
 // Real web development projects from nahushpatel.in
 const webDevProjects = [
@@ -233,7 +233,7 @@ const creativeItems = [
 // SeasonBackground removed — was unused and added unnecessary complexity
 
 const WorkPage = () => {
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeFilter, setActiveFilter] = useState("Social Media");
   const [socialSubTab, setSocialSubTab] = useState("Video Portfolio");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
   const [selectedCreative, setSelectedCreative] = useState<(typeof creativeItems)[number] | null>(null);
@@ -243,7 +243,7 @@ const WorkPage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isAutoScrolling = useRef(false);
 
-  const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
+  const filtered = projects.filter((p) => p.tags.includes(activeFilter));
 
   /* Reels scrolling logic moved to ReelsPage.tsx */
 
