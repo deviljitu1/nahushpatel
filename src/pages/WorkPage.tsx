@@ -275,7 +275,7 @@ const WorkPage = () => {
     <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-4xl min-h-screen pt-4'}`}>
 
       {/* Section Toggle - Always visible */}
-      <div className={`${isFullscreen ? 'absolute top-0 left-0 right-0 z-50 px-5 pt-3 pb-2 bg-gradient-to-b from-black/90 via-black/60 to-transparent' : 'mb-8'}`}>
+      <div className={`${isFullscreen ? 'relative z-50 px-5 pt-3 pb-8 bg-black/5' : 'mb-8'}`}>
         <div className={isFullscreen ? 'max-w-lg mx-auto' : ''}>
 
           {/* Back Button for Creative Carousel */}
@@ -288,28 +288,27 @@ const WorkPage = () => {
             </button>
           )}
 
-          {!isFullscreen && (
-            <>
-              <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-3xl font-bold mb-1 tracking-tight"
-              >
-                My <span className="gradient-text">Work</span>
-              </motion.h1>
-              <p className="text-sm mb-8 text-muted-foreground">Case studies & creative work</p>
-            </>
-          )}
+          <>
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`text-3xl font-bold mb-1 tracking-tight ${isFullscreen ? 'text-white' : ''}`}
+            >
+              My <span className="gradient-text">Work</span>
+            </motion.h1>
+            <p className={`text-sm mb-8 text-muted-foreground ${isFullscreen ? 'text-white/60' : ''}`}>Case studies & creative work</p>
+          </>
 
-          {/* Main Filter Navigation */}
-          <div className={`flex gap-3 overflow-x-auto pb-2 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 lg:justify-center' : ''}`}>
-            {!isFullscreen && filters.map((tag) => (
+          <div className={`flex gap-3 overflow-x-auto pb-2 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 lg:justify-center' : '-mx-1 px-1 lg:justify-center dark'}`}>
+            {filters.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setActiveFilter(tag)}
                 className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] whitespace-nowrap ${activeFilter === tag
                   ? "bg-transparent text-primary border-primary/20 shadow-none ring-2 ring-primary/10"
-                  : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
+                  : isFullscreen
+                    ? "bg-white/10 text-white/70 border-white/10 hover:text-white"
+                    : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
               >
                 {tag}
               </button>
