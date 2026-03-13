@@ -336,6 +336,36 @@ const formatCount = (n: number): string => {
   return n.toString();
 };
 
+const getSessionId = () => {
+  let sid = localStorage.getItem('portfolio_session_id');
+  if (!sid) {
+    sid = crypto.randomUUID();
+    localStorage.setItem('portfolio_session_id', sid);
+  }
+  return sid;
+};
+
+const timeAgo = (date: string) => {
+  const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+  if (seconds < 60) return 'now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `${days}d`;
+};
+
+type DbComment = {
+  id: string;
+  video_id: number;
+  user_name: string;
+  avatar_initials: string;
+  comment_text: string;
+  likes: number;
+  created_at: string;
+};
+
 const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)[number]; isActive: boolean; onEnded?: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const blurVideoRef = useRef<HTMLVideoElement>(null);
@@ -345,23 +375,66 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
   const [showMore, setShowMore] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showComments, setShowComments] = useState(false);
-  const [comments, setComments] = useState(demoComments[video.id] || []);
+  const [comments, setComments] = useState<DbComment[]>([]);
+  const [commentCount, setCommentCount] = useState(video.comments);
   const [newComment, setNewComment] = useState("");
+  const [newName, setNewName] = useState("");
   const [shareCount, setShareCount] = useState(video.shares);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
+  const commentInputRef = useRef<HTMLInputElement>(null);
+
+  // Load like state from localStorage
+  useEffect(() => {
+    const sessionId = getSessionId();
+    supabase
+      .from('video_likes')
+      .select('id')
+      .eq('video_id', video.id)
+      .eq('session_id', sessionId)
+      .then(({ data }) => {
+        if (data && data.length > 0) setIsLiked(true);
+      });
+  }, [video.id]);
+
+  // Fetch comments from DB when drawer opens
+  const fetchComments = useCallback(async () => {
+    const { data } = await supabase
+      .from('video_comments')
+      .select('*')
+      .eq('video_id', video.id)
+      .order('created_at', { ascending: false });
+    if (data) {
+      setComments(data as DbComment[]);
+      setCommentCount(data.length);
+    }
+  }, [video.id]);
+
+  useEffect(() => {
+    if (showComments) {
+      fetchComments();
+      // Focus input after drawer opens
+      setTimeout(() => commentInputRef.current?.focus(), 400);
+    }
+  }, [showComments, fetchComments]);
+
+  useEffect(() => {
+    // Also fetch count on mount
+    supabase
+      .from('video_comments')
+      .select('id', { count: 'exact', head: true })
+      .eq('video_id', video.id)
+      .then(({ count }) => {
+        if (count !== null) setCommentCount(count);
+      });
+  }, [video.id]);
 
   useEffect(() => {
     if (isActive) {
       const playPromise = videoRef.current?.play();
       const blurPlayPromise = blurVideoRef.current?.play();
-
-      playPromise?.then(() => {
-        setIsPlaying(true);
-      }).catch((e) => {
-        console.error("Autoplay failed:", e);
-        setIsPlaying(false);
-      });
-
-      blurPlayPromise?.catch(e => console.log("Blur autoplay silent fail"));
+      playPromise?.then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+      blurPlayPromise?.catch(() => {});
     } else {
       videoRef.current?.pause();
       blurVideoRef.current?.pause();
@@ -383,14 +456,18 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
     }
   };
 
-  const handleLike = (e: React.MouseEvent) => {
+  const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    const sessionId = getSessionId();
     if (isLiked) {
+      setIsLiked(false);
       setLikeCount(prev => prev - 1);
+      await supabase.from('video_likes').delete().eq('video_id', video.id).eq('session_id', sessionId);
     } else {
+      setIsLiked(true);
       setLikeCount(prev => prev + 1);
+      await supabase.from('video_likes').insert({ video_id: video.id, session_id: sessionId });
     }
-    setIsLiked(!isLiked);
   };
 
   const handleShare = async (e: React.MouseEvent) => {
@@ -407,25 +484,34 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
       } else {
         await navigator.clipboard.writeText(window.location.href);
         setShareCount(prev => prev + 1);
-        // Brief visual feedback handled by count change
+        setShowCopied(true);
+        setTimeout(() => setShowCopied(false), 2000);
       }
-    } catch (err) {
-      // User cancelled share
+    } catch {
+      // User cancelled
     }
   };
 
-  const handleAddComment = (e: React.FormEvent) => {
+  const handleAddComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    const comment = {
-      user: "you",
-      avatar: "YO",
-      text: newComment.trim(),
-      time: "now",
-      likes: 0,
-    };
-    setComments(prev => [comment, ...prev]);
-    setNewComment("");
+    setIsSubmitting(true);
+    const userName = newName.trim() || 'Anonymous';
+    const initials = userName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    
+    const { data, error } = await supabase.from('video_comments').insert({
+      video_id: video.id,
+      user_name: userName,
+      avatar_initials: initials,
+      comment_text: newComment.trim(),
+    }).select().single();
+
+    if (!error && data) {
+      setComments(prev => [data as DbComment, ...prev]);
+      setCommentCount(prev => prev + 1);
+      setNewComment("");
+    }
+    setIsSubmitting(false);
   };
 
   return (
@@ -437,14 +523,12 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
             ref={blurVideoRef}
             src={video.videoUrl}
             className="w-full h-full object-cover blur-[60px]"
-            loop
-            muted
-            playsInline
-            preload="auto"
+            loop muted playsInline preload="auto"
           />
           <div className="absolute inset-0 bg-black/30" />
         </div>
       )}
+
       {/* Video */}
       <div
         className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center"
@@ -454,15 +538,11 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
           ref={videoRef}
           src={video.videoUrl}
           className={`max-w-full max-h-full transition-all duration-700 ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
-          loop
-          muted={false}
-          playsInline
-          preload="metadata"
+          loop muted={false} playsInline preload="metadata"
           onEnded={onEnded}
           onTimeUpdate={() => {
             if (videoRef.current) {
-              const p = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-              setProgress(p);
+              setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100);
             }
           }}
         />
@@ -490,26 +570,27 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
           </span>
         </div>
 
+        {/* Copied toast */}
+        <AnimatePresence>
+          {showCopied && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-20 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-black/70 backdrop-blur-md text-xs text-white font-medium"
+            >
+              Link copied! 🔗
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Right side actions */}
         <div className="absolute right-4 bottom-32 md:bottom-24 z-10 flex flex-col items-center gap-6">
-          <button
-            onClick={handleLike}
-            className="flex flex-col items-center gap-1 group"
-          >
-            <motion.div
-              whileTap={{ scale: 1.3 }}
-              className="p-2 rounded-full bg-black/20 backdrop-blur-sm transition-transform"
-            >
-              <Heart
-                className={`w-7 h-7 transition-all duration-300 ${isLiked
-                  ? "text-red-500 fill-red-500 scale-110"
-                  : "text-white"
-                  }`}
-              />
+          <button onClick={handleLike} className="flex flex-col items-center gap-1 group">
+            <motion.div whileTap={{ scale: 1.3 }} className="p-2 rounded-full bg-black/20 backdrop-blur-sm transition-transform">
+              <Heart className={`w-7 h-7 transition-all duration-300 ${isLiked ? "text-red-500 fill-red-500 scale-110" : "text-white"}`} />
             </motion.div>
-            <span className="text-xs text-white font-medium drop-shadow-md">
-              {formatCount(likeCount)}
-            </span>
+            <span className="text-xs text-white font-medium drop-shadow-md">{formatCount(likeCount)}</span>
           </button>
 
           <button
@@ -527,21 +608,14 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
             <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
               <MessageCircle className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xs text-white font-medium drop-shadow-md">
-              {formatCount(comments.length > (demoComments[video.id]?.length || 0) ? video.comments + (comments.length - (demoComments[video.id]?.length || 0)) : video.comments)}
-            </span>
+            <span className="text-xs text-white font-medium drop-shadow-md">{formatCount(commentCount)}</span>
           </button>
 
-          <button
-            onClick={handleShare}
-            className="flex flex-col items-center gap-1 group"
-          >
+          <button onClick={handleShare} className="flex flex-col items-center gap-1 group">
             <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
               <Send className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xs text-white font-medium drop-shadow-md">
-              {formatCount(shareCount)}
-            </span>
+            <span className="text-xs text-white font-medium drop-shadow-md">{formatCount(shareCount)}</span>
           </button>
         </div>
 
@@ -559,36 +633,21 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
               </span>
               <span className="text-[10px] text-white/80">Original Audio</span>
             </div>
-            <button className="ml-2 px-3 py-1 rounded-lg border border-white/30 text-[10px] text-white font-medium backdrop-blur-sm hover:bg-white/10 transition-colors">
-              Follow
-            </button>
           </div>
 
-          <h3 className="text-sm font-bold text-white drop-shadow-md mb-2 line-clamp-1">
-            {video.title}
-          </h3>
+          <h3 className="text-sm font-bold text-white drop-shadow-md mb-2 line-clamp-1">{video.title}</h3>
 
           <p
-            className={`text-xs text-white/90 drop-shadow-md leading-relaxed pr-12 ${!showMore ? "line-clamp-2" : ""
-              }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowMore(!showMore);
-            }}
+            className={`text-xs text-white/90 drop-shadow-md leading-relaxed pr-12 ${!showMore ? "line-clamp-2" : ""}`}
+            onClick={(e) => { e.stopPropagation(); setShowMore(!showMore); }}
           >
             {video.description}
-            {!showMore && (
-              <span className="text-white/60 font-medium ml-1 cursor-pointer hover:text-white">
-                more
-              </span>
-            )}
+            {!showMore && <span className="text-white/60 font-medium ml-1 cursor-pointer hover:text-white">more</span>}
           </p>
 
           {showMore && (
             <div className="mt-2 text-[10px] text-white/50 flex gap-2">
-              <span>#portfolio</span>
-              <span>#video</span>
-              <span>#creative</span>
+              <span>#portfolio</span><span>#video</span><span>#creative</span>
             </div>
           )}
 
@@ -603,87 +662,112 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
         </div>
       </div>
 
-      {/* Comments Drawer */}
+      {/* Comments Drawer — positioned above bottom nav */}
       <AnimatePresence>
         {showComments && (
-          <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="absolute bottom-0 left-0 right-0 z-30 bg-zinc-900/95 backdrop-blur-xl rounded-t-3xl max-h-[65%] flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Handle bar */}
-            <div className="flex justify-center pt-3 pb-2">
-              <div className="w-10 h-1 rounded-full bg-white/30" />
-            </div>
-            
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 pb-3 border-b border-white/10">
-              <h4 className="text-sm font-bold text-white">{formatCount(comments.length > (demoComments[video.id]?.length || 0) ? video.comments + (comments.length - (demoComments[video.id]?.length || 0)) : video.comments)} Comments</h4>
-              <button
-                onClick={() => setShowComments(false)}
-                className="text-white/60 hover:text-white text-xs font-medium"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Comments list */}
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
-              {comments.map((comment, idx) => (
-                <div key={idx} className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/60 to-accent/60 flex items-center justify-center shrink-0">
-                    <span className="text-[10px] font-bold text-white">{comment.avatar}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-white">{comment.user}</span>
-                      <span className="text-[10px] text-white/40">{comment.time}</span>
-                    </div>
-                    <p className="text-xs text-white/80 mt-0.5 leading-relaxed">{comment.text}</p>
-                    <div className="flex items-center gap-3 mt-1.5">
-                      <button className="text-[10px] text-white/40 hover:text-white/70 flex items-center gap-1">
-                        <Heart className="w-3 h-3" /> {comment.likes > 0 && comment.likes}
-                      </button>
-                      <button className="text-[10px] text-white/40 hover:text-white/70">Reply</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Add comment */}
-            <form onSubmit={handleAddComment} className="px-4 py-3 border-t border-white/10 flex gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center shrink-0">
-                <span className="text-[10px] font-bold text-white">YO</span>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 z-25 bg-black/40"
+              onClick={(e) => { e.stopPropagation(); setShowComments(false); }}
+            />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 350 }}
+              className="absolute bottom-20 md:bottom-0 left-0 right-0 z-30 bg-zinc-900/98 backdrop-blur-2xl rounded-t-3xl flex flex-col"
+              style={{ maxHeight: '60vh' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Handle bar */}
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-white/30" />
               </div>
-              <input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-                className="flex-1 bg-white/10 rounded-full px-4 py-2 text-xs text-white placeholder:text-white/40 outline-none focus:bg-white/15 transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={!newComment.trim()}
-                className="text-primary font-bold text-xs disabled:opacity-30 transition-opacity"
-              >
-                Post
-              </button>
-            </form>
-          </motion.div>
+              
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 pb-3 border-b border-white/10">
+                <h4 className="text-sm font-bold text-white">{formatCount(commentCount)} Comments</h4>
+                <button onClick={() => setShowComments(false)} className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                  <X className="w-4 h-4 text-white/70" />
+                </button>
+              </div>
+
+              {/* Comments list */}
+              <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
+                {comments.length === 0 && (
+                  <div className="text-center py-8">
+                    <MessageCircle className="w-10 h-10 text-white/20 mx-auto mb-2" />
+                    <p className="text-xs text-white/40">No comments yet. Be the first!</p>
+                  </div>
+                )}
+                {comments.map((comment) => (
+                  <motion.div
+                    key={comment.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex gap-3"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/60 to-accent/60 flex items-center justify-center shrink-0">
+                      <span className="text-[10px] font-bold text-white">{comment.avatar_initials}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-white">{comment.user_name}</span>
+                        <span className="text-[10px] text-white/40">{timeAgo(comment.created_at)}</span>
+                      </div>
+                      <p className="text-xs text-white/80 mt-0.5 leading-relaxed">{comment.comment_text}</p>
+                      <div className="flex items-center gap-3 mt-1.5">
+                        <button className="text-[10px] text-white/40 hover:text-white/70 flex items-center gap-1">
+                          <Heart className="w-3 h-3" /> {comment.likes > 0 && comment.likes}
+                        </button>
+                        <button className="text-[10px] text-white/40 hover:text-white/70">Reply</button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Add comment — with name + comment input */}
+              <form onSubmit={handleAddComment} className="px-4 py-3 border-t border-white/10 space-y-2 safe-area-bottom">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder="Your name"
+                    maxLength={30}
+                    className="w-28 bg-white/10 rounded-full px-3 py-2 text-xs text-white placeholder:text-white/40 outline-none focus:bg-white/15 transition-colors"
+                  />
+                  <input
+                    ref={commentInputRef}
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment..."
+                    maxLength={500}
+                    className="flex-1 bg-white/10 rounded-full px-4 py-2 text-xs text-white placeholder:text-white/40 outline-none focus:bg-white/15 transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!newComment.trim() || isSubmitting}
+                    className="text-primary font-bold text-xs disabled:opacity-30 transition-opacity px-2"
+                  >
+                    {isSubmitting ? '...' : 'Post'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
       {/* Custom Timeline Progress Bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-20">
-        <div
-          className="h-full bg-primary transition-all duration-100 ease-linear"
-          style={{ width: `${progress}%` }}
-        />
+        <div className="h-full bg-primary transition-all duration-100 ease-linear" style={{ width: `${progress}%` }} />
       </div>
     </div>
   );
