@@ -372,36 +372,6 @@ const WorkPage = () => {
             )}
           </div>
 
-            {/* If fullscreen (Social Media sub-modes), show a back to projects/all button or similar if needed? 
-                  Actually, user might want to switch tabs even in fullscreen. 
-                  But full screen video portfolio usually hides the main nav.
-                  Let's show a minimal back button or the sub-tabs.
-              */}
-
-          </div>
-
-          {activeFilter === 'Social Media' && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-2 flex gap-2 justify-center flex-wrap pb-2"
-            >
-              {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => (
-                <button
-                  key={sub}
-                  onClick={() => setSocialSubTab(sub === 'Ads' ? 'Paid Ads' : sub)}
-                  className={`px-3 py-1.5 rounded-full text-[9px] font-bold transition-all border shadow-sm ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
-                    ? 'bg-primary text-primary-foreground border-primary scale-105 shadow-md'
-                    : isFullscreen 
-                      ? 'bg-white/10 text-white/60 border-white/5 hover:bg-white/20 hover:text-white'
-                      : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'}`}
-                >
-                  {sub}
-                </button>
-              ))}
-            </motion.div>
-          )}
-
         </div>
 
       <AnimatePresence mode="wait">
