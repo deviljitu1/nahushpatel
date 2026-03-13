@@ -120,205 +120,217 @@ interface HomePageProps {
 }
 
 /* ─── Component ─────────────────────────────────────────────────────── */
-const [isMobile, setIsMobile] = useState(false);
+const HomePage = ({ onNavigate }: HomePageProps) => {
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const typed = useTypewriter([
+    "Digital Marketer",
+    "Web Developer",
+    "Growth Hacker",
+    "Automation Expert",
+  ]);
 
-useEffect(() => {
-  const checkMobile = () => {
-    setIsMobile(window.innerWidth < 768);
-  };
-  checkMobile();
-  window.addEventListener('resize', checkMobile);
-  return () => window.removeEventListener('resize', checkMobile);
-}, []);
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-return (
-  <div className="relative px-4 sm:px-6 pt-6 sm:pt-12 max-w-screen-xl mx-auto overflow-x-hidden">
+  return (
+    <div className="relative px-4 sm:px-6 pt-6 sm:pt-12 max-w-screen-xl mx-auto overflow-x-hidden pb-24 lg:pb-12">
 
-    {/* ── All page content ──────────────────────────────────── */}
-    <div className="relative z-10 flex flex-col items-center">
-      <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-12 w-full max-w-2xl">
+      {/* ── All page content ──────────────────────────────────── */}
+      <div className="relative z-10 flex flex-col items-center">
+        
+        {/* HERO SECTION */}
+        <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-16 w-full max-w-2xl">
 
-        {/* 3D Profile Cube */}
-        <motion.div variants={item} className="mb-8 inline-block relative">
-          {/* Outer glow ring */}
-          <div
-            className="relative"
-            style={{
-              filter: "drop-shadow(0 20px 48px hsl(24 95% 53% / 0.35))",
-            }}
-          >
-            <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl animate-pulse -z-10" />
-            <ProfileCube
-              imageSrc="/Nahush Patel.jpg"
-              size={isMobile ? 120 : 160}
-              onFaceClick={() => setZoomOpen(true)}
-            />
-          </div>
+          {/* 3D Profile Cube */}
+          <motion.div variants={item} className="mb-10 inline-block relative mt-4">
+            <div
+              className="relative"
+              style={{
+                filter: "drop-shadow(0 20px 48px hsl(24 95% 53% / 0.35))",
+              }}
+            >
+              <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl animate-pulse -z-10" />
+              <ProfileCube
+                imageSrc="/Nahush Patel.jpg"
+                size={isMobile ? 120 : 160}
+                onFaceClick={() => setZoomOpen(true)}
+              />
+            </div>
 
-          {/* Pulse badge */}
-          <motion.div
-            className="absolute -bottom-1 -right-1 w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-primary to-orange-400 flex items-center justify-center shadow-lg z-10 border-4 border-white dark:border-zinc-950"
-            animate={{ scale: [1, 1.15, 1] }}
-            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-            title="Available for Hire"
-          >
-            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            {/* Pulse badge */}
+            <motion.div
+              className="absolute -bottom-1 -right-1 w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-orange-400 flex items-center justify-center shadow-lg z-10 border-4 border-white dark:border-zinc-950"
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+            >
+              <Sparkles className="w-5 h-5 text-white" />
+            </motion.div>
+
+            {/* Drag hint */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5, duration: 0.8 }}
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-muted-foreground/60 font-bold tracking-widest uppercase select-none pointer-events-none"
+            >
+              drag to rotate
+            </motion.p>
           </motion.div>
 
-          {/* Drag hint */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-muted-foreground/60 font-medium select-none pointer-events-none tracking-widest uppercase"
-          >
-            drag to rotate
+          {/* Availability Badge */}
+          <motion.div variants={item} className="flex justify-center mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-[11px] font-bold tracking-wider uppercase shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              AVAILABLE FOR PROJECTS
+            </span>
+          </motion.div>
+
+          {/* Name */}
+          <motion.h1 variants={item} className="text-4xl sm:text-5xl lg:text-7xl font-black mb-3 tracking-tight leading-[1.05] px-2 text-foreground">
+            Hi, I'm <span className="text-shimmer">Nahush Patel</span>
+          </motion.h1>
+
+          {/* Typewriter role */}
+          <motion.div variants={item} className="h-10 flex items-center justify-center mb-6">
+            <span className="text-lg sm:text-xl lg:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-500 to-primary/80">
+              {typed}
+              <span className="animate-blink ml-1.5 font-light text-primary">|</span>
+            </span>
+          </motion.div>
+
+          {/* Contact Details */}
+          <motion.div variants={item} className="flex items-center justify-center gap-3 text-[13px] text-muted-foreground mb-10 flex-wrap px-4 font-semibold text-center">
+            <span className="flex items-center gap-1.5 bg-secondary/40 backdrop-blur-sm px-4 py-1.5 rounded-full border border-border/50 hover:border-primary/30 transition-colors"><MapPin className="w-4 h-4 text-primary" /> Raipur, India</span>
+            <span className="flex items-center gap-1.5 bg-secondary/40 backdrop-blur-sm px-4 py-1.5 rounded-full border border-border/50 hover:border-primary/30 transition-colors"><Mail className="w-4 h-4 text-primary" /> nahushpatel2@gmail.com</span>
+          </motion.div>
+
+          <motion.p variants={item} className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed mb-12 px-6 font-medium">
+            I craft high-converting digital experiences — from <span className="text-foreground font-bold">Meta ads</span> that sell to <span className="text-foreground font-bold">automations</span> that scale businesses.
           </motion.p>
-        </motion.div>
 
-        {/* Open to Work */}
-        <motion.div variants={item} className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20 text-green-600 dark:text-green-400 text-[11px] font-bold tracking-wider shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            OPEN FOR PROJECTS
-          </span>
-        </motion.div>
-
-        {/* Name */}
-        <motion.h1 variants={item} className="text-4xl sm:text-5xl lg:text-7xl font-black mb-2 tracking-tight leading-[1.05] px-2">
-          Hi, I'm <span className="text-shimmer">Nahush Patel</span>
-        </motion.h1>
-
-        {/* Typewriter role */}
-        <motion.div variants={item} className="h-8 flex items-center justify-center mb-4">
-          <span className="text-base sm:text-xl lg:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">
-            {typed}
-            <span className="animate-blink ml-1 font-normal text-primary">|</span>
-          </span>
-        </motion.div>
-
-        {/* Meta chips */}
-        <motion.div variants={item} className="flex items-center justify-center gap-3 text-[13px] text-muted-foreground mb-8 flex-wrap px-4">
-          <span className="flex items-center gap-1.5 font-semibold bg-secondary/50 px-3 py-1 rounded-full"><MapPin className="w-3.5 h-3.5 text-primary" /> Raipur, India</span>
-          <span className="flex items-center gap-1.5 font-semibold bg-secondary/50 px-3 py-1 rounded-full"><Mail className="w-3.5 h-3.5 text-primary" /> nahushpatel2@gmail.com</span>
-          <span className="flex items-center gap-1.5 font-semibold bg-secondary/50 px-3 py-1 rounded-full"><Briefcase className="w-3.5 h-3.5 text-primary" /> Full-cycle Marketing</span>
-        </motion.div>
-
-        <motion.p variants={item} className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed mb-10 px-6 font-medium">
-          I craft high-converting digital experiences — from <span className="text-foreground font-bold">meta ads</span> that sell to <span className="text-foreground font-bold">automations</span> that scale.
-        </motion.p>
-
-        {/* CTAs — Optimized for Mobile Tapability */}
-        <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-6 sm:px-0">
-          <button
-            onClick={() => onNavigate("contact")}
-            className="group w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-orange-500 text-white font-bold text-base shadow-[0_10px_30px_rgba(249,115,22,0.3)] hover:shadow-[0_15px_35px_rgba(249,115,22,0.4)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3"
-          >
-            Hire Me <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-          <div className="flex gap-3 w-full sm:w-auto">
+          {/* Hero Actions */}
+          <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-6 sm:px-0">
             <button
-              onClick={() => onNavigate("work")}
-              className="flex-1 sm:flex-none px-7 py-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2.5"
+              onClick={() => onNavigate("contact")}
+              className="group w-full sm:w-auto px-10 py-4.5 rounded-2xl bg-gradient-to-r from-primary to-orange-500 text-white font-bold text-base shadow-[0_12px_40px_rgba(249,115,22,0.35)] hover:shadow-[0_18px_50px_rgba(249,115,22,0.45)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3"
             >
-              <Eye className="w-5 h-5 text-primary" /> Work
+              Hire Me <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <a
-              href="/resume.pdf"
-              download="Nahush_Patel_Resume.pdf"
-              className="flex-1 sm:flex-none px-7 py-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2.5"
-            >
-              <Download className="w-5 h-5 text-primary" /> CV
-            </a>
-          </div>
+            <div className="flex gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => onNavigate("work")}
+                className="flex-1 sm:flex-none px-8 py-4.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5"
+              >
+                <Eye className="w-5 h-5 text-primary" /> Work
+              </button>
+              <a
+                href="/resume.pdf"
+                download="Nahush_Patel_Resume.pdf"
+                className="flex-1 sm:flex-none px-8 py-4.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5"
+              >
+                <Download className="w-5 h-5 text-primary" /> CV
+              </a>
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
 
-      {/* ── What I Do (Hidden for now) ──────────────────────────────────
+        {/* WHAT I DO SECTION */}
         <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mb-10"
+           variants={container}
+           initial="hidden"
+           whileInView="show"
+           viewport={{ once: true, amount: 0.1 }} 
+           className="mb-20 w-full max-w-5xl px-2"
         >
-          <motion.h2 variants={fadeUp} className="section-label text-center mb-4">What I Do</motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <motion.h2 variants={fadeUp} className="text-2xl sm:text-3xl font-black text-center mb-8 tracking-tight">Core Expertise</motion.h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {whatIDo.map((w) => {
               const Icon = w.icon;
               return (
                 <motion.div
                   key={w.title}
                   variants={item}
-                  className="soft-card p-5 flex flex-col gap-3 group cursor-default"
+                  className="group relative p-6 sm:p-8 rounded-3xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-500 overflow-hidden"
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${w.bg} group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className={`w-5 h-5 ${w.color}`} />
+                  <div className={`absolute top-0 right-0 w-32 h-32 ${w.bg} rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${w.bg} mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                    <Icon className={`w-7 h-7 ${w.color}`} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm lg:text-base mb-0.5">{w.title}</h3>
-                    <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">{w.desc}</p>
+                    <h3 className="font-bold text-lg lg:text-xl mb-3">{w.title}</h3>
+                    <p className="text-sm lg:text-base text-muted-foreground leading-relaxed font-medium">{w.desc}</p>
                   </div>
                 </motion.div>
               );
             })}
           </div>
         </motion.div>
-        ────────────────────────────────────────────────────────── */}
 
-      {/* ── Stats ────────────────────────────────────────────── */}
-      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {stats.map((stat) => (
-          <StatCard key={stat.label} stat={stat} />
-        ))}
-      </motion.div>
+        {/* STATS SECTION */}
+        <motion.div 
+          variants={container} 
+          initial="hidden" 
+          whileInView="show" 
+          viewport={{ once: true, amount: 0.2 }} 
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-20 w-full max-w-5xl px-2"
+        >
+          {stats.map((stat) => (
+            <StatCard key={stat.label} stat={stat} />
+          ))}
+        </motion.div>
 
-      {/* ── Client Marquee ───────────────────────────────────── */}
-      <ClientMarquee />
+        {/* TRUSTED BY SECTION */}
+        <div className="w-full max-w-5xl px-2 mb-10 text-center">
+          <ClientMarquee />
+        </div>
 
-      {/* ── Zoom Lightbox ────────────────────────────────────── */}
-      <AnimatePresence>
-        {zoomOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={() => setZoomOpen(false)}
-          >
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+        {/* ZOOM LIGHTBOX */}
+        <AnimatePresence>
+          {zoomOpen && (
             <motion.div
-              className="relative z-10 max-w-xs w-full mx-6"
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.6, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              onClick={(e) => e.stopPropagation()}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setZoomOpen(false)}
             >
-              <div className="rounded-3xl overflow-hidden shadow-2xl gradient-bg p-[3px]"
-                style={{ boxShadow: "0 24px 64px hsl(24 95% 53% / 0.4)" }}>
-                <img
-                  src="/Nahush Patel.jpg"
-                  alt="Nahush Patel"
-                  className="w-full h-auto rounded-[22px] object-cover object-top block"
-                />
-              </div>
-              <button
-                onClick={() => setZoomOpen(false)}
-                className="absolute -top-3 -right-3 w-9 h-9 rounded-full gradient-bg flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                aria-label="Close"
+              <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" />
+              <motion.div
+                className="relative z-10 max-w-sm w-full"
+                initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.8, opacity: 0, y: 20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                onClick={(e) => e.stopPropagation()}
               >
-                <X className="w-4 h-4 text-primary-foreground" />
-              </button>
+                <div className="rounded-[2.5rem] overflow-hidden shadow-[0_0_80px_rgba(249,115,22,0.3)] border-[3px] border-primary/30">
+                  <img
+                    src="/Nahush Patel.jpg"
+                    alt="Nahush Patel"
+                    className="w-full h-auto object-cover object-top block"
+                  />
+                </div>
+                <button
+                  onClick={() => setZoomOpen(false)}
+                  className="absolute -top-4 -right-4 w-12 h-12 rounded-full bg-background text-primary flex items-center justify-center shadow-2xl border border-border/50 hover:scale-110 active:scale-90 transition-all z-20"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
-    {/* end z-10 content wrapper */}
-  </div>
-);
+  );
 };
 
 /* ─── Stat Card ─────────────────────────────────────────────────────── */
@@ -329,32 +341,32 @@ function StatCard({ stat }: { stat: (typeof stats)[number] }) {
     <motion.div
       variants={item}
       ref={ref}
-      className="soft-card p-5 flex flex-col items-center justify-center text-center cursor-pointer group"
+      className="p-6 sm:p-8 rounded-3xl bg-secondary/30 dark:bg-zinc-900/40 border border-border/50 flex flex-col items-center justify-center text-center group w-full hover:bg-secondary/50 transition-colors"
     >
-      <div className="soft-icon-box mb-3 group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-5 h-5 text-primary" />
+      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500">
+        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
       </div>
-      <div className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
+      <div className="text-3xl sm:text-4xl font-black text-foreground tracking-tighter leading-none">
         {count}<span className="text-primary">{stat.suffix}</span>
       </div>
-      <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1">{stat.label}</p>
+      <p className="text-[10px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-3">{stat.label}</p>
     </motion.div>
   );
 }
 
 /* ─── Client Marquee ────────────────────────────────────────────────── */
 const ClientMarquee = () => (
-  <div className="soft-card p-6 mb-10">
-    <h2 className="section-label text-center mb-5">Trusted By</h2>
+  <div className="p-8 sm:p-12 rounded-[2.5rem] bg-secondary/20 border border-border/40 w-full overflow-hidden text-center">
+    <h2 className="section-label text-center mb-10 opacity-70">Trusted By Forward-Thinking Brands</h2>
     <div className="relative flex overflow-hidden select-none">
-      <div className="absolute left-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-r from-card to-transparent pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-10 z-10 bg-gradient-to-l from-card to-transparent pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-background/20 to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-l from-background/20 to-transparent pointer-events-none" />
       {[0, 1].map((n) => (
-        <div key={n} className="flex animate-marquee whitespace-nowrap gap-10 min-w-full shrink-0 items-center px-2" aria-hidden={n === 1}>
+        <div key={n} className="flex animate-marquee whitespace-nowrap gap-12 sm:gap-24 min-w-full shrink-0 items-center px-4" aria-hidden={n === 1}>
           {[...clients, ...clients, ...clients, ...clients].map((client, i) => (
             <a key={i} href={client.link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center min-w-[100px] transition-all duration-500 hover:scale-110 transform cursor-pointer">
-              <img src={client.logo} alt={client.name} className="h-9 w-auto object-contain drop-shadow-sm opacity-70 hover:opacity-100 transition-opacity" />
+              className="flex items-center justify-center min-w-[120px] transition-all duration-700 grayscale hover:grayscale-0 hover:scale-110 transform">
+              <img src={client.logo} alt={client.name} className="h-8 sm:h-12 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity" />
             </a>
           ))}
         </div>
