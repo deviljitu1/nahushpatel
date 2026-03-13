@@ -120,24 +120,26 @@ interface HomePageProps {
 }
 
 /* ─── Component ─────────────────────────────────────────────────────── */
-const HomePage = ({ onNavigate }: HomePageProps) => {
-  const [zoomOpen, setZoomOpen] = useState(false);
-  const typed = useTypewriter([
-    "Digital Marketer",
-    "Web Developer",
-    "Growth Hacker",
-    "Automation Expert",
-  ]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
-    <div className="relative px-5 pt-6 sm:pt-10 max-w-screen-xl mx-auto">
+    <div className="relative px-4 sm:px-6 pt-6 sm:pt-12 max-w-screen-xl mx-auto overflow-x-hidden">
 
       {/* ── All page content ──────────────────────────────────── */}
-      <div className="relative z-10">
-        <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-10">
+      <div className="relative z-10 flex flex-col items-center">
+        <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-12 w-full max-w-2xl">
 
           {/* 3D Profile Cube */}
-          <motion.div variants={item} className="mb-7 inline-block relative">
+          <motion.div variants={item} className="mb-8 inline-block relative">
             {/* Outer glow ring */}
             <div
               className="relative"
@@ -145,22 +147,22 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
                 filter: "drop-shadow(0 20px 48px hsl(24 95% 53% / 0.35))",
               }}
             >
-              <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl animate-pulse -z-10" />
+              <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl animate-pulse -z-10" />
               <ProfileCube
                 imageSrc="/Nahush Patel.jpg"
-                size={typeof window !== "undefined" && window.innerWidth < 480 ? 110 : 160}
+                size={isMobile ? 120 : 160}
                 onFaceClick={() => setZoomOpen(true)}
               />
             </div>
 
             {/* Pulse badge */}
             <motion.div
-              className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl gradient-bg flex items-center justify-center shadow-lg z-10"
-              animate={{ scale: [1, 1.18, 1] }}
-              transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+              className="absolute -bottom-1 -right-1 w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-primary to-orange-400 flex items-center justify-center shadow-lg z-10 border-4 border-white dark:border-zinc-950"
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
               title="Available for Hire"
             >
-              <Sparkles className="w-4 h-4 text-primary-foreground" />
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </motion.div>
 
             {/* Drag hint */}
@@ -168,68 +170,65 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5, duration: 0.8 }}
-              className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] text-muted-foreground/50 font-medium select-none pointer-events-none"
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-muted-foreground/60 font-medium select-none pointer-events-none tracking-widest uppercase"
             >
               drag to rotate
             </motion.p>
           </motion.div>
 
           {/* Open to Work */}
-          <motion.div variants={item} className="flex justify-center mb-4">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-green-500/10 border border-green-500/25 text-green-600 dark:text-green-400 text-[11px] font-bold tracking-wide">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              Available for Hire
+          <motion.div variants={item} className="flex justify-center mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 dark:bg-green-500/10 border border-green-100 dark:border-green-500/20 text-green-600 dark:text-green-400 text-[11px] font-bold tracking-wider shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              OPEN FOR PROJECTS
             </span>
           </motion.div>
 
           {/* Name */}
-          <motion.h1 variants={item} className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-1 tracking-tight">
+          <motion.h1 variants={item} className="text-4xl sm:text-5xl lg:text-7xl font-black mb-2 tracking-tight leading-[1.05] px-2">
             Hi, I'm <span className="text-shimmer">Nahush Patel</span>
           </motion.h1>
 
           {/* Typewriter role */}
-          <motion.div variants={item} className="h-7 flex items-center justify-center mb-2">
-            <span className="text-sm sm:text-base lg:text-lg font-semibold text-primary">
+          <motion.div variants={item} className="h-8 flex items-center justify-center mb-4">
+            <span className="text-base sm:text-xl lg:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">
               {typed}
-              <span className="animate-blink ml-0.5 font-normal text-primary/60">|</span>
+              <span className="animate-blink ml-1 font-normal text-primary">|</span>
             </span>
           </motion.div>
 
           {/* Meta chips */}
-          <motion.div variants={item} className="flex items-center justify-center gap-2 text-[12px] text-muted-foreground mb-3 flex-wrap px-2">
-            <span className="flex items-center gap-1 font-medium"><MapPin className="w-3 h-3 shrink-0 text-primary" /> Raipur, India</span>
-            <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
-            <span className="hidden sm:flex items-center gap-1 font-medium"><Mail className="w-3 h-3 shrink-0 text-primary" /> nahushpatel2@gmail.com</span>
-            <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
-            <span className="flex items-center gap-1 font-medium"><Briefcase className="w-3 h-3 shrink-0 text-primary" /> Freelance / Full-time</span>
+          <motion.div variants={item} className="flex items-center justify-center gap-3 text-[13px] text-muted-foreground mb-8 flex-wrap px-4">
+            <span className="flex items-center gap-1.5 font-semibold bg-secondary/50 px-3 py-1 rounded-full"><MapPin className="w-3.5 h-3.5 text-primary" /> Raipur, India</span>
+            <span className="flex items-center gap-1.5 font-semibold bg-secondary/50 px-3 py-1 rounded-full"><Mail className="w-3.5 h-3.5 text-primary" /> nahushpatel2@gmail.com</span>
+            <span className="flex items-center gap-1.5 font-semibold bg-secondary/50 px-3 py-1 rounded-full"><Briefcase className="w-3.5 h-3.5 text-primary" /> Full-cycle Marketing</span>
           </motion.div>
 
-          <motion.p variants={item} className="text-sm sm:text-base text-muted-foreground max-w-sm lg:max-w-md mx-auto leading-relaxed mb-6 px-4">
-            I craft high-converting digital experiences — from ads that sell to automations that scale.
+          <motion.p variants={item} className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed mb-10 px-6 font-medium">
+            I craft high-converting digital experiences — from <span className="text-foreground font-bold">meta ads</span> that sell to <span className="text-foreground font-bold">automations</span> that scale.
           </motion.p>
 
-          {/* CTAs — full width on mobile, inline on sm+ */}
-          <motion.div variants={item} className="flex flex-col xs:flex-row gap-2.5 xs:gap-3 justify-center items-stretch xs:items-center px-4 xs:px-0">
+          {/* CTAs — Optimized for Mobile Tapability */}
+          <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-6 sm:px-0">
             <button
               onClick={() => onNavigate("contact")}
-              className="group w-full xs:w-auto px-6 py-3 rounded-2xl gradient-bg text-primary-foreground font-semibold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
-              style={{ boxShadow: "0 8px 24px hsl(24 95% 53% / 0.35)" }}
+              className="group w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-orange-500 text-white font-bold text-base shadow-[0_10px_30px_rgba(249,115,22,0.3)] hover:shadow-[0_15px_35px_rgba(249,115,22,0.4)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3"
             >
-              Hire Me <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              Hire Me <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <div className="flex gap-2.5 xs:gap-3">
+            <div className="flex gap-3 w-full sm:w-auto">
               <button
                 onClick={() => onNavigate("work")}
-                className="flex-1 xs:flex-none px-5 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
+                className="flex-1 sm:flex-none px-7 py-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2.5"
               >
-                <Eye className="w-4 h-4 text-primary" /> Work
+                <Eye className="w-5 h-5 text-primary" /> Work
               </button>
               <a
                 href="/resume.pdf"
                 download="Nahush_Patel_Resume.pdf"
-                className="flex-1 xs:flex-none px-5 py-3 rounded-2xl soft-card text-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-300 !shadow-md"
+                className="flex-1 sm:flex-none px-7 py-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2.5"
               >
-                <Download className="w-4 h-4 text-primary" /> CV
+                <Download className="w-5 h-5 text-primary" /> CV
               </a>
             </div>
           </motion.div>
