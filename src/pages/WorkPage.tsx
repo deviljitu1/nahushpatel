@@ -173,74 +173,117 @@ const projects = [
 const videoPortfolio = [
   {
     id: 1,
-    title: "Brand Intro Reel",
-    category: "Reel",
-    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-    creator: "@yourusername",
-    description: "Created this brand intro using After Effects + Premiere Pro. Focused on smooth transitions and brand color matching. 🎬",
-    likes: "2.4K",
-    comments: "186",
-    shares: "342",
+    title: "Art of the Whisk",
+    category: "Commercial",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344608/Whisk_qty2idzlzmzkvgzz0iy3itytmznlrtl2ugn30iy_zhzkzd.mp4",
+    creator: "@nahushpatel",
+    description: "A high-speed culinary motion study focusing on textures and movement. 🍳",
+    likes: "3.2K",
+    comments: "245",
+    shares: "1.1K",
+    aspectRatio: "16:9",
   },
   {
     id: 2,
-    title: "Product Motion Graphics",
-    category: "Motion",
-    videoUrl: "https://www.w3schools.com/html/movie.mp4",
-    creator: "@yourusername",
-    description: "3D product showcase with motion graphics. Made with Blender + After Effects. Client loved the floating effect ✨",
-    likes: "5.1K",
-    comments: "423",
-    shares: "891",
+    title: "Urban Rhythms",
+    category: "Scene",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344582/_scene_1_202511111742_sh8fv_srx10l.mp4",
+    creator: "@nahushpatel",
+    description: "Capturing the essence of city life through dynamic transitions and sound design. 🏙️",
+    likes: "4.5K",
+    comments: "312",
+    shares: "890",
+    aspectRatio: "16:9",
   },
   {
     id: 3,
-    title: "AI Generated Ad",
-    category: "AI Video",
-    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-    creator: "@yourusername",
-    description: "Fully AI-generated ad using Runway + Midjourney. Prompt engineering + post-production editing in Premiere 🤖",
-    likes: "8.7K",
-    comments: "1.2K",
-    shares: "2.1K",
+    title: "November Hues",
+    category: "Lifestyle",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344554/Nov_17__1228_15s_202511171254_32z0y_oqrmxq.mp4",
+    creator: "@nahushpatel",
+    description: "A seasonal lifestyle edit with warm tones and cinematic grading. 🍂",
+    likes: "2.8K",
+    comments: "156",
+    shares: "432",
+    aspectRatio: "16:9",
   },
   {
     id: 4,
-    title: "Client Testimonial Edit",
-    category: "Edit",
-    videoUrl: "https://www.w3schools.com/html/movie.mp4",
-    creator: "@yourusername",
-    description: "Testimonial video edit with dynamic captions, b-roll cuts, and color grading. Shot on iPhone, edited in DaVinci 🎥",
-    likes: "1.8K",
-    comments: "94",
-    shares: "156",
+    title: "Golden Hour Story",
+    category: "Cinematic",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344538/Nov_14__1433_29s_202511141457_ho8je_yimvk9.mp4",
+    creator: "@nahushpatel",
+    description: "Exploring light and shadow during the most magical hour of the day. ☀️",
+    likes: "5.1K",
+    comments: "423",
+    shares: "1.2K",
+    aspectRatio: "16:9",
   },
   {
     id: 5,
-    title: "Social Media Campaign",
-    category: "Reel",
-    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-    creator: "@yourusername",
-    description: "Campaign reel for a food brand. Hook → Value → CTA format. 3x engagement vs their previous content 📱",
-    likes: "12K",
-    comments: "890",
+    title: "Cultural Narratives",
+    category: "Documentary",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344516/Hindi_sdkg1s.mp4",
+    creator: "@nahushpatel",
+    description: "A vertical documentary piece exploring Hindi cultural expressions. 🇮🇳",
+    likes: "8.9K",
+    comments: "1.1K",
     shares: "3.4K",
+    aspectRatio: "9:16",
   },
   {
     id: 6,
-    title: "Explainer Animation",
-    category: "Motion",
-    videoUrl: "https://www.w3schools.com/html/movie.mp4",
-    creator: "@yourusername",
-    description: "2D explainer animation for a SaaS product. Script → Storyboard → Animation pipeline in 5 days 🚀",
-    likes: "3.6K",
-    comments: "267",
-    shares: "518",
+    title: "Masterpiece Production",
+    category: "Film",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344504/1_npwj0g.mp4",
+    creator: "@nahushpatel",
+    description: "Full-scale production showcase with high-end camera work and VFX. 🎥",
+    likes: "12K",
+    comments: "2.4K",
+    shares: "5.6K",
+    aspectRatio: "16:9",
+  },
+  {
+    id: 7,
+    title: "Quick Branding Snap",
+    category: "Social",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344468/_duration_8s_202511170013_dbx1h_n7ypbj.mp4",
+    creator: "@nahushpatel",
+    description: "Short-form content designed for maximum engagement in under 10 seconds. ⚡",
+    likes: "1.5K",
+    comments: "89",
+    shares: "267",
+    aspectRatio: "16:9",
+  },
+  {
+    id: 8,
+    title: "Cinematic Vertical",
+    category: "Reel",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344453/_description_cinematic_202512082302_8oaa_k4drmr.mp4",
+    creator: "@nahushpatel",
+    description: "Premium cinematic storytelling optimized for mobile scrolling. ✨",
+    likes: "6.7K",
+    comments: "534",
+    shares: "1.8K",
+    aspectRatio: "9:16",
+  },
+  {
+    id: 9,
+    title: "Widescreen Vision",
+    category: "Showcase",
+    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344437/_description_cinematic_202511170019_ltn6_paqx05.mp4",
+    creator: "@nahushpatel",
+    description: "Cinematic wide-ratio showcase for high-resolution displays. 🎞️",
+    likes: "9.2K",
+    comments: "890",
+    shares: "2.1K",
+    aspectRatio: "16:9",
   },
 ];
 
 const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)[number]; isActive: boolean; onEnded?: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const blurVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -248,14 +291,20 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
 
   useEffect(() => {
     if (isActive) {
-      videoRef.current?.play().then(() => {
+      const playPromise = videoRef.current?.play();
+      const blurPlayPromise = blurVideoRef.current?.play();
+
+      playPromise?.then(() => {
         setIsPlaying(true);
       }).catch((e) => {
         console.error("Autoplay failed:", e);
         setIsPlaying(false);
       });
+
+      blurPlayPromise?.catch(e => console.log("Blur autoplay silent fail"));
     } else {
       videoRef.current?.pause();
+      blurVideoRef.current?.pause();
       setIsPlaying(false);
     }
   }, [isActive]);
@@ -264,24 +313,41 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
+      blurVideoRef.current?.pause();
       setIsPlaying(false);
     } else {
       videoRef.current.play().catch(console.error);
+      blurVideoRef.current?.play().catch(console.error);
       setIsPlaying(true);
     }
   };
 
   return (
-    <div className="relative w-full h-[100dvh] md:h-full snap-start shrink-0 flex items-center justify-center bg-black">
+    <div className="relative w-full h-[100dvh] md:h-full snap-start shrink-0 flex items-center justify-center bg-black overflow-hidden text-white">
+      {/* Background Blur for 16:9 videos */}
+      {video.aspectRatio === "16:9" && (
+        <div className="absolute inset-0 z-0 opacity-40 scale-110 pointer-events-none">
+          <video
+            ref={blurVideoRef}
+            src={video.videoUrl}
+            className="w-full h-full object-cover blur-[60px]"
+            loop
+            muted
+            playsInline
+            preload="auto"
+          />
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+      )}
       {/* Video */}
       <div
-        className="relative w-full h-full overflow-hidden cursor-pointer"
+        className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center"
         onClick={togglePlay}
       >
         <video
           ref={videoRef}
           src={video.videoUrl}
-          className="absolute inset-0 w-full h-full object-cover"
+          className={`max-w-full max-h-full transition-all duration-700 ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
           loop
           muted={false}
           playsInline
