@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, Music2, CheckCircle2, X, Play, Video, Film, Youtube, Instagram, ArrowUp, ArrowDown } from "lucide-react";
+import { Heart, MessageCircle, Share2, Music2, CheckCircle2, X, Play, Video, Film, Youtube, Instagram, ArrowUp, ArrowDown, Maximize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const videoPortfolio = [
@@ -162,6 +162,19 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
     else { videoRef.current.play().catch(console.error); blurVideoRef.current?.play().catch(console.error); setIsPlaying(true); }
   };
 
+  const toggleFullscreen = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      } else if ((videoRef.current as any).webkitRequestFullscreen) {
+        (videoRef.current as any).webkitRequestFullscreen();
+      } else if ((videoRef.current as any).msRequestFullscreen) {
+        (videoRef.current as any).msRequestFullscreen();
+      }
+    }
+  };
+
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const sessionId = getSessionId();
@@ -284,6 +297,13 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
               </div>
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{formatCount(shareCount)}</span>
             </button>
+
+            <button onClick={toggleFullscreen} className="flex flex-col items-center gap-1.5 group">
+              <div className="p-4 rounded-full bg-muted/50 group-hover:bg-primary/10 transition-all">
+                <Maximize2 className="w-6 h-6 text-muted-foreground group-hover:text-primary" />
+              </div>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Full</span>
+            </button>
           </div>
         </div>
 
@@ -327,6 +347,13 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
                 <Share2 className="w-6 h-6 text-white" />
               </div>
               <span className="text-xs text-white font-medium drop-shadow-md">{formatCount(shareCount)}</span>
+            </button>
+
+            <button onClick={toggleFullscreen} className="flex flex-col items-center gap-1.5 group">
+              <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
+                <Maximize2 className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-xs text-white font-medium drop-shadow-md">Full view</span>
             </button>
           </div>
 
