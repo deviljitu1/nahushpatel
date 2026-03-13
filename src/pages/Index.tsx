@@ -77,7 +77,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden font-sans selection:bg-primary/30 flex">
-      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
+      <div className="hidden lg:block h-screen sticky top-0 left-0 z-[100]">
+        <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
+      </div>
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col flex-1 h-screen">
