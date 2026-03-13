@@ -106,20 +106,25 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
           </span>
         </button>
 
-        {/* Floating Theme Toggle - Mobile only (Above Contact Tab) */}
+        {/* Floating Theme Toggle - Mobile only (Draggable & Circular) */}
         <motion.button
+          drag
+          dragConstraints={{ left: -300, right: 20, top: -700, bottom: 20 }}
+          dragElastic={0.1}
+          whileDrag={{ scale: 1.1, boxShadow: "0 20px 40px hsl(24 95% 53% / 0.5)" }}
           initial={false}
           animate={{ rotate: isDark ? 0 : 360 }}
           onClick={onToggleTheme}
-          className="sm:hidden absolute -top-14 right-2 w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg border-2 border-background z-50 active:scale-90 transition-all"
+          className="sm:hidden absolute -top-24 right-4 w-12 h-12 rounded-full gradient-bg flex items-center justify-center shadow-2xl border-4 border-background z-50 active:scale-90 transition-all"
           style={{ 
-            boxShadow: "0 8px 24px hsl(24 95% 53% / 0.35)",
+            boxShadow: "0 10px 30px hsl(24 95% 53% / 0.4)",
+            touchAction: "none" // Required for framer-motion drag on mobile
           }}
         >
           {isDark ? (
-            <Sun className="w-4 h-4 text-primary-foreground" />
+            <Sun className="w-5 h-5 text-primary-foreground" />
           ) : (
-            <Moon className="w-4 h-4 text-primary-foreground" />
+            <Moon className="w-5 h-5 text-primary-foreground" />
           )}
         </motion.button>
       </div>
