@@ -275,10 +275,10 @@ const WorkPage = () => {
     <div className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen ? 'bg-zinc-950 h-full overflow-hidden' : 'mx-auto px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
 
       {/* Section Header - Persistent & Responsive */}
-      <div className={`z-50 px-5 transition-all duration-500 rounded-b-[2rem] ${isFullscreen 
-        ? 'sticky top-0 bg-zinc-950/80 backdrop-blur-2xl border-b border-white/5 pt-6 pb-8' 
-        : 'mb-8 pt-6'}`}>
-        <div className={isFullscreen ? 'max-w-7xl mx-auto' : 'max-w-full'}>
+      <div className={`z-50 transition-all duration-700 ${isFullscreen 
+        ? 'absolute top-0 left-0 right-0 bg-gradient-to-b from-zinc-950/80 to-transparent backdrop-blur-md border-b border-white/5 pt-6 pb-12 px-8' 
+        : 'relative mb-12 pt-8 px-5'}`}>
+        <div className={isFullscreen ? 'max-w-screen-2xl mx-auto flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6' : 'max-w-full'}>
 
           {/* Back Button for Creative Carousel */}
           {activeFilter === 'Social Media' && socialSubTab === 'Creatives' && creativeMode === 'carousel' && (
@@ -294,31 +294,60 @@ const WorkPage = () => {
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`font-black tracking-tighter transition-all duration-500 ${isFullscreen ? 'text-3xl text-white mb-1' : 'text-5xl mb-2'}`}
+              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen ? 'text-2xl text-white mb-0' : 'text-5xl mb-2'}`}
             >
               My <span className="gradient-text">Work</span>
             </motion.h1>
-            <p className={`font-medium tracking-tight transition-opacity duration-500 ${isFullscreen ? 'text-sm text-white/50 mb-4' : 'text-base text-muted-foreground mb-10'}`}>
-              Case studies & creative work
-            </p>
+            {!isFullscreen && (
+              <p className="font-medium tracking-tight text-base text-muted-foreground mb-1">
+                Case studies & creative work
+              </p>
+            )}
           </div>
 
-          <div className={`flex gap-2 overflow-x-auto pb-4 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : '-mx-1 px-1 sm:justify-start lg:justify-center'}`}>
-            {filters.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setActiveFilter(tag)}
-                className={`px-5 py-2.5 rounded-2xl text-[12px] font-black tracking-widest transition-all border-2 active:scale-95 whitespace-nowrap ${activeFilter === tag
-                  ? isFullscreen 
-                    ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(251,146,60,0.3)]"
-                    : "bg-primary/5 text-primary border-primary/20 shadow-none"
-                  : isFullscreen
-                    ? "bg-white/5 text-white/40 border-white/5 hover:text-white hover:bg-white/10"
-                    : "bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary"}`}
+          <div className="flex flex-col gap-4">
+            <div className={`flex gap-2 overflow-x-auto scrollbar-none ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : 'justify-start'}`}>
+              {filters.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => setActiveFilter(tag)}
+                  className={`px-5 py-2.5 rounded-2xl text-[12px] font-black tracking-widest transition-all border-2 active:scale-95 whitespace-nowrap ${activeFilter === tag
+                    ? isFullscreen 
+                      ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(251,146,60,0.3)]"
+                      : "bg-primary/5 text-primary border-primary/20 shadow-none font-black"
+                    : isFullscreen
+                      ? "bg-white/5 text-white/40 border-white/5 hover:text-white hover:bg-white/10"
+                      : "bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary"}`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+
+            {activeFilter === 'Social Media' && (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className={`flex gap-2 items-center ${isFullscreen ? 'justify-start' : 'justify-center'} overflow-x-auto scrollbar-none`}
               >
-                {tag}
-              </button>
-            ))}
+                <div className={`h-4 w-[1px] ${isFullscreen ? 'bg-white/10' : 'bg-slate-200'} mx-2 hidden lg:block`} />
+                {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => (
+                  <button
+                    key={sub}
+                    onClick={() => setSocialSubTab(sub === 'Ads' ? 'Paid Ads' : sub)}
+                    className={`px-4 py-2 rounded-xl text-[11px] font-bold tracking-tight transition-all border-2 active:scale-95 whitespace-nowrap ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
+                      ? isFullscreen
+                        ? 'bg-white text-black border-white shadow-xl'
+                        : 'bg-foreground text-background border-foreground shadow-md'
+                      : isFullscreen 
+                        ? 'bg-white/5 text-white/60 border-white/5 hover:bg-white/20 hover:text-white'
+                        : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-slate-100 dark:border-slate-700 hover:bg-slate-50'}`}
+                  >
+                    {sub}
+                  </button>
+                ))}
+              </motion.div>
+            )}
           </div>
 
             {/* If fullscreen (Social Media sub-modes), show a back to projects/all button or similar if needed? 
@@ -454,19 +483,19 @@ const WorkPage = () => {
               </div>
             </div>
             
-            {/* Desktop Navigation for Video Portfolio in Work Page */}
+            {/* Desktop Navigation for Video Portfolio in Work Page - Synced with Reels Selection Nav */}
             <div className="hidden lg:flex fixed flex-col right-12 top-1/2 -translate-y-1/2 gap-6 z-50">
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex - 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
                 disabled={activeVideoIndex === 0}
-                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 border border-primary/20 shadow-xl backdrop-blur-md"
+                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
               >
                 <ArrowUp className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex + 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
                 disabled={activeVideoIndex === videoPortfolio.length - 1}
-                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 border border-primary/20 shadow-xl backdrop-blur-md"
+                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
               >
                 <ArrowDown className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
