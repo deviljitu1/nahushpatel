@@ -79,14 +79,14 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
           );
         })}
 
-        {/* Separator */}
-        <div className="w-px h-8 bg-border/40 mx-0.5" />
+        {/* Separator - Desktop only */}
+        <div className="hidden sm:block w-px h-8 bg-border/40 mx-0.5" />
 
-        {/* Theme Toggle */}
+        {/* Theme Toggle - Desktop only */}
         <button
           onClick={onToggleTheme}
           aria-label="Toggle theme"
-          className="relative flex flex-col items-center justify-center h-full min-w-[44px] z-10 group"
+          className="hidden sm:flex flex-col items-center justify-center h-full min-w-[44px] z-10 group"
         >
           <motion.div
             key={isDark ? "sun" : "moon"}
@@ -105,6 +105,23 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
             {isDark ? "Light" : "Dark"}
           </span>
         </button>
+
+        {/* Floating Theme Toggle - Mobile only (Above Contact Tab) */}
+        <motion.button
+          initial={false}
+          animate={{ rotate: isDark ? 0 : 360 }}
+          onClick={onToggleTheme}
+          className="sm:hidden absolute -top-14 right-2 w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg border-2 border-background z-50 active:scale-90 transition-all"
+          style={{ 
+            boxShadow: "0 8px 24px hsl(24 95% 53% / 0.35)",
+          }}
+        >
+          {isDark ? (
+            <Sun className="w-4 h-4 text-primary-foreground" />
+          ) : (
+            <Moon className="w-4 h-4 text-primary-foreground" />
+          )}
+        </motion.button>
       </div>
     </nav>
   );
