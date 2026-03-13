@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "@/components/BottomNav";
+import Sidebar from "@/components/Sidebar";
 import HomePage from "@/pages/HomePage";
 import { useTheme } from "@/hooks/use-theme";
 
@@ -75,12 +76,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden font-sans selection:bg-primary/30">
-      {/* Grid background */}
-      <div className="grid-bg" />
+    <div className="min-h-screen bg-background relative overflow-hidden font-sans selection:bg-primary/30 flex">
+      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col h-screen">
+      <div className="relative z-10 flex flex-col flex-1 h-screen">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -88,7 +88,9 @@ const Index = () => {
           className="flex-1 overflow-hidden flex flex-col relative"
         >
           {/* Scrollable Content */}
-          <div className={`flex-1 overflow-y-auto scrollbar-none relative z-10 ${activeTab === 'reels' ? 'pb-0' : 'pb-28'}`} style={{ WebkitOverflowScrolling: "touch" }}>
+          <div className={`flex-1 overflow-y-auto scrollbar-none relative z-10 ${
+            activeTab === 'reels' ? 'pb-0' : 'pb-24 lg:pb-0'
+          }`} style={{ WebkitOverflowScrolling: "touch" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -111,7 +113,9 @@ const Index = () => {
         </motion.div>
       </div>
 
-      <BottomNav activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
+      <div className="lg:hidden">
+        <BottomNav activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
+      </div>
     </div>
   );
 };

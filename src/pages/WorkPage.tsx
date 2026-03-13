@@ -274,8 +274,10 @@ const WorkPage = () => {
   return (
     <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-4xl min-h-screen pt-4'}`}>
 
-      {/* Section Toggle - Always visible */}
-      <div className={`${isFullscreen ? 'relative z-50 px-5 pt-3 pb-8 bg-black/5' : 'mb-8'}`}>
+      {/* Section Header - Persistent & Responsive */}
+      <div className={`z-50 px-5 transition-all duration-500 ${isFullscreen 
+        ? 'sticky top-0 bg-black/40 backdrop-blur-2xl border-b border-white/5 pt-4 pb-6' 
+        : 'mb-8 pt-4'}`}>
         <div className={isFullscreen ? 'max-w-lg mx-auto' : ''}>
 
           {/* Back Button for Creative Carousel */}
@@ -288,31 +290,34 @@ const WorkPage = () => {
             </button>
           )}
 
-          <>
+          <div className="flex flex-col">
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`text-3xl font-bold mb-1 tracking-tight ${isFullscreen ? 'text-white' : ''}`}
+              className={`font-bold tracking-tight transition-all duration-300 ${isFullscreen ? 'text-2xl text-white mb-0.5' : 'text-3xl mb-1'}`}
             >
               My <span className="gradient-text">Work</span>
             </motion.h1>
-            <p className={`text-sm mb-8 text-muted-foreground ${isFullscreen ? 'text-white/60' : ''}`}>Case studies & creative work</p>
-          </>
-
-          <div className={`flex gap-3 overflow-x-auto pb-2 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 lg:justify-center' : '-mx-1 px-1 lg:justify-center dark'}`}>
+            <p className={`text-xs transition-opacity duration-300 mb-6 ${isFullscreen ? 'text-white/50 mb-4' : 'text-muted-foreground mb-8'}`}>
+              Case studies & creative work
+            </p>
+            <div className={`flex gap-2 overflow-x-auto pb-4 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 lg:justify-center' : '-mx-1 px-1 lg:justify-center'}`}>
             {filters.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setActiveFilter(tag)}
-                className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[3px] whitespace-nowrap ${activeFilter === tag
-                  ? "bg-transparent text-primary border-primary/20 shadow-none ring-2 ring-primary/10"
+                className={`px-4 py-2 rounded-xl text-[11px] font-bold tracking-wide transition-all border border-b-[3px] active:border-b-0 active:translate-y-[2px] whitespace-nowrap ${activeFilter === tag
+                  ? isFullscreen 
+                    ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(251,146,60,0.3)]"
+                    : "bg-transparent text-primary border-primary/20 shadow-none ring-2 ring-primary/10"
                   : isFullscreen
-                    ? "bg-white/10 text-white/70 border-white/10 hover:text-white"
+                    ? "bg-white/5 text-white/50 border-white/10 hover:text-white hover:bg-white/10"
                     : "bg-white dark:bg-slate-800 text-muted-foreground border-slate-200 dark:border-slate-700 hover:text-foreground"}`}
               >
                 {tag}
               </button>
             ))}
+          </div>
 
             {/* If fullscreen (Social Media sub-modes), show a back to projects/all button or similar if needed? 
                   Actually, user might want to switch tabs even in fullscreen. 
@@ -322,20 +327,21 @@ const WorkPage = () => {
 
           </div>
 
-          {/* Filter Sub-Tabs for Social Media */}
           {activeFilter === 'Social Media' && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex gap-2 justify-center flex-wrap"
+              className="mt-2 flex gap-2 justify-center flex-wrap pb-2"
             >
               {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => (
                 <button
                   key={sub}
                   onClick={() => setSocialSubTab(sub === 'Ads' ? 'Paid Ads' : sub)}
-                  className={`px-4 py-2 rounded-full text-[10px] font-bold transition-all border shadow-sm ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
+                  className={`px-3 py-1.5 rounded-full text-[9px] font-bold transition-all border shadow-sm ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
                     ? 'bg-primary text-primary-foreground border-primary scale-105 shadow-md'
-                    : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+                    : isFullscreen 
+                      ? 'bg-white/10 text-white/60 border-white/5 hover:bg-white/20 hover:text-white'
+                      : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'}`}
                 >
                   {sub}
                 </button>
