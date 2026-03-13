@@ -215,7 +215,7 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
   };
 
   return (
-    <div className="relative w-full h-full snap-start shrink-0 flex flex-col bg-black lg:bg-background overflow-hidden text-white lg:text-foreground">
+    <div className="relative w-full h-full snap-start shrink-0 flex flex-col bg-transparent overflow-hidden text-white lg:text-foreground">
       {/* Ambient Background Blur - Only on desktop for that premium feel */}
       <div className="absolute inset-0 z-0 opacity-20 scale-110 pointer-events-none overflow-hidden hidden lg:block">
         <video 

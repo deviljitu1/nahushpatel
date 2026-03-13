@@ -88,9 +88,9 @@ const Index = () => {
           className="flex-1 overflow-hidden flex flex-col relative"
         >
           {/* Scrollable Content */}
-          <div className={`flex-1 overflow-y-auto scrollbar-none relative z-10 ${
-            activeTab === 'reels' || activeTab === 'work' ? 'pb-0' : 'pb-24 lg:pb-0'
-          }`} style={{ WebkitOverflowScrolling: "touch" }}>
+          <div className={`flex-1 relative z-10 ${
+            activeTab === 'reels' || activeTab === 'work' ? 'overflow-hidden h-full' : 'overflow-y-auto scrollbar-none'
+          } ${activeTab === 'reels' || activeTab === 'work' ? 'pb-0' : 'pb-24 lg:pb-0'}`} style={{ WebkitOverflowScrolling: "touch" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -98,7 +98,7 @@ const Index = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="min-h-full"
+                className={`w-full ${activeTab === 'reels' || activeTab === 'work' ? 'h-full' : 'min-h-full'}`}
               >
                 <Suspense fallback={
                   <div className="flex h-[80vh] items-center justify-center">

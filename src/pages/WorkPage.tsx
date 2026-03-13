@@ -272,7 +272,7 @@ const WorkPage = () => {
   const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
-    <div className={`transition-colors duration-500 ${isFullscreen ? 'absolute inset-0 z-50 bg-zinc-950 flex flex-col' : 'relative mx-auto w-full px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
+    <div className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen ? 'bg-zinc-950 h-full overflow-hidden' : 'mx-auto px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
 
       {/* Section Header - Persistent & Responsive */}
       <div className={`z-50 px-5 transition-all duration-500 rounded-b-[2rem] ${isFullscreen 
