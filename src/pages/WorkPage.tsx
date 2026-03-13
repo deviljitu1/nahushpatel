@@ -6,7 +6,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { supabase } from "@/integrations/supabase/client";
 import { ReelCard, videoPortfolio } from "@/pages/ReelsPage";
 
-const filters = ["SEO", "Web Dev", "Automation", "Social Media"];
+const categoryData = [
+  { id: 'SEO', title: 'SEO', image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=200&auto=format&fit=crop' },
+  { id: 'Web Dev', title: 'Web Dev', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=200&auto=format&fit=crop' },
+  { id: 'Automation', title: 'Automation', image: 'https://images.unsplash.com/photo-1518433278981-1127cc340b09?q=80&w=200&auto=format&fit=crop' },
+  { id: 'Social Media', title: 'Social Media', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop' }
+];
+
+const filters = categoryData.map(c => c.id);
 
 // Real web development projects from nahushpatel.in
 const webDevProjects = [
@@ -305,21 +312,36 @@ const WorkPage = () => {
             )}
           </div>
 
-          <div className="flex flex-col gap-4">
-            <div className={`flex gap-2 overflow-x-auto scrollbar-none ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : 'justify-start'}`}>
-              {filters.map((tag) => (
+          <div className="flex flex-col gap-6">
+            <div className={`flex gap-6 overflow-x-auto scrollbar-none py-2 ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : 'justify-start'}`}>
+              {categoryData.map((cat) => (
                 <button
-                  key={tag}
-                  onClick={() => setActiveFilter(tag)}
-                  className={`px-5 py-2.5 rounded-2xl text-[12px] font-black tracking-widest transition-all border-2 active:scale-95 whitespace-nowrap ${activeFilter === tag
-                    ? isFullscreen 
-                      ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(251,146,60,0.3)]"
-                      : "bg-primary/5 text-primary border-primary/20 shadow-none font-black"
-                    : isFullscreen
-                      ? "bg-white/5 text-white/40 border-white/5 hover:text-white hover:bg-white/10"
-                      : "bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary"}`}
+                  key={cat.id}
+                  onClick={() => setActiveFilter(cat.id)}
+                  className="flex flex-col items-center gap-3 transition-all duration-300 group shrink-0"
                 >
-                  {tag}
+                  {/* Circle with Gradient Border */}
+                  <div className={`relative p-[3px] rounded-full transition-all duration-500 transform ${activeFilter === cat.id 
+                    ? 'scale-110 !p-[4px] bg-gradient-to-tr from-[#fb923c] via-[#ec4899] to-[#8b5cf6] shadow-[0_0_25px_rgba(236,72,153,0.4)]' 
+                    : 'bg-zinc-200 dark:bg-zinc-800 hover:bg-gradient-to-tr hover:from-primary/50 hover:to-primary group-hover:scale-105'}`}>
+                    <div className={`rounded-full p-1 bg-background ${isFullscreen ? 'bg-zinc-950' : 'bg-white dark:bg-zinc-900'} transition-colors`}>
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden relative">
+                        <img 
+                          src={cat.image} 
+                          alt={cat.title} 
+                          className={`w-full h-full object-cover transition-all duration-500 ${activeFilter === cat.id ? 'scale-110' : 'grayscale-[50%] group-hover:grayscale-0'}`} 
+                        />
+                        <div className={`absolute inset-0 bg-black/10 transition-opacity ${activeFilter === cat.id ? 'opacity-0' : 'opacity-40 group-hover:opacity-10'}`} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Label */}
+                  <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id 
+                    ? 'text-primary' 
+                    : isFullscreen ? 'text-white/40' : 'text-muted-foreground'}`}>
+                    {cat.title}
+                  </span>
                 </button>
               ))}
             </div>
