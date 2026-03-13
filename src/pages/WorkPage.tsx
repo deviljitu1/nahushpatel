@@ -272,13 +272,13 @@ const WorkPage = () => {
   const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
-    <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-lg lg:max-w-6xl md:h-[calc(100dvh-6rem)] h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-4xl min-h-screen pt-4'}`}>
+    <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-full h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-6xl min-h-screen pt-4'}`}>
 
       {/* Section Header - Persistent & Responsive */}
       <div className={`z-50 px-5 transition-all duration-500 ${isFullscreen 
         ? 'sticky top-0 bg-black/40 backdrop-blur-2xl border-b border-white/5 pt-4 pb-6' 
         : 'mb-8 pt-4'}`}>
-        <div className={isFullscreen ? 'max-w-lg mx-auto' : ''}>
+        <div className={isFullscreen ? 'max-w-5xl mx-auto' : ''}>
 
           {/* Back Button for Creative Carousel */}
           {activeFilter === 'Social Media' && socialSubTab === 'Creatives' && creativeMode === 'carousel' && (
@@ -362,7 +362,7 @@ const WorkPage = () => {
             exit={{ opacity: 0, y: -20 }}
             className="pb-24 grid gap-8 px-1"
           >
-            <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-6">
+            <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-8">
               {filtered.map((project) => (
                 <motion.div
                   key={project.id}
@@ -424,24 +424,27 @@ const WorkPage = () => {
             <div 
               ref={containerRef}
               onScroll={handleScroll}
-              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col h-full"
+              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col h-full bg-black lg:bg-transparent"
               style={{ scrollBehavior: 'smooth' }}
             >
-              {videoPortfolio.map((video, i) => (
-                <ReelCard 
-                  key={video.id} 
-                  video={video} 
-                  isActive={i === activeVideoIndex} 
-                  onEnded={() => {
-                    if (i < videoPortfolio.length - 1) {
-                      containerRef.current?.scrollTo({ top: (i + 1) * containerRef.current.clientHeight, behavior: 'smooth' });
-                    } else {
-                      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                  }}
-                />
-              ))}
+              <div className="flex-1">
+                {videoPortfolio.map((video, i) => (
+                  <ReelCard 
+                    key={video.id} 
+                    video={video} 
+                    isActive={i === activeVideoIndex} 
+                    onEnded={() => {
+                      if (i < videoPortfolio.length - 1) {
+                        containerRef.current?.scrollTo({ top: (i + 1) * containerRef.current.clientHeight, behavior: 'smooth' });
+                      } else {
+                        containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                  />
+                ))}
+              </div>
             </div>
+
 
             {/* Indicator / Info Overlay */}
             <div className="absolute top-20 right-4 z-30 flex flex-col gap-2">
@@ -450,23 +453,24 @@ const WorkPage = () => {
               </div>
             </div>
             
-            {/* Scroll Navigation for Desktop in Work Page */}
-            <div className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 flex-col gap-4 z-40">
+            {/* Desktop Navigation for Video Portfolio in Work Page */}
+            <div className="hidden lg:flex fixed flex-col right-12 top-1/2 -translate-y-1/2 gap-6 z-50">
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex - 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
-                className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 disabled:opacity-20"
                 disabled={activeVideoIndex === 0}
+                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 border border-primary/20 shadow-xl backdrop-blur-md"
               >
-                <ArrowUp className="w-5 h-5" />
+                <ArrowUp className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex + 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
-                className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 disabled:opacity-20"
                 disabled={activeVideoIndex === videoPortfolio.length - 1}
+                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 border border-primary/20 shadow-xl backdrop-blur-md"
               >
-                <ArrowDown className="w-5 h-5" />
+                <ArrowDown className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
             </div>
+
           </motion.div>
         )}
 

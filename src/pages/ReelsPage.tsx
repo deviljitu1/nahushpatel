@@ -462,7 +462,7 @@ const ReelsPage = () => {
       <div 
         ref={containerRef}
         onScroll={handleScroll}
-        className="h-full w-full lg:max-w-[420px] lg:h-[90vh] lg:rounded-[32px] lg:border-[8px] lg:border-zinc-900 lg:shadow-[0_0_100px_rgba(0,0,0,0.9)] lg:relative overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col bg-black z-10"
+        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col bg-black lg:bg-transparent z-10"
         style={{ scrollBehavior: 'smooth' }}
       >
         {videoPortfolio.map((video, i) => (
@@ -480,25 +480,26 @@ const ReelsPage = () => {
           />
         ))}
 
-        {/* Desktop navigation hints */}
-        <div className="hidden lg:flex absolute flex-col right-[-70px] top-1/2 -translate-y-1/2 gap-6 z-20">
+        {/* Desktop navigation hints - Positioned relative to the viewport */}
+        <div className="hidden lg:flex fixed flex-col right-12 top-1/2 -translate-y-1/2 gap-6 z-50">
           <button 
             onClick={() => scrollToIndex(Math.max(activeIndex - 1, 0))}
             disabled={activeIndex === 0}
-            className="p-4 rounded-full bg-white/5 hover:bg-white/10 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-white/5 shadow-xl"
+            className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
             title="Previous (Arrow Up)"
           >
-            <ArrowUp className="w-6 h-6 text-white" />
+            <ArrowUp className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
           </button>
           <button 
             onClick={() => scrollToIndex(Math.min(activeIndex + 1, videoPortfolio.length - 1))}
             disabled={activeIndex === videoPortfolio.length - 1}
-            className="p-4 rounded-full bg-white/5 hover:bg-white/10 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-white/5 shadow-xl"
+            className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
             title="Next (Arrow Down)"
           >
-            <ArrowDown className="w-6 h-6 text-white" />
+            <ArrowDown className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
           </button>
         </div>
+
       </div>
     </div>
   );
