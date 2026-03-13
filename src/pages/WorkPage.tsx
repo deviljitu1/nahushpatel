@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Send, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown, Code2, ExternalLink, Globe, X, Bookmark } from "lucide-react";
+import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Share2, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown, Code2, ExternalLink, Globe, X, Bookmark } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -280,6 +280,22 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   const commentInputRef = useRef<HTMLInputElement>(null);
+  
+  // Handle physical back button to close drawer
+  useEffect(() => {
+    if (showComments) {
+      // Add a dummy state to history to intercept the next back button
+      window.history.pushState({ drawerOpen: true }, "");
+      
+      const handlePopState = (e: PopStateEvent) => {
+        // If we're going back and the drawer was open, close it and stay on page
+        setShowComments(false);
+      };
+      
+      window.addEventListener('popstate', handlePopState);
+      return () => window.removeEventListener('popstate', handlePopState);
+    }
+  }, [showComments]);
 
   useEffect(() => {
     const sessionId = getSessionId();
@@ -334,12 +350,12 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
       if (navigator.share) {
         await navigator.share({ title: video.title, text: `Check out "${video.title}" by ${video.creator}`, url: window.location.href });
         setShareCount(prev => prev + 1);
-      } else {
+      } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(window.location.href);
         setShareCount(prev => prev + 1);
         setShowCopied(true); setTimeout(() => setShowCopied(false), 2000);
       }
-    } catch { /* cancelled */ }
+    } catch { /* cancelled or failed */ }
   };
 
   const handleAddComment = async (e: React.FormEvent) => {
@@ -364,7 +380,15 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
         </div>
       )}
 
-      <div className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center" onClick={togglePlay}>
+      <motion.div 
+        key={video.id}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center" 
+        onClick={togglePlay}
+      >
         <video ref={videoRef} src={video.videoUrl}
           className={`max-w-full max-h-full transition-all duration-700 ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
           loop muted={false} playsInline preload="metadata" onEnded={onEnded}
@@ -396,7 +420,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
         </AnimatePresence>
 
         {/* Right side actions */}
-        <div className="absolute right-4 bottom-32 md:bottom-24 z-10 flex flex-col items-center gap-6">
+        <div className="absolute right-4 bottom-32 md:bottom-24 z-20 flex flex-col items-center gap-6">
           <button onClick={handleLike} className="flex flex-col items-center gap-1 group">
             <motion.div whileTap={{ scale: 1.3 }} className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
               <Heart className={`w-7 h-7 transition-all duration-300 ${isLiked ? "text-red-500 fill-red-500 scale-110" : "text-white"}`} />
@@ -414,7 +438,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
 
           <button onClick={handleShare} className="flex flex-col items-center gap-1 group">
             <div className="p-2 rounded-full bg-black/20 backdrop-blur-sm group-active:scale-90 transition-transform">
-              <Send className="w-6 h-6 text-white" />
+              <Share2 className="w-6 h-6 text-white" />
             </div>
             <span className="text-xs text-white font-medium drop-shadow-md">{formatCount(shareCount)}</span>
           </button>
@@ -454,7 +478,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Comments Drawer — above bottom nav */}
       <AnimatePresence>
@@ -466,7 +490,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
             <motion.div
               initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 350 }}
-              className="absolute bottom-20 md:bottom-0 left-0 right-0 z-30 bg-zinc-900/98 backdrop-blur-2xl rounded-t-3xl flex flex-col"
+              className="absolute bottom-0 left-0 right-0 z-30 bg-zinc-900/98 backdrop-blur-2xl rounded-t-3xl flex flex-col"
               style={{ maxHeight: '55vh' }}
               onClick={(e) => e.stopPropagation()}>
               
@@ -507,7 +531,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
                 ))}
               </div>
 
-              <form onSubmit={handleAddComment} className="px-4 py-3 border-t border-white/10 space-y-2">
+              <form onSubmit={handleAddComment} className="px-4 py-3 border-t border-white/10 space-y-2 pb-[max(12px,env(safe-area-inset-bottom))]">
                 <div className="flex gap-2">
                   <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Your name"
                     maxLength={30} className="w-28 bg-white/10 rounded-full px-3 py-2 text-xs text-white placeholder:text-white/40 outline-none focus:bg-white/15 transition-colors" />
@@ -654,8 +678,8 @@ const WorkPage = () => {
 
       e.preventDefault();
       wheelCooldown.blocked = true;
-      // Long enough for the scroll animation to finish before allowing next reel
-      setTimeout(() => { wheelCooldown.blocked = false; }, 900);
+      // Faster cooldown for more fluid sequence scrolling
+      setTimeout(() => { wheelCooldown.blocked = false; }, 600);
 
       if (e.deltaY > 0) {
         scrollToIndex(Math.min(activeVideoIndex + 1, videoPortfolio.length - 1));
@@ -864,7 +888,7 @@ const WorkPage = () => {
             {/* Desktop: centered phone-frame container */}
             <div
               ref={containerRef}
-              className="w-full h-full lg:w-[450px] lg:h-[90vh] lg:rounded-3xl lg:overflow-hidden lg:border-2 lg:border-white/10 lg:shadow-2xl snap-y snap-mandatory overflow-y-auto scrollbar-none relative focus:outline-none"
+              className="w-full h-full lg:w-[450px] lg:h-[90vh] lg:rounded-3xl lg:overflow-hidden lg:border-2 lg:border-white/10 lg:shadow-2xl snap-y snap-mandatory overflow-y-auto scrollbar-none relative focus:outline-none scroll-smooth touch-pan-y overscroll-none"
               tabIndex={0}
               onScroll={handleScroll}
             >
@@ -1154,6 +1178,10 @@ const WorkPage = () => {
       {/* Project Detail Dialog */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
         <DialogContent className="bg-white dark:bg-slate-900 border-none text-foreground max-w-lg lg:max-w-2xl mx-auto p-0 overflow-hidden shadow-2xl rounded-3xl">
+          <DialogHeader className="sr-only">
+            <DialogTitle>{selectedProject?.title}</DialogTitle>
+            <DialogDescription>{selectedProject?.problem}</DialogDescription>
+          </DialogHeader>
           {selectedProject && (
             <>
               <div className="relative h-64 overflow-hidden">
@@ -1246,10 +1274,9 @@ const WorkPage = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => setSocialSubTab('All')}
-          className="fixed bottom-20 right-4 z-[9999] px-5 py-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
-          style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }} // Ensure visibility on iOS
+          className="fixed top-24 left-4 z-[9999] px-4 py-2 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 text-[10px] font-bold shadow-2xl flex items-center gap-2 hover:bg-black/70 transition-all active:scale-95"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to Case Studies
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to Projects
         </motion.button>,
         document.body
       )}

@@ -145,9 +145,10 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
                 filter: "drop-shadow(0 20px 48px hsl(24 95% 53% / 0.35))",
               }}
             >
+              <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl animate-pulse -z-10" />
               <ProfileCube
                 imageSrc="/Nahush Patel.jpg"
-                size={typeof window !== "undefined" && window.innerWidth < 380 ? 96 : 112}
+                size={typeof window !== "undefined" && window.innerWidth < 768 ? 120 : 160}
                 onFaceClick={() => setZoomOpen(true)}
               />
             </div>
