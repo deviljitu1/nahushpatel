@@ -281,32 +281,12 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-28 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent p-[2px]">
-              <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                <span className="text-xs font-bold text-white">NP</span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold text-white drop-shadow-md flex items-center gap-1">
-                {video.creator} <CheckCircle2 className="w-3 h-3 text-blue-400 fill-blue-400/20" />
-              </span>
-              <span className="text-[10px] text-white/80">Original Audio</span>
-            </div>
-          </div>
-
           <h3 className="text-sm font-bold text-white drop-shadow-md mb-2 line-clamp-1">{video.title}</h3>
           <p className={`text-xs text-white/90 drop-shadow-md leading-relaxed pr-12 ${!showMore ? "line-clamp-2" : ""}`}
             onClick={(e) => { e.stopPropagation(); setShowMore(!showMore); }}>
             {video.description}
             {!showMore && <span className="text-white/60 font-medium ml-1">more</span>}
           </p>
-          <div className="flex items-center gap-2 mt-4 text-white/70">
-            <Music2 className="w-3 h-3 animate-pulse" />
-            <div className="text-[10px] overflow-hidden w-32 relative">
-              <div className="whitespace-nowrap animate-marquee">Original Audio - {video.creator} • Trending Sound</div>
-            </div>
-          </div>
         </div>
       </motion.div>
 
