@@ -224,7 +224,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
       >
         <video ref={videoRef} src={video.videoUrl}
           className={`max-w-full transition-all duration-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
-          loop muted={false} playsInline preload="metadata" onEnded={onEnded}
+          loop={false} muted={false} playsInline preload="metadata" onEnded={onEnded}
           onTimeUpdate={() => { if (videoRef.current) setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100); }}
         />
 
@@ -441,6 +441,8 @@ const ReelsPage = () => {
             onEnded={() => {
               if (i < videoPortfolio.length - 1) {
                 scrollToIndex(i + 1);
+              } else {
+                scrollToIndex(0); // Infinite loop back to the first video
               }
             }}
           />
