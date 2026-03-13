@@ -532,6 +532,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
 };
 
 
+const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07 } },
 };
