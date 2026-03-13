@@ -130,7 +130,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
   ]);
 
   return (
-    <div className="relative px-5 pt-10 max-w-lg lg:max-w-4xl mx-auto">
+    <div className="relative px-5 pt-10 max-w-screen-xl mx-auto">
 
       {/* ── All page content ──────────────────────────────────── */}
       <div className="relative z-10">
@@ -148,7 +148,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl animate-pulse -z-10" />
               <ProfileCube
                 imageSrc="/Nahush Patel.jpg"
-                size={typeof window !== "undefined" && window.innerWidth < 768 ? 120 : 160}
+                size={typeof window !== "undefined" && window.innerWidth < 480 ? 110 : 160}
                 onFaceClick={() => setZoomOpen(true)}
               />
             </div>
