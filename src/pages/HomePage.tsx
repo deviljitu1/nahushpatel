@@ -130,7 +130,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
   ]);
 
   return (
-    <div className="relative px-5 pt-10 max-w-screen-xl mx-auto">
+    <div className="relative px-5 pt-6 sm:pt-10 max-w-screen-xl mx-auto">
 
       {/* ── All page content ──────────────────────────────────── */}
       <div className="relative z-10">

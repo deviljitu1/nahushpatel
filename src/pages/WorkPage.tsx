@@ -312,19 +312,19 @@ const WorkPage = () => {
             )}
           </div>
 
-          <div className={`flex flex-col ${isFullscreen ? 'gap-3' : 'gap-6'}`}>
-            <div className={`flex gap-4 overflow-x-auto scrollbar-none py-1 ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : 'justify-center'}`}>
+          <div className={`flex flex-col ${isFullscreen ? 'lg:flex-row lg:items-center lg:gap-8' : 'gap-6'}`}>
+            {/* Main Categories (Circles) */}
+            <div className={`flex gap-4 overflow-x-auto scrollbar-none py-1 ${isFullscreen ? 'justify-center lg:justify-start' : 'justify-center lg:justify-start -mx-1 px-1'}`}>
               {categoryData.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveFilter(cat.id)}
                   className="flex flex-col items-center gap-1.5 transition-all duration-300 group shrink-0"
                 >
-                  {/* Circle with Gradient Border */}
                   <div className={`relative p-[2px] rounded-full transition-all duration-500 transform ${activeFilter === cat.id 
                     ? 'scale-105 bg-gradient-to-tr from-[#fb923c] via-[#ec4899] to-[#8b5cf6] shadow-[0_0_15px_rgba(236,72,153,0.3)]' 
                     : 'bg-zinc-200 dark:bg-zinc-800 hover:bg-gradient-to-tr hover:from-primary/50 hover:to-primary group-hover:scale-105'}`}>
-                    <div className={`rounded-full p-0.5 bg-background ${isFullscreen ? 'bg-zinc-950' : 'bg-white dark:bg-zinc-900'} transition-colors`}>
+                    <div className={`rounded-full p-0.5 bg-background ${isFullscreen ? 'bg-white' : 'bg-white dark:bg-zinc-900'} transition-colors`}>
                       <div className={`rounded-full overflow-hidden relative transition-all ${isFullscreen ? 'w-10 h-10 sm:w-12 sm:h-12' : 'w-16 h-16 sm:w-20 sm:h-20'}`}>
                         <img 
                           src={cat.image} 
@@ -335,39 +335,47 @@ const WorkPage = () => {
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Label */}
-                  <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id 
-                    ? 'text-primary' 
-                    : isFullscreen ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
+                  <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id ? 'text-primary' : 'text-muted-foreground'}`}>
                     {cat.title}
                   </span>
                 </button>
               ))}
             </div>
 
+            {/* Sub-tabs for Social Media (Small Circles) */}
             {activeFilter === 'Social Media' && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className={`flex gap-2 items-center ${isFullscreen ? 'justify-start' : 'justify-center'} overflow-x-auto scrollbar-none`}
+                className="flex gap-4 items-center justify-center lg:justify-start overflow-x-auto scrollbar-none pb-2 px-2"
               >
-                <div className={`h-4 w-[1px] ${isFullscreen ? 'bg-slate-200' : 'bg-slate-200'} mx-2 hidden lg:block`} />
-                {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => (
-                  <button
-                    key={sub}
-                    onClick={() => setSocialSubTab(sub === 'Ads' ? 'Paid Ads' : sub)}
-                    className={`px-4 py-2 rounded-xl text-[11px] font-bold tracking-tight transition-all border-2 active:scale-95 whitespace-nowrap ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
-                      ? isFullscreen
-                        ? 'bg-foreground text-background border-foreground shadow-md'
-                        : 'bg-foreground text-background border-foreground shadow-md'
-                      : isFullscreen 
-                        ? 'bg-white/80 text-muted-foreground border-slate-100 hover:bg-slate-50'
-                        : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-slate-100 dark:border-slate-700 hover:bg-slate-50'}`}
-                  >
-                    {sub}
-                  </button>
-                ))}
+                <div className="h-8 w-[1px] bg-slate-200 mx-2 hidden lg:block" />
+                {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => {
+                  const internalSub = sub === 'Ads' ? 'Paid Ads' : sub;
+                  const isActive = socialSubTab === internalSub;
+                  return (
+                    <button
+                      key={sub}
+                      onClick={() => setSocialSubTab(internalSub)}
+                      className="flex flex-col items-center gap-1.5 transition-all duration-300 group shrink-0"
+                    >
+                      <div className={`relative p-[1.5px] rounded-full transition-all duration-500 transform ${isActive 
+                        ? 'scale-105 bg-gradient-to-tr from-primary via-accent to-primary shadow-[0_0_10px_rgba(236,72,153,0.2)]' 
+                        : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 group-hover:scale-105'}`}>
+                        <div className={`rounded-full p-0.5 bg-white transition-colors`}>
+                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-zinc-50 overflow-hidden`}>
+                            {sub === 'Video Portfolio' && <Video className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />}
+                            {sub === 'Creatives' && <Sparkles className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />}
+                            {sub === 'Ads' && <Megaphone className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />}
+                          </div>
+                        </div>
+                      </div>
+                      <span className={`text-[7px] sm:text-[8px] font-bold uppercase tracking-wider transition-all duration-300 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
+                        {sub}
+                      </span>
+                    </button>
+                  );
+                })}
               </motion.div>
             )}
           </div>
@@ -480,14 +488,14 @@ const WorkPage = () => {
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex - 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
                 disabled={activeVideoIndex === 0}
-                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-sm backdrop-blur-md"
+                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
               >
                 <ArrowUp className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex + 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
                 disabled={activeVideoIndex === videoPortfolio.length - 1}
-                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-sm backdrop-blur-md"
+                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
               >
                 <ArrowDown className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
