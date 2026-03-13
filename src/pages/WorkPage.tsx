@@ -279,11 +279,11 @@ const WorkPage = () => {
   const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
-    <div className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen ? 'bg-zinc-950 h-full overflow-hidden' : 'mx-auto px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
+    <div className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen ? 'bg-white h-full overflow-hidden' : 'mx-auto px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
 
       {/* Section Header - Persistent & Responsive */}
       <div className={`z-50 transition-all duration-700 ${isFullscreen 
-        ? 'sticky top-0 left-0 right-0 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 pt-4 pb-4 px-6 mb-0' 
+        ? 'sticky top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-100 pt-4 pb-4 px-6 mb-0' 
         : 'relative mb-12 pt-8 px-5'}`}>
         <div className={isFullscreen ? 'max-w-screen-2xl mx-auto flex flex-col items-center lg:flex-row lg:items-center lg:justify-between gap-4' : 'max-w-full'}>
 
@@ -301,7 +301,7 @@ const WorkPage = () => {
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen ? 'text-lg text-white mb-0' : 'text-5xl mb-2'}`}
+              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen ? 'text-lg text-foreground mb-0' : 'text-5xl mb-2'}`}
             >
               My <span className="gradient-text">Work</span>
             </motion.h1>
@@ -339,7 +339,7 @@ const WorkPage = () => {
                   {/* Label */}
                   <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id 
                     ? 'text-primary' 
-                    : isFullscreen ? 'text-white/40' : 'text-muted-foreground'}`}>
+                    : isFullscreen ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                     {cat.title}
                   </span>
                 </button>
@@ -352,17 +352,17 @@ const WorkPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 className={`flex gap-2 items-center ${isFullscreen ? 'justify-start' : 'justify-center'} overflow-x-auto scrollbar-none`}
               >
-                <div className={`h-4 w-[1px] ${isFullscreen ? 'bg-white/10' : 'bg-slate-200'} mx-2 hidden lg:block`} />
+                <div className={`h-4 w-[1px] ${isFullscreen ? 'bg-slate-200' : 'bg-slate-200'} mx-2 hidden lg:block`} />
                 {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => (
                   <button
                     key={sub}
                     onClick={() => setSocialSubTab(sub === 'Ads' ? 'Paid Ads' : sub)}
                     className={`px-4 py-2 rounded-xl text-[11px] font-bold tracking-tight transition-all border-2 active:scale-95 whitespace-nowrap ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
                       ? isFullscreen
-                        ? 'bg-white text-black border-white shadow-xl'
+                        ? 'bg-foreground text-background border-foreground shadow-md'
                         : 'bg-foreground text-background border-foreground shadow-md'
                       : isFullscreen 
-                        ? 'bg-white/5 text-white/60 border-white/5 hover:bg-white/20 hover:text-white'
+                        ? 'bg-white/80 text-muted-foreground border-slate-100 hover:bg-slate-50'
                         : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-slate-100 dark:border-slate-700 hover:bg-slate-50'}`}
                   >
                     {sub}
@@ -446,7 +446,7 @@ const WorkPage = () => {
             <div 
               ref={containerRef}
               onScroll={handleScroll}
-              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col w-full bg-zinc-950"
+              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col w-full bg-white"
               style={{ scrollBehavior: 'smooth' }}
             >
               <div className="flex-1">
@@ -480,14 +480,14 @@ const WorkPage = () => {
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex - 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
                 disabled={activeVideoIndex === 0}
-                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
+                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-sm backdrop-blur-md"
               >
                 <ArrowUp className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
               <button 
                 onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex + 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
                 disabled={activeVideoIndex === videoPortfolio.length - 1}
-                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
+                className="p-4 rounded-full bg-foreground/5 dark:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-sm backdrop-blur-md"
               >
                 <ArrowDown className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
               </button>
