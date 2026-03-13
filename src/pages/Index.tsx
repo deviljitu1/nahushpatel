@@ -88,7 +88,7 @@ const Index = () => {
           className="flex-1 overflow-hidden flex flex-col relative"
         >
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto scrollbar-none pb-28 relative z-10" style={{ WebkitOverflowScrolling: "touch" }}>
+          <div className={`flex-1 overflow-y-auto scrollbar-none relative z-10 ${activeTab === 'reels' ? 'pb-0' : 'pb-28'}`} style={{ WebkitOverflowScrolling: "touch" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}

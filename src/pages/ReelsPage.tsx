@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, Music2, CheckCircle2, X, Play, Video, Film, Youtube, Instagram } from "lucide-react";
+import { Heart, MessageCircle, Share2, Music2, CheckCircle2, X, Play, Video, Film, Youtube, Instagram, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const videoPortfolio = [
@@ -202,23 +202,28 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
   };
 
   return (
-    <div className="relative w-full h-[100dvh] md:h-full snap-start shrink-0 flex items-center justify-center bg-black overflow-hidden text-white">
-      {video.aspectRatio === "16:9" && (
-        <div className="absolute inset-0 z-0 opacity-40 scale-110 pointer-events-none">
-          <video ref={blurVideoRef} src={video.videoUrl} className="w-full h-full object-cover blur-[60px]" loop muted playsInline preload="auto" />
-          <div className="absolute inset-0 bg-black/30" />
-        </div>
-      )}
+    <div className="relative w-full h-full snap-start shrink-0 flex items-center justify-center bg-black overflow-hidden text-white">
+      {/* Background Blur for non-vertical videos or for ambient desktop feel */}
+      <div className="absolute inset-0 z-0 opacity-40 scale-110 pointer-events-none overflow-hidden">
+        <video 
+          ref={blurVideoRef} 
+          src={video.videoUrl} 
+          className="w-full h-full object-cover blur-[100px]" 
+          loop muted playsInline preload="auto" 
+        />
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
 
       <motion.div 
         key={video.id}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center" 
+        exit={{ opacity: 0 }}
+        className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center bg-black/20" 
         onClick={togglePlay}
       >
         <video ref={videoRef} src={video.videoUrl}
-          className={`max-w-full max-h-full transition-all duration-700 ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
+          className={`max-w-full transition-all duration-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
           loop muted={false} playsInline preload="metadata" onEnded={onEnded}
           onTimeUpdate={() => { if (videoRef.current) setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100); }}
         />
@@ -367,6 +372,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
 
 const ReelsPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isWheelLocked, setIsWheelLocked] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -375,12 +381,56 @@ const ReelsPage = () => {
     if (!isNaN(index) && index !== activeIndex) setActiveIndex(index);
   };
 
+  const scrollToIndex = (index: number) => {
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+    container.scrollTo({
+      top: index * container.clientHeight,
+      behavior: 'smooth'
+    });
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        scrollToIndex(Math.min(activeIndex + 1, videoPortfolio.length - 1));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        scrollToIndex(Math.max(activeIndex - 1, 0));
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeIndex]);
+
+  // Wheel navigation with cooldown
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 50) return;
+      if (isWheelLocked) return;
+
+      setIsWheelLocked(true);
+      setTimeout(() => setIsWheelLocked(false), 800);
+
+      if (e.deltaY > 0) {
+        scrollToIndex(Math.min(activeIndex + 1, videoPortfolio.length - 1));
+      } else {
+        scrollToIndex(Math.max(activeIndex - 1, 0));
+      }
+    };
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [activeIndex, isWheelLocked]);
+
   return (
-    <div className="h-[100dvh] w-full bg-black overflow-hidden relative">
+    <div className="h-[100dvh] w-full bg-zinc-950 overflow-hidden relative lg:flex lg:items-center lg:justify-center">
+      {/* Centered Reel Container */}
       <div 
         ref={containerRef}
         onScroll={handleScroll}
-        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col"
+        className="h-full w-full lg:max-w-[420px] lg:h-[90vh] lg:rounded-[32px] lg:border-[8px] lg:border-zinc-900 lg:shadow-[0_0_100px_rgba(0,0,0,0.9)] lg:relative overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col bg-black z-10"
         style={{ scrollBehavior: 'smooth' }}
       >
         {videoPortfolio.map((video, i) => (
@@ -390,11 +440,31 @@ const ReelsPage = () => {
             isActive={i === activeIndex} 
             onEnded={() => {
               if (i < videoPortfolio.length - 1) {
-                containerRef.current?.scrollTo({ top: (i + 1) * window.innerHeight, behavior: 'smooth' });
+                scrollToIndex(i + 1);
               }
             }}
           />
         ))}
+
+        {/* Desktop navigation hints */}
+        <div className="hidden lg:flex absolute flex-col right-[-70px] top-1/2 -translate-y-1/2 gap-6 z-20">
+          <button 
+            onClick={() => scrollToIndex(Math.max(activeIndex - 1, 0))}
+            disabled={activeIndex === 0}
+            className="p-4 rounded-full bg-white/5 hover:bg-white/10 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-white/5 shadow-xl"
+            title="Previous (Arrow Up)"
+          >
+            <ArrowUp className="w-6 h-6 text-white" />
+          </button>
+          <button 
+            onClick={() => scrollToIndex(Math.min(activeIndex + 1, videoPortfolio.length - 1))}
+            disabled={activeIndex === videoPortfolio.length - 1}
+            className="p-4 rounded-full bg-white/5 hover:bg-white/10 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-white/5 shadow-xl"
+            title="Next (Arrow Down)"
+          >
+            <ArrowDown className="w-6 h-6 text-white" />
+          </button>
+        </div>
       </div>
     </div>
   );
