@@ -219,11 +219,11 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="relative flex-1 flex flex-col lg:flex-row items-center justify-center z-10 overflow-hidden cursor-pointer lg:gap-8 lg:px-20 mb-24 lg:mb-0" 
+        className="relative flex-1 flex flex-col xl:flex-row items-center justify-center z-10 overflow-hidden cursor-pointer xl:gap-12 xl:px-12 2xl:px-24 mb-24 xl:mb-0" 
         onClick={togglePlay}
       >
         {/* Video Column */}
-        <div className="relative h-full lg:h-[85vh] aspect-[9/16] max-h-screen flex items-center justify-center shadow-[0_0_100px_rgba(0,0,0,0.3)] rounded-none lg:rounded-3xl overflow-hidden bg-black">
+        <div className="relative h-full xl:h-[82vh] aspect-[9/16] max-h-screen flex items-center justify-center shadow-[0_0_100px_rgba(0,0,0,0.3)] rounded-none xl:rounded-[2rem] overflow-hidden bg-black transition-all duration-500">
 
         <video ref={videoRef} src={video.videoUrl}
           className={`max-w-full transition-all duration-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
@@ -245,19 +245,19 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
         </div>
 
         {/* Interaction & Description Column - Desktop Design */}
-        <div className="hidden lg:flex flex-col justify-end h-[85vh] w-80 py-8 gap-8 animate-in fade-in slide-in-from-right-8 duration-700">
+        <div className="hidden xl:flex flex-col justify-end xl:h-[82vh] max-w-sm py-8 gap-8 animate-in fade-in slide-in-from-right-8 duration-700">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
               {video.type === 'youtube' && <Youtube className="w-3.5 h-3.5" />}
               {video.type === 'instagram' && <Instagram className="w-3.5 h-3.5" />}
               {video.category}
             </div>
             
-            <h3 className="text-2xl font-black tracking-tighter leading-none dark:text-white">
+            <h3 className="text-3xl font-black tracking-tighter leading-[1.1] dark:text-white">
               {video.title}
             </h3>
             
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-[320px]">
               {video.description}
             </p>
           </div>
@@ -287,8 +287,8 @@ export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPor
           </div>
         </div>
 
-        {/* Mobile Overlays - Hidden on Desktop */}
-        <div className="lg:hidden">
+        {/* Mobile Overlays - Hidden on Desktop/XL screens */}
+        <div className="xl:hidden">
           <div className="absolute top-6 left-4 z-10">
             <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full bg-black/40 text-white font-bold backdrop-blur-md border border-white/10">
               {video.type === 'youtube' && <Youtube className="w-3 h-3 text-red-500" />}

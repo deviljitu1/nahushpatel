@@ -272,13 +272,13 @@ const WorkPage = () => {
   const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
 
   return (
-    <div className={`relative mx-auto ${isFullscreen ? 'px-0 max-w-full h-[100dvh] flex flex-col' : 'px-6 max-w-lg lg:max-w-6xl min-h-screen pt-4'}`}>
+    <div className={`relative mx-auto w-full ${isFullscreen ? 'px-0 h-[100dvh] flex flex-col' : 'px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
 
       {/* Section Header - Persistent & Responsive */}
       <div className={`z-50 px-5 transition-all duration-500 ${isFullscreen 
         ? 'sticky top-0 bg-black/40 backdrop-blur-2xl border-b border-white/5 pt-4 pb-6' 
         : 'mb-8 pt-4'}`}>
-        <div className={isFullscreen ? 'max-w-5xl mx-auto' : ''}>
+        <div className={isFullscreen ? 'max-w-7xl mx-auto' : 'max-w-full'}>
 
           {/* Back Button for Creative Carousel */}
           {activeFilter === 'Social Media' && socialSubTab === 'Creatives' && creativeMode === 'carousel' && (
@@ -301,7 +301,7 @@ const WorkPage = () => {
             <p className={`text-xs transition-opacity duration-300 mb-6 ${isFullscreen ? 'text-white/50 mb-4' : 'text-muted-foreground mb-8'}`}>
               Case studies & creative work
             </p>
-            <div className={`flex gap-2 overflow-x-auto pb-4 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 lg:justify-center' : '-mx-1 px-1 lg:justify-center'}`}>
+            <div className={`flex gap-2 overflow-x-auto pb-4 scrollbar-none ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : '-mx-1 px-1 sm:justify-start lg:justify-center'}`}>
             {filters.map((tag) => (
               <button
                 key={tag}
@@ -362,7 +362,7 @@ const WorkPage = () => {
             exit={{ opacity: 0, y: -20 }}
             className="pb-24 grid gap-8 px-1"
           >
-            <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3 lg:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
               {filtered.map((project) => (
                 <motion.div
                   key={project.id}
