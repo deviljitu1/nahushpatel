@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { supabase } from "@/integrations/supabase/client";
 import { ReelCard, videoPortfolio } from "@/pages/ReelsPage";
 
-const filters = ["Social Media", "SEO", "Automation", "Web Dev"];
+const filters = ["All", "SEO", "Web Dev", "Automation", "Social Media"];
 
 // Real web development projects from nahushpatel.in
 const webDevProjects = [
@@ -233,7 +233,7 @@ const creativeItems = [
 // SeasonBackground removed — was unused and added unnecessary complexity
 
 const WorkPage = () => {
-  const [activeFilter, setActiveFilter] = useState("Social Media");
+  const [activeFilter, setActiveFilter] = useState("All");
   const [socialSubTab, setSocialSubTab] = useState("Video Portfolio");
   const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
   const [selectedCreative, setSelectedCreative] = useState<(typeof creativeItems)[number] | null>(null);
@@ -243,7 +243,7 @@ const WorkPage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isAutoScrolling = useRef(false);
 
-  const filtered = projects.filter((p) => p.tags.includes(activeFilter));
+  const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.tags.includes(activeFilter));
 
   /* Reels scrolling logic moved to ReelsPage.tsx */
 
@@ -330,11 +330,11 @@ const WorkPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 flex gap-2 justify-center flex-wrap"
             >
-              {['Video Portfolio', 'Creatives', 'Paid Ads'].map((sub) => (
+              {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => (
                 <button
                   key={sub}
-                  onClick={() => setSocialSubTab(sub)}
-                  className={`px-4 py-2 rounded-full text-[10px] font-bold transition-all border shadow-sm ${socialSubTab === sub
+                  onClick={() => setSocialSubTab(sub === 'Ads' ? 'Paid Ads' : sub)}
+                  className={`px-4 py-2 rounded-full text-[10px] font-bold transition-all border shadow-sm ${socialSubTab === (sub === 'Ads' ? 'Paid Ads' : sub)
                     ? 'bg-primary text-primary-foreground border-primary scale-105 shadow-md'
                     : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'}`}
                 >
