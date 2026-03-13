@@ -22,6 +22,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from "@emailjs/browser";
 
@@ -35,6 +40,7 @@ export function ScheduleDialog({ children }: ScheduleDialogProps) {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [open, setOpen] = useState(false);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
@@ -144,24 +150,43 @@ export function ScheduleDialog({ children }: ScheduleDialogProps) {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="flex flex-col gap-2 items-center md:items-start">
-                            <Label className="w-full text-left">Select Date</Label>
-                            <div className="rounded-md border p-2 flex justify-center bg-background w-fit">
-                                <Calendar
-                                    mode="single"
-                                    selected={date}
-                                    onSelect={setDate}
-                                    initialFocus
-                                    disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
-                                    className="rounded-md border shadow"
-                                />
-                            </div>
+                        <div className="flex flex-col gap-2">
+                            <Label>Select Date</Label>
+                            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className={cn(
+                                            "w-full justify-start text-left font-normal soft-card border-0 h-10",
+                                            !date && "text-muted-foreground"
+                                        )}
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
+                                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={date}
+                                        onSelect={(d) => {
+                                            setDate(d);
+                                            setIsCalendarOpen(false);
+                                        }}
+                                        initialFocus
+                                        disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
+                                    />
+                                </PopoverContent>
+                            </Popover>
                         </div>
                         <div className="flex flex-col gap-2">
                             <Label>Select Time</Label>
                             <Select onValueChange={setTime} value={time}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Time" />
+                                <SelectTrigger className="soft-card border-0 h-10">
+                                    <div className="flex items-center gap-2">
+                                        <Clock className="w-4 h-4 text-primary" />
+                                        <SelectValue placeholder="Time" />
+                                    </div>
                                 </SelectTrigger>
                                 <SelectContent>
                                     {timeSlots.map((slot) => (
