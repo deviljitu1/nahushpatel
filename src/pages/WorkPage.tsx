@@ -4,8 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Share2, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown, Code2, ExternalLink, Globe, X, Bookmark } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { ReelCard, videoPortfolio } from "@/pages/ReelsPage";
 
-const filters = ["All", "SEO", "Web Dev", "Automation"];
+const filters = ["All", "SEO", "Web Dev", "Automation", "Social Media"];
 
 // Real web development projects from nahushpatel.in
 const webDevProjects = [
@@ -322,7 +323,26 @@ const WorkPage = () => {
 
           </div>
 
-          {/* Filter Sub-Tabs removed */}
+          {/* Filter Sub-Tabs for Social Media */}
+          {activeFilter === 'Social Media' && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 flex gap-2 justify-center flex-wrap"
+            >
+              {['All', 'Video Portfolio', 'Creatives', 'Paid Ads'].map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => setSocialSubTab(sub)}
+                  className={`px-4 py-2 rounded-full text-[10px] font-bold transition-all border shadow-sm ${socialSubTab === sub
+                    ? 'bg-primary text-primary-foreground border-primary scale-105 shadow-md'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-muted-foreground border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+                >
+                  {sub}
+                </button>
+              ))}
+            </motion.div>
+          )}
 
         </div>
       </div>
@@ -387,7 +407,63 @@ const WorkPage = () => {
           </motion.div>
         )}
 
-        {/* Video Portfolio View removed (moved to ReelsPage) */}
+        {/* VIEW 2: VIDEO PORTFOLIO (REELS) IN WORK PAGE */}
+        {activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio' && (
+          <motion.div
+            key="video-portfolio"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex-1 min-h-0 relative bg-black overflow-hidden flex flex-col"
+          >
+            <div 
+              ref={containerRef}
+              onScroll={handleScroll}
+              className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col h-full"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              {videoPortfolio.map((video, i) => (
+                <ReelCard 
+                  key={video.id} 
+                  video={video} 
+                  isActive={i === activeVideoIndex} 
+                  onEnded={() => {
+                    if (i < videoPortfolio.length - 1) {
+                      containerRef.current?.scrollTo({ top: (i + 1) * containerRef.current.clientHeight, behavior: 'smooth' });
+                    } else {
+                      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Indicator / Info Overlay */}
+            <div className="absolute top-20 right-4 z-30 flex flex-col gap-2">
+              <div className="bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold text-white">
+                {activeVideoIndex + 1} / {videoPortfolio.length}
+              </div>
+            </div>
+            
+            {/* Scroll Navigation for Desktop in Work Page */}
+            <div className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 flex-col gap-4 z-40">
+              <button 
+                onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex - 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
+                className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 disabled:opacity-20"
+                disabled={activeVideoIndex === 0}
+              >
+                <ArrowUp className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex + 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
+                className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/10 disabled:opacity-20"
+                disabled={activeVideoIndex === videoPortfolio.length - 1}
+              >
+                <ArrowDown className="w-5 h-5" />
+              </button>
+            </div>
+          </motion.div>
+        )}
 
         {/* VIEW 3: CREATIVES */}
         {activeFilter === "Social Media" && socialSubTab === "Creatives" && (

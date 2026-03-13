@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageCircle, Share2, Music2, CheckCircle2, X, Play, Video, Film, Youtube, Instagram, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const videoPortfolio = [
+export const videoPortfolio = [
   {
     id: 1, title: "Art of the Whisk", category: "YouTube Shorts",
     videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344608/Whisk_qty2idzlzmzkvgzz0iy3itytmznlrtl2ugn30iy_zhzkzd.mp4",
@@ -95,7 +95,7 @@ const timeAgo = (date: string) => {
   return `${days}d`;
 };
 
-type DbComment = {
+export type DbComment = {
   id: string;
   video_id: number;
   user_name: string;
@@ -105,7 +105,7 @@ type DbComment = {
   created_at: string;
 };
 
-const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)[number]; isActive: boolean; onEnded?: () => void }) => {
+export const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)[number]; isActive: boolean; onEnded?: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const blurVideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -202,8 +202,8 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
   };
 
   return (
-    <div className="relative w-full h-full snap-start shrink-0 flex items-center justify-center bg-black overflow-hidden text-white">
-      {/* Background Blur for non-vertical videos or for ambient desktop feel */}
+    <div className="relative w-full h-full snap-start shrink-0 flex flex-col bg-black overflow-hidden text-white">
+      {/* Background Blur for non-vertical videos or for ambient desktop feel - ALWAYS FULL SCREEN */}
       <div className="absolute inset-0 z-0 opacity-40 scale-110 pointer-events-none overflow-hidden">
         <video 
           ref={blurVideoRef} 
@@ -219,7 +219,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="relative w-full h-full z-10 overflow-hidden cursor-pointer flex items-center justify-center bg-black/20" 
+        className="relative flex-1 flex flex-col items-center justify-center z-10 overflow-hidden cursor-pointer bg-black/5 mb-24" 
         onClick={togglePlay}
       >
         <video ref={videoRef} src={video.videoUrl}
@@ -256,7 +256,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
           )}
         </AnimatePresence>
 
-        <div className="absolute right-4 bottom-32 z-20 flex flex-col items-center gap-6">
+        <div className="absolute right-4 bottom-24 z-20 flex flex-col items-center gap-6">
           <button onClick={handleLike} className="flex flex-col items-center gap-1 group">
             <motion.div whileTap={{ scale: 1.3 }} className="p-2 rounded-full bg-black/20 backdrop-blur-sm">
               <Heart className={`w-7 h-7 transition-all duration-300 ${isLiked ? "text-red-500 fill-red-500 scale-110" : "text-white"}`} />
@@ -280,7 +280,7 @@ const ReelCard = ({ video, isActive, onEnded }: { video: (typeof videoPortfolio)
           </button>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-28 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pb-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
           <h3 className="text-sm font-bold text-white drop-shadow-md mb-2 line-clamp-1">{video.title}</h3>
           <p className={`text-xs text-white/90 drop-shadow-md leading-relaxed pr-12 ${!showMore ? "line-clamp-2" : ""}`}
             onClick={(e) => { e.stopPropagation(); setShowMore(!showMore); }}>
