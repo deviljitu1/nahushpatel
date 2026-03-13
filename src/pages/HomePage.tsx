@@ -114,16 +114,7 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } 
 const item = { hidden: { opacity: 0, y: 24, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" as const } } };
 const fadeUp = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } } };
 
-/* ─── Props ─────────────────────────────────────────────────────────── */
-interface HomePageProps {
-  onNavigate: (tab: string) => void;
-}
-
-/* ─── Component ─────────────────────────────────────────────────────── */
-const HomePage = ({ onNavigate }: HomePageProps) => {
-  const [zoomOpen, setZoomOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const typed = useTypewriter([
+/* ─�  const typed = useTypewriter([
     "Digital Marketer",
     "Web Developer",
     "Growth Hacker",
@@ -146,21 +137,14 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
       <div className="relative z-10 flex flex-col items-center w-full max-w-full">
         
         {/* HERO SECTION */}
-        <motion.div 
-          variants={container} 
-          initial="hidden" 
-          animate="show" 
-          className="flex flex-col items-center text-center w-full max-w-2xl mt-4 px-2"
-        >
+        <motion.div variants={container} initial="hidden" animate="show" className="text-center mb-16 w-full max-w-2xl px-2">
 
           {/* 3D Profile Cube */}
-          <motion.div variants={item} className="mb-12 relative">
+          <motion.div variants={item} className="mb-10 inline-block relative mt-4">
             <div
-              className="relative flex items-center justify-center mx-auto"
+              className="relative"
               style={{
                 filter: "drop-shadow(0 20px 48px hsl(24 95% 53% / 0.35))",
-                width: isMobile ? 120 : 160,
-                height: isMobile ? 120 : 160,
               }}
             >
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl animate-pulse -z-10" />
@@ -192,7 +176,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           {/* Availability Badge */}
-          <motion.div variants={item} className="mb-6 w-full flex justify-center">
+          <motion.div variants={item} className="flex justify-center mb-6">
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-[11px] font-bold tracking-wider uppercase shadow-sm">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               AVAILABLE FOR PROJECTS
@@ -200,32 +184,30 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           {/* Name */}
-          <div className="w-full flex justify-center px-4 mb-3">
-            <motion.h1 variants={item} className="text-fluid-2xl font-black tracking-tighter leading-none text-foreground text-center">
-              Hi, I'm <span className="text-shimmer">Nahush Patel</span>
-            </motion.h1>
-          </div>
+          <motion.h1 variants={item} className="text-4xl sm:text-5xl lg:text-7xl font-black mb-3 tracking-tight leading-[1.05] px-2 text-foreground">
+            Hi, I'm <span className="text-shimmer">Nahush Patel</span>
+          </motion.h1>
 
           {/* Typewriter role */}
-          <motion.div variants={item} className="h-10 w-full flex items-center justify-center mb-6">
-            <span className="text-lg sm:text-xl lg:text-plus font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-500 to-primary/80">
+          <motion.div variants={item} className="h-10 flex items-center justify-center mb-6">
+            <span className="text-lg sm:text-xl lg:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-orange-500 to-primary/80">
               {typed}
               <span className="animate-blink ml-1.5 font-light text-primary">|</span>
             </span>
           </motion.div>
 
           {/* Contact Details */}
-          <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-3 text-[13px] text-muted-foreground mb-10 px-4 font-semibold text-center w-full">
-            <span className="flex items-center gap-1.5 bg-secondary/40 backdrop-blur-sm px-5 py-2 rounded-full border border-border/50 hover:border-primary/30 transition-colors shrink-0"><MapPin className="w-4 h-4 text-primary" /> Raipur, India</span>
-            <span className="flex items-center gap-1.5 bg-secondary/40 backdrop-blur-sm px-5 py-2 rounded-full border border-border/50 hover:border-primary/30 transition-colors shrink-0"><Mail className="w-4 h-4 text-primary" /> nahushpatel2@gmail.com</span>
+          <motion.div variants={item} className="flex items-center justify-center gap-3 text-[13px] text-muted-foreground mb-10 flex-wrap px-4 font-semibold">
+            <span className="flex items-center gap-1.5 bg-secondary/40 backdrop-blur-sm px-4 py-1.5 rounded-full border border-border/50 hover:border-primary/30 transition-colors shrink-0"><MapPin className="w-4 h-4 text-primary" /> Raipur, India</span>
+            <span className="flex items-center gap-1.5 bg-secondary/40 backdrop-blur-sm px-4 py-1.5 rounded-full border border-border/50 hover:border-primary/30 transition-colors shrink-0"><Mail className="w-4 h-4 text-primary" /> nahushpatel2@gmail.com</span>
           </motion.div>
 
-          <motion.p variants={item} className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed mb-12 px-8 font-medium italic opacity-90">
+          <motion.p variants={item} className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto leading-relaxed mb-12 px-6 font-medium italic opacity-90">
             I craft high-converting digital experiences — from <span className="text-foreground font-bold not-italic">Meta ads</span> that sell to <span className="text-foreground font-bold not-italic">automations</span> that scale businesses.
           </motion.p>
 
           {/* Hero Actions */}
-          <motion.div variants={item} className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full px-6 sm:px-0 max-w-sm sm:max-w-none mx-auto">
+          <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center items-center px-6 sm:px-0">
             <button
               onClick={() => onNavigate("contact")}
               className="group w-full sm:w-auto px-10 py-4.5 rounded-2xl bg-gradient-to-r from-primary to-orange-500 text-white font-bold text-base shadow-[0_12px_40px_rgba(249,115,22,0.35)] hover:shadow-[0_18px_50px_rgba(249,115,22,0.45)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3"
@@ -235,9 +217,21 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
             <div className="flex gap-3 w-full sm:w-auto">
               <button
                 onClick={() => onNavigate("work")}
-                className="flex-1 sm:flex-none px-7 py-4.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5"
+                className="flex-1 sm:flex-none px-8 py-4.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5"
               >
                 <Eye className="w-5 h-5 text-primary" /> Work
+              </button>
+              <a
+                href="/resume.pdf"
+                download="Nahush_Patel_Resume.pdf"
+                className="flex-1 sm:flex-none px-8 py-4.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-foreground font-bold text-base shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5"
+              >
+                <Download className="w-5 h-5 text-primary" /> CV
+              </a>
+            </div>
+          </motion.div>
+        </motion.div>
+ h-5 text-primary" /> Work
               </button>
               <a
                 href="/resume.pdf"
