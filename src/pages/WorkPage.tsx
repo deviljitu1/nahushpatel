@@ -283,9 +283,9 @@ const WorkPage = () => {
 
       {/* Section Header - Persistent & Responsive */}
       <div className={`z-50 transition-all duration-700 ${isFullscreen 
-        ? 'absolute top-0 left-0 right-0 bg-gradient-to-b from-zinc-950/80 to-transparent backdrop-blur-md border-b border-white/5 pt-6 pb-12 px-8' 
+        ? 'sticky top-0 left-0 right-0 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 pt-4 pb-4 px-6 mb-0' 
         : 'relative mb-12 pt-8 px-5'}`}>
-        <div className={isFullscreen ? 'max-w-screen-2xl mx-auto flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6' : 'max-w-full'}>
+        <div className={isFullscreen ? 'max-w-screen-2xl mx-auto flex flex-col items-center lg:flex-row lg:items-center lg:justify-between gap-4' : 'max-w-full'}>
 
           {/* Back Button for Creative Carousel */}
           {activeFilter === 'Social Media' && socialSubTab === 'Creatives' && creativeMode === 'carousel' && (
@@ -301,7 +301,7 @@ const WorkPage = () => {
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen ? 'text-2xl text-white mb-0' : 'text-5xl mb-2'}`}
+              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen ? 'text-lg text-white mb-0' : 'text-5xl mb-2'}`}
             >
               My <span className="gradient-text">Work</span>
             </motion.h1>
@@ -312,20 +312,20 @@ const WorkPage = () => {
             )}
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className={`flex gap-6 overflow-x-auto scrollbar-none py-2 ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : 'justify-start'}`}>
+          <div className={`flex flex-col ${isFullscreen ? 'gap-3' : 'gap-6'}`}>
+            <div className={`flex gap-4 overflow-x-auto scrollbar-none py-1 ${!isFullscreen ? '-mx-1 px-1 sm:justify-start lg:justify-center' : 'justify-center'}`}>
               {categoryData.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveFilter(cat.id)}
-                  className="flex flex-col items-center gap-3 transition-all duration-300 group shrink-0"
+                  className="flex flex-col items-center gap-1.5 transition-all duration-300 group shrink-0"
                 >
                   {/* Circle with Gradient Border */}
-                  <div className={`relative p-[3px] rounded-full transition-all duration-500 transform ${activeFilter === cat.id 
-                    ? 'scale-110 !p-[4px] bg-gradient-to-tr from-[#fb923c] via-[#ec4899] to-[#8b5cf6] shadow-[0_0_25px_rgba(236,72,153,0.4)]' 
+                  <div className={`relative p-[2px] rounded-full transition-all duration-500 transform ${activeFilter === cat.id 
+                    ? 'scale-105 bg-gradient-to-tr from-[#fb923c] via-[#ec4899] to-[#8b5cf6] shadow-[0_0_15px_rgba(236,72,153,0.3)]' 
                     : 'bg-zinc-200 dark:bg-zinc-800 hover:bg-gradient-to-tr hover:from-primary/50 hover:to-primary group-hover:scale-105'}`}>
-                    <div className={`rounded-full p-1 bg-background ${isFullscreen ? 'bg-zinc-950' : 'bg-white dark:bg-zinc-900'} transition-colors`}>
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden relative">
+                    <div className={`rounded-full p-0.5 bg-background ${isFullscreen ? 'bg-zinc-950' : 'bg-white dark:bg-zinc-900'} transition-colors`}>
+                      <div className={`rounded-full overflow-hidden relative transition-all ${isFullscreen ? 'w-10 h-10 sm:w-12 sm:h-12' : 'w-16 h-16 sm:w-20 sm:h-20'}`}>
                         <img 
                           src={cat.image} 
                           alt={cat.title} 
@@ -337,7 +337,7 @@ const WorkPage = () => {
                   </div>
                   
                   {/* Label */}
-                  <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id 
+                  <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id 
                     ? 'text-primary' 
                     : isFullscreen ? 'text-white/40' : 'text-muted-foreground'}`}>
                     {cat.title}
