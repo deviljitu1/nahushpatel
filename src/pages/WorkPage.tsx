@@ -1,399 +1,260 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart, MessageCircle, Share2, Music2, Film, Video, CheckCircle2, ArrowLeft, ArrowUp, ArrowDown, Code2, ExternalLink, Globe, X, Bookmark } from "lucide-react";
+import {
+  TrendingUp, Wrench, ArrowUpRight, Play, Pause, Heart,
+  MessageCircle, Share2, Music2, Film, Video, CheckCircle2,
+  ArrowLeft, ArrowUp, ArrowDown, Code2, ExternalLink, Globe,
+  X, Bookmark, Sparkles, Megaphone
+} from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { ReelCard, videoPortfolio } from "@/pages/ReelsPage";
 
+/* ─── Data ─────────────────────────────────────────────────────────── */
 const categoryData = [
-  { id: 'SEO', title: 'SEO', image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=200&auto=format&fit=crop' },
-  { id: 'Web Dev', title: 'Web Dev', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=200&auto=format&fit=crop' },
-  { id: 'Automation', title: 'Automation', image: 'https://images.unsplash.com/photo-1518433278981-1127cc340b09?q=80&w=200&auto=format&fit=crop' },
-  { id: 'Social Media', title: 'Social Media', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop' }
+  { id: "SEO", title: "SEO", image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=200&auto=format&fit=crop" },
+  { id: "Web Dev", title: "Web Dev", image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=200&auto=format&fit=crop" },
+  { id: "Automation", title: "Automation", image: "https://images.unsplash.com/photo-1518433278981-1127cc340b09?q=80&w=200&auto=format&fit=crop" },
+  { id: "Social Media", title: "Social Media", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop" },
 ];
 
-const filters = categoryData.map(c => c.id);
+const filters = categoryData.map((c) => c.id);
 
-// Real web development projects from nahushpatel.in
 const webDevProjects = [
-  {
-    id: 1,
-    title: "Project Kisan",
-    badge: "🏆 Hackathon",
-    status: "In Progress",
-    description: "An AI-powered farming assistant built for Google Hackathon 2025. Assists farmers with soil analysis, irrigation advice, crop planning, and organic solutions using Gemini AI.",
-    tags: ["React", "Gemini AI", "Vercel"],
-    color: "from-green-500 to-emerald-700",
-    link: "https://project-kisan-ai-farming-assistant-fawn.vercel.app/",
-    coverImage: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "LinkPost AI",
-    badge: "🤖 AI Tool",
-    status: "Live",
-    description: "An AI-powered LinkedIn post generator built with React and OpenAI/Gemini API. Helps craft engaging, SEO-optimized posts with just a click.",
-    tags: ["React", "OpenAI", "Netlify"],
-    color: "from-blue-500 to-indigo-700",
-    link: "https://linkpostai.netlify.app/",
-    coverImage: "https://images.unsplash.com/photo-1611944212129-29977ae1398c?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Tindog",
-    badge: "🐶 Landing Page",
-    status: "Live",
-    description: "A responsive Tinder-like landing page for dogs, built with Bootstrap 5. Features responsive navigation, pricing cards, and testimonial sections.",
-    tags: ["HTML", "CSS", "Bootstrap 5"],
-    color: "from-amber-500 to-orange-600",
-    link: "https://deviljitu1.github.io/Tindog/",
-    coverImage: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Personal Portfolio",
-    badge: "🌐 Portfolio",
-    status: "Live",
-    description: "A responsive personal portfolio website showcasing projects, skills and experience. Built with modern web technologies and optimized for performance.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    color: "from-purple-500 to-violet-700",
-    link: "https://nahushpatel.in/",
-    coverImage: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Poetree",
-    badge: "✍️ Blog",
-    status: "Live",
-    description: "A minimalist poetry blog with elegant typography and smooth animations. Built with HTML, CSS and JavaScript for a serene reading experience.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    color: "from-rose-400 to-pink-600",
-    link: "https://poetreebird.netlify.app/",
-    coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Calm Mind AI",
-    badge: "🧠 Wellness",
-    status: "Live",
-    description: "An AI-powered mental wellness web app designed to help emotionally vulnerable individuals with guided support, breathing exercises, and curated resources.",
-    tags: ["React", "AI", "Netlify"],
-    color: "from-teal-400 to-cyan-600",
-    link: "https://calmmindai.netlify.app/",
-    coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop",
-  },
+  { id: 1, title: "Project Kisan", badge: "🏆 Hackathon", status: "In Progress", description: "An AI-powered farming assistant built for Google Hackathon 2025. Assists farmers with soil analysis, irrigation advice, crop planning, and organic solutions using Gemini AI.", tags: ["React", "Gemini AI", "Vercel"], color: "from-green-500 to-emerald-700", link: "https://project-kisan-ai-farming-assistant-fawn.vercel.app/", coverImage: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?q=80&w=800&auto=format&fit=crop" },
+  { id: 2, title: "LinkPost AI", badge: "🤖 AI Tool", status: "Live", description: "An AI-powered LinkedIn post generator built with React and OpenAI/Gemini API. Helps craft engaging, SEO-optimized posts with just a click.", tags: ["React", "OpenAI", "Netlify"], color: "from-blue-500 to-indigo-700", link: "https://linkpostai.netlify.app/", coverImage: "https://images.unsplash.com/photo-1611944212129-29977ae1398c?q=80&w=800&auto=format&fit=crop" },
+  { id: 3, title: "Tindog", badge: "🐶 Landing Page", status: "Live", description: "A responsive Tinder-like landing page for dogs, built with Bootstrap 5. Features responsive navigation, pricing cards, and testimonial sections.", tags: ["HTML", "CSS", "Bootstrap 5"], color: "from-amber-500 to-orange-600", link: "https://deviljitu1.github.io/Tindog/", coverImage: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop" },
+  { id: 4, title: "Personal Portfolio", badge: "🌐 Portfolio", status: "Live", description: "A responsive personal portfolio website showcasing projects, skills and experience. Built with modern web technologies and optimized for performance.", tags: ["HTML", "CSS", "JavaScript"], color: "from-purple-500 to-violet-700", link: "https://nahushpatel.in/", coverImage: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=800&auto=format&fit=crop" },
+  { id: 5, title: "Poetree", badge: "✍️ Blog", status: "Live", description: "A minimalist poetry blog with elegant typography and smooth animations. Built with HTML, CSS and JavaScript for a serene reading experience.", tags: ["HTML", "CSS", "JavaScript"], color: "from-rose-400 to-pink-600", link: "https://poetreebird.netlify.app/", coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop" },
+  { id: 6, title: "Calm Mind AI", badge: "🧠 Wellness", status: "Live", description: "An AI-powered mental wellness web app designed to help emotionally vulnerable individuals with guided support, breathing exercises, and curated resources.", tags: ["React", "AI", "Netlify"], color: "from-teal-400 to-cyan-600", link: "https://calmmindai.netlify.app/", coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop" },
 ];
 
 const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Growth Engine",
-    result: "3x revenue in 90 days",
-    tags: ["SEO", "Paid Ads"],
-    coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=800&auto=format&fit=crop",
-    problem: "Low organic traffic and poor ROAS on paid campaigns.",
-    solution: "Rebuilt SEO architecture, launched targeted Meta & Google Ads funnels.",
-    tools: ["Google Ads", "Meta Ads", "Ahrefs", "GA4"],
-    metrics: [
-      { label: "Revenue Growth", value: "3x" },
-      { label: "ROAS", value: "4.2x" },
-      { label: "Organic Traffic", value: "+180%" },
-    ],
-  },
-  {
-    id: 2,
-    title: "SaaS Landing Page Redesign",
-    result: "45% conversion lift",
-    tags: ["Web Dev"],
-    coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
-    problem: "High bounce rate on landing pages, low trial signups.",
-    solution: "Designed mobile-first landing with clear CTAs and social proof.",
-    tools: ["React", "TailwindCSS", "Figma", "Hotjar"],
-    metrics: [
-      { label: "Conversion Rate", value: "+45%" },
-      { label: "Bounce Rate", value: "-32%" },
-      { label: "Page Speed", value: "98/100" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Lead Gen Automation Pipeline",
-    result: "500+ leads/month on autopilot",
-    tags: ["Automation"],
-    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
-    problem: "Manual lead collection, no nurture sequences.",
-    solution: "Built n8n workflows with WhatsApp + email automation.",
-    tools: ["n8n", "WhatsApp API", "Google Sheets", "Google Looker Studio"],
-    metrics: [
-      { label: "Leads/Month", value: "500+" },
-      { label: "Response Time", value: "<5 min" },
-      { label: "Cost/Lead", value: "-60%" },
-    ],
-  },
-  {
-    id: 4,
-    title: "Restaurant Social Takeover",
-    result: "10K followers in 60 days",
-    tags: ["Social Media"],
-    coverImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop",
-    problem: "Zero social presence, no local visibility.",
-    solution: "Created content calendar, Reels strategy, and influencer collabs.",
-    tools: ["Instagram", "Canva", "Later", "Meta Business Suite"],
-    metrics: [
-      { label: "Followers", value: "10K+" },
-      { label: "Engagement Rate", value: "8.4%" },
-      { label: "Walk-ins", value: "+35%" },
-    ],
-  },
-  {
-    id: 5,
-    title: "SEO Domination for Local Biz",
-    result: "#1 on Google for 12 keywords",
-    tags: ["SEO"],
-    coverImage: "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=800&auto=format&fit=crop",
-    problem: "Not ranking for any local search terms.",
-    solution: "Technical SEO audit, content clusters, and local citation building.",
-    tools: ["Ahrefs", "Screaming Frog", "Google Search Console"],
-    metrics: [
-      { label: "Keywords #1", value: "12" },
-      { label: "Organic Traffic", value: "+240%" },
-      { label: "Leads", value: "+90%" },
-    ],
-  },
-  {
-    id: 6,
-    title: "Funnel + Ads for Coaching Biz",
-    result: "₹15L revenue in 30 days",
-    tags: ["Paid Ads", "Web Dev"],
-    coverImage: "https://images.unsplash.com/photo-1553877616-152807fbe913?q=80&w=800&auto=format&fit=crop",
-    problem: "No online sales system for high-ticket coaching.",
-    solution: "Built sales funnel with webinar flow + retargeting ads.",
-    tools: ["ClickFunnels", "Google Ads", "Meta Ads", "Razorpay"],
-    metrics: [
-      { label: "Revenue", value: "₹15L" },
-      { label: "ROAS", value: "5.8x" },
-      { label: "Webinar Signups", value: "800+" },
-    ],
-  },
+  { id: 1, title: "E-Commerce Growth Engine", result: "3x revenue in 90 days", tags: ["SEO", "Paid Ads"], coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=800&auto=format&fit=crop", problem: "Low organic traffic and poor ROAS on paid campaigns.", solution: "Rebuilt SEO architecture, launched targeted Meta & Google Ads funnels.", tools: ["Google Ads", "Meta Ads", "Ahrefs", "GA4"], metrics: [{ label: "Revenue Growth", value: "3x" }, { label: "ROAS", value: "4.2x" }, { label: "Organic Traffic", value: "+180%" }] },
+  { id: 2, title: "SaaS Landing Page Redesign", result: "45% conversion lift", tags: ["Web Dev"], coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", problem: "High bounce rate on landing pages, low trial signups.", solution: "Designed mobile-first landing with clear CTAs and social proof.", tools: ["React", "TailwindCSS", "Figma", "Hotjar"], metrics: [{ label: "Conversion Rate", value: "+45%" }, { label: "Bounce Rate", value: "-32%" }, { label: "Page Speed", value: "98/100" }] },
+  { id: 3, title: "Lead Gen Automation Pipeline", result: "500+ leads/month on autopilot", tags: ["Automation"], coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop", problem: "Manual lead collection, no nurture sequences.", solution: "Built n8n workflows with WhatsApp + email automation.", tools: ["n8n", "WhatsApp API", "Google Sheets", "Google Looker Studio"], metrics: [{ label: "Leads/Month", value: "500+" }, { label: "Response Time", value: "<5 min" }, { label: "Cost/Lead", value: "-60%" }] },
+  { id: 4, title: "Restaurant Social Takeover", result: "10K followers in 60 days", tags: ["Social Media"], coverImage: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop", problem: "Zero social presence, no local visibility.", solution: "Created content calendar, Reels strategy, and influencer collabs.", tools: ["Instagram", "Canva", "Later", "Meta Business Suite"], metrics: [{ label: "Followers", value: "10K+" }, { label: "Engagement Rate", value: "8.4%" }, { label: "Walk-ins", value: "+35%" }] },
+  { id: 5, title: "SEO Domination for Local Biz", result: "#1 on Google for 12 keywords", tags: ["SEO"], coverImage: "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=800&auto=format&fit=crop", problem: "Not ranking for any local search terms.", solution: "Technical SEO audit, content clusters, and local citation building.", tools: ["Ahrefs", "Screaming Frog", "Google Search Console"], metrics: [{ label: "Keywords #1", value: "12" }, { label: "Organic Traffic", value: "+240%" }, { label: "Leads", value: "+90%" }] },
+  { id: 6, title: "Funnel + Ads for Coaching Biz", result: "₹15L revenue in 30 days", tags: ["Paid Ads", "Web Dev"], coverImage: "https://images.unsplash.com/photo-1553877616-152807fbe913?q=80&w=800&auto=format&fit=crop", problem: "No online sales system for high-ticket coaching.", solution: "Built sales funnel with webinar flow + retargeting ads.", tools: ["ClickFunnels", "Google Ads", "Meta Ads", "Razorpay"], metrics: [{ label: "Revenue", value: "₹15L" }, { label: "ROAS", value: "5.8x" }, { label: "Webinar Signups", value: "800+" }] },
 ];
 
-// Video Portfolio data moved to ReelsPage.tsx
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-};
-const cardAnim = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-};
-
-// Creative portfolio items
 const creativeItems = [
-  {
-    id: 1,
-    title: "Neon Brand Identity",
-    category: "Branding",
-    image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
-    description: "Complete visual identity for a cyberpunk-themed coffee shop.",
-  },
-  {
-    id: 2,
-    title: "Minimalist Poster Series",
-    category: "Print Design",
-    image: "https://images.unsplash.com/photo-1572044162444-ad6021105507?q=80&w=2000&auto=format&fit=crop",
-    description: "Series of 3 posters focusing on typography and negative space.",
-  },
-  {
-    id: 3,
-    title: "Social Media Kit",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2000&auto=format&fit=crop",
-    description: " cohesive set of templates for Instagram stories and posts.",
-  },
-  {
-    id: 4,
-    title: "3D Product Render",
-    category: "3D Art",
-    image: "https://images.unsplash.com/photo-1633596683562-4a46a328325a?q=80&w=2000&auto=format&fit=crop",
-    description: "Hyper-realistic render of a concept smart watch.",
-  },
-  {
-    id: 5,
-    title: "Event Banner",
-    category: "Marketing",
-    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop",
-    description: "Large format banner design for a tech conference.",
-  },
-  {
-    id: 6,
-    title: "App UI Concept",
-    category: "UI/UX",
-    image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=2000&auto=format&fit=crop",
-    description: "Dark mode interface design for a music streaming app.",
-  },
+  { id: 1, title: "Neon Brand Identity", category: "Branding", image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop", description: "Complete visual identity for a cyberpunk-themed coffee shop." },
+  { id: 2, title: "Minimalist Poster Series", category: "Print Design", image: "https://images.unsplash.com/photo-1572044162444-ad6021105507?q=80&w=2000&auto=format&fit=crop", description: "Series of 3 posters focusing on typography and negative space." },
+  { id: 3, title: "Social Media Kit", category: "Social Media", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2000&auto=format&fit=crop", description: "A cohesive set of templates for Instagram stories and posts." },
+  { id: 4, title: "3D Product Render", category: "3D Art", image: "https://images.unsplash.com/photo-1633596683562-4a46a328325a?q=80&w=2000&auto=format&fit=crop", description: "Hyper-realistic render of a concept smart watch." },
+  { id: 5, title: "Event Banner", category: "Marketing", image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop", description: "Large format banner design for a tech conference." },
+  { id: 6, title: "App UI Concept", category: "UI/UX", image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=2000&auto=format&fit=crop", description: "Dark mode interface design for a music streaming app." },
 ];
 
-
-
-// SeasonBackground removed — was unused and added unnecessary complexity
-
+/* ─── WorkPage ─────────────────────────────────────────────────────── */
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("Social Media");
   const [socialSubTab, setSocialSubTab] = useState("Video Portfolio");
-  const [selectedProject, setSelectedProject] = useState<(typeof projects)[number] | null>(null);
-  const [selectedCreative, setSelectedCreative] = useState<(typeof creativeItems)[number] | null>(null);
-  const [creativeMode, setCreativeMode] = useState<"wall" | "carousel">("wall");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedCreative, setSelectedCreative] = useState(null);
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef(null);
   const isAutoScrolling = useRef(false);
 
   const filtered = projects.filter((p) => p.tags.includes(activeFilter));
 
-  /* Reels scrolling logic moved to ReelsPage.tsx */
-
-  /* Key down and wheel navigation moved to ReelsPage.tsx */
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  const handleScroll = (e) => {
     if (isAutoScrolling.current) return;
-
     const container = e.currentTarget;
     if (container.clientHeight === 0) return;
     const index = Math.round(container.scrollTop / container.clientHeight);
-    if (!isNaN(index) && index !== activeVideoIndex) {
-      setActiveVideoIndex(index);
-    }
+    if (!isNaN(index) && index !== activeVideoIndex) setActiveVideoIndex(index);
   };
 
-  // Reset creative mode when section changes
   useEffect(() => {
-    if (socialSubTab !== 'Creatives') {
-      setTimeout(() => setCreativeMode('wall'), 300);
-    }
+    if (socialSubTab !== "Creatives") return;
   }, [socialSubTab]);
 
-
-
-  const isFullscreen = activeFilter === 'Social Media' && (socialSubTab === 'Video Portfolio' || socialSubTab === 'Creatives' || socialSubTab === 'Paid Ads');
+  const isFullscreen =
+    activeFilter === "Social Media" &&
+    (socialSubTab === "Video Portfolio" ||
+      socialSubTab === "Creatives" ||
+      socialSubTab === "Paid Ads");
 
   return (
-    <div className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen ? 'bg-white h-full overflow-hidden' : 'mx-auto px-4 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4'}`}>
+    <div
+      className={`relative w-full transition-colors duration-500 flex flex-col ${isFullscreen
+          ? "bg-white h-full overflow-hidden"
+          : "mx-auto px-3 sm:px-6 md:px-8 max-w-[1400px] min-h-screen pt-4"
+        }`}
+    >
+      {/* ── Sticky Header ── */}
+      <div
+        className={`z-50 transition-all duration-700 ${isFullscreen
+            ? "sticky top-0 left-0 right-0 bg-white/90 backdrop-blur-md border-b border-slate-100 pt-3 pb-3 px-4 sm:px-6 mb-0"
+            : "relative mb-8 pt-6 px-1"
+          }`}
+      >
+        <div
+          className={
+            isFullscreen
+              ? "max-w-screen-2xl mx-auto flex flex-col items-center gap-3"
+              : "max-w-full"
+          }
+        >
+          {/* Back button — Creative carousel */}
+          {activeFilter === "Social Media" &&
+            socialSubTab === "Creatives" && (
+              <button
+                onClick={() => { }}
+                className="mb-1 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full w-fit text-xs font-semibold self-start"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" /> Back
+              </button>
+            )}
 
-      {/* Section Header - Persistent & Responsive */}
-      <div className={`z-50 transition-all duration-700 ${isFullscreen 
-        ? 'sticky top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-100 pt-4 pb-4 px-6 mb-0' 
-        : 'relative mb-12 pt-8 px-5'}`}>
-        <div className={isFullscreen ? 'max-w-screen-2xl mx-auto flex flex-col items-center lg:flex-row lg:items-center lg:justify-between gap-4' : 'max-w-full'}>
-
-          {/* Back Button for Creative Carousel */}
-          {activeFilter === 'Social Media' && socialSubTab === 'Creatives' && creativeMode === 'carousel' && (
-            <button
-              onClick={() => setCreativeMode('wall')}
-              className="mb-2 flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back to Gallery
-            </button>
-          )}
-
-          <div className="flex flex-col">
+          {/* Title row */}
+          <div className="flex flex-col w-full">
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen ? 'text-lg text-foreground mb-0' : 'text-5xl mb-2'}`}
+              className={`font-black tracking-tighter transition-all duration-700 ${isFullscreen
+                  ? "text-base sm:text-lg text-foreground mb-0 text-center"
+                  : "text-3xl sm:text-4xl lg:text-5xl mb-1"
+                }`}
             >
-              My <span className="gradient-text">Work</span>
+              My{" "}
+              <span className="gradient-text">Work</span>
             </motion.h1>
             {!isFullscreen && (
-              <p className="font-medium tracking-tight text-base text-muted-foreground mb-1">
+              <p className="font-medium text-sm text-muted-foreground mb-4">
                 Case studies & creative work
               </p>
             )}
           </div>
 
-          <div className={`flex flex-col ${isFullscreen ? 'lg:flex-row lg:items-center lg:gap-8' : 'gap-6'}`}>
-            {/* Main Categories (Circles) */}
-            <div className={`flex gap-4 overflow-x-auto scrollbar-none py-1 ${isFullscreen ? 'justify-center lg:justify-start' : 'justify-center lg:justify-start -mx-1 px-1'}`}>
-              {categoryData.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveFilter(cat.id)}
-                  className="flex flex-col items-center gap-1.5 transition-all duration-300 group shrink-0"
+          {/* ── Category Circles ── */}
+          <div
+            className={`flex gap-3 sm:gap-4 overflow-x-auto scrollbar-none py-1 w-full ${isFullscreen ? "justify-center" : "justify-start sm:justify-center"
+              }`}
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            {categoryData.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveFilter(cat.id)}
+                className="flex flex-col items-center gap-1 transition-all duration-300 group shrink-0"
+              >
+                <div
+                  className={`relative p-[2px] rounded-full transition-all duration-500 transform ${activeFilter === cat.id
+                      ? "scale-105 bg-gradient-to-tr from-[#fb923c] via-[#ec4899] to-[#8b5cf6] shadow-[0_0_15px_rgba(236,72,153,0.3)]"
+                      : "bg-zinc-200 dark:bg-zinc-800 hover:bg-gradient-to-tr hover:from-primary/50 hover:to-primary group-hover:scale-105"
+                    }`}
                 >
-                  <div className={`relative p-[2px] rounded-full transition-all duration-500 transform ${activeFilter === cat.id 
-                    ? 'scale-105 bg-gradient-to-tr from-[#fb923c] via-[#ec4899] to-[#8b5cf6] shadow-[0_0_15px_rgba(236,72,153,0.3)]' 
-                    : 'bg-zinc-200 dark:bg-zinc-800 hover:bg-gradient-to-tr hover:from-primary/50 hover:to-primary group-hover:scale-105'}`}>
-                    <div className={`rounded-full p-0.5 bg-background ${isFullscreen ? 'bg-white' : 'bg-white dark:bg-zinc-900'} transition-colors`}>
-                      <div className={`rounded-full overflow-hidden relative transition-all ${isFullscreen ? 'w-10 h-10 sm:w-12 sm:h-12' : 'w-16 h-16 sm:w-20 sm:h-20'}`}>
-                        <img 
-                          src={cat.image} 
-                          alt={cat.title} 
-                          className={`w-full h-full object-cover transition-all duration-500 ${activeFilter === cat.id ? 'scale-110' : 'grayscale-[50%] group-hover:grayscale-0'}`} 
-                        />
-                        <div className={`absolute inset-0 bg-black/10 transition-opacity ${activeFilter === cat.id ? 'opacity-0' : 'opacity-40 group-hover:opacity-10'}`} />
-                      </div>
+                  <div className="rounded-full p-0.5 bg-white dark:bg-zinc-900 transition-colors">
+                    <div
+                      className={`rounded-full overflow-hidden relative transition-all ${isFullscreen
+                          ? "w-9 h-9 sm:w-11 sm:h-11"
+                          : "w-12 h-12 sm:w-16 sm:h-16 md:w-18 md:h-18"
+                        }`}
+                    >
+                      <img
+                        src={cat.image}
+                        alt={cat.title}
+                        className={`w-full h-full object-cover transition-all duration-500 ${activeFilter === cat.id
+                            ? "scale-110"
+                            : "grayscale-[50%] group-hover:grayscale-0"
+                          }`}
+                      />
+                      <div
+                        className={`absolute inset-0 bg-black/10 transition-opacity ${activeFilter === cat.id
+                            ? "opacity-0"
+                            : "opacity-40 group-hover:opacity-10"
+                          }`}
+                      />
                     </div>
                   </div>
-                  <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {cat.title}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Sub-tabs for Social Media (Small Circles) */}
-            {activeFilter === 'Social Media' && (
-              <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex gap-4 items-center justify-center lg:justify-start overflow-x-auto scrollbar-none pb-2 px-2"
-              >
-                <div className="h-8 w-[1px] bg-slate-200 mx-2 hidden lg:block" />
-                {['Video Portfolio', 'Creatives', 'Ads'].map((sub) => {
-                  const internalSub = sub === 'Ads' ? 'Paid Ads' : sub;
-                  const isActive = socialSubTab === internalSub;
-                  return (
-                    <button
-                      key={sub}
-                      onClick={() => setSocialSubTab(internalSub)}
-                      className="flex flex-col items-center gap-1.5 transition-all duration-300 group shrink-0"
-                    >
-                      <div className={`relative p-[1.5px] rounded-full transition-all duration-500 transform ${isActive 
-                        ? 'scale-105 bg-gradient-to-tr from-primary via-accent to-primary shadow-[0_0_10px_rgba(236,72,153,0.2)]' 
-                        : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 group-hover:scale-105'}`}>
-                        <div className={`rounded-full p-0.5 bg-white transition-colors`}>
-                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-zinc-50 overflow-hidden`}>
-                            {sub === 'Video Portfolio' && <Video className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />}
-                            {sub === 'Creatives' && <Sparkles className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />}
-                            {sub === 'Ads' && <Megaphone className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />}
-                          </div>
-                        </div>
-                      </div>
-                      <span className={`text-[7px] sm:text-[8px] font-bold uppercase tracking-wider transition-all duration-300 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
-                        {sub}
-                      </span>
-                    </button>
-                  );
-                })}
-              </motion.div>
-            )}
+                </div>
+                <span
+                  className={`text-[7px] sm:text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeFilter === cat.id
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                    }`}
+                >
+                  {cat.title}
+                </span>
+              </button>
+            ))}
           </div>
 
+          {/* ── Social Sub-tabs ── */}
+          {activeFilter === "Social Media" && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex gap-4 sm:gap-6 items-center justify-center overflow-x-auto scrollbar-none pb-1 w-full"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
+              {["Video Portfolio", "Creatives", "Ads"].map((sub) => {
+                const internalSub = sub === "Ads" ? "Paid Ads" : sub;
+                const isActive = socialSubTab === internalSub;
+                return (
+                  <button
+                    key={sub}
+                    onClick={() => setSocialSubTab(internalSub)}
+                    className="flex flex-col items-center gap-1 transition-all duration-300 group shrink-0"
+                  >
+                    <div
+                      className={`relative p-[1.5px] rounded-full transition-all duration-500 transform ${isActive
+                          ? "scale-105 bg-gradient-to-tr from-primary via-accent to-primary shadow-[0_0_10px_rgba(236,72,153,0.2)]"
+                          : "bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 group-hover:scale-105"
+                        }`}
+                    >
+                      <div className="rounded-full p-0.5 bg-white">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-zinc-50 overflow-hidden">
+                          {sub === "Video Portfolio" && (
+                            <Video
+                              className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                            />
+                          )}
+                          {sub === "Creatives" && (
+                            <Sparkles
+                              className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                            />
+                          )}
+                          {sub === "Ads" && (
+                            <Megaphone
+                              className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <span
+                      className={`text-[7px] sm:text-[8px] font-bold uppercase tracking-wider transition-all duration-300 ${isActive ? "text-primary" : "text-muted-foreground"
+                        }`}
+                    >
+                      {sub}
+                    </span>
+                  </button>
+                );
+              })}
+            </motion.div>
+          )}
         </div>
       </div>
 
+      {/* ── Content Views ── */}
       <AnimatePresence mode="wait">
-        {/* VIEW 1: PROJECTS (Case Studies) */}
-        {(!isFullscreen) && activeFilter !== "Web Dev" && (
+
+        {/* VIEW 1: Case Studies */}
+        {!isFullscreen && activeFilter !== "Web Dev" && (
           <motion.div
             key="projects-list"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="pb-24 grid gap-8 px-1"
+            className="pb-24 px-1"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               {filtered.map((project) => (
                 <motion.div
                   key={project.id}
@@ -403,36 +264,39 @@ const WorkPage = () => {
                   onClick={() => setSelectedProject(project)}
                   className="group soft-card overflow-hidden cursor-pointer !p-0"
                 >
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-44 sm:h-48 overflow-hidden">
                     <img
                       src={project.coverImage}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    <div className="absolute bottom-3 left-4 right-4">
-                      <h3 className="font-bold text-lg text-white leading-tight mb-1">{project.title}</h3>
-                      <div className="flex gap-2 flex-wrap">
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h3 className="font-bold text-base sm:text-lg text-white leading-tight mb-1">
+                        {project.title}
+                      </h3>
+                      <div className="flex gap-1.5 flex-wrap">
                         {project.tags.map((tag) => (
-                          <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-sm text-white border border-white/10">
+                          <span
+                            key={tag}
+                            className="text-[9px] px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-sm text-white border border-white/10"
+                          >
                             {tag}
                           </span>
                         ))}
                       </div>
                     </div>
                   </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center justify-between mb-4">
+                  <div className="p-4 sm:p-5">
+                    <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
-                          <TrendingUp className="w-4 h-4" />
+                        <div className="p-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                          <TrendingUp className="w-3.5 h-3.5" />
                         </div>
                         <span className="font-bold text-sm">{project.result}</span>
                       </div>
-                      <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                     </div>
-
                     <p className="text-xs text-muted-foreground line-clamp-2">
                       {project.problem}
                     </p>
@@ -443,8 +307,8 @@ const WorkPage = () => {
           </motion.div>
         )}
 
-        {/* VIEW 2: VIDEO PORTFOLIO (REELS) IN WORK PAGE */}
-        {activeFilter === 'Social Media' && socialSubTab === 'Video Portfolio' && (
+        {/* VIEW 2: Video Portfolio */}
+        {activeFilter === "Social Media" && socialSubTab === "Video Portfolio" && (
           <motion.div
             key="video-portfolio"
             initial={{ opacity: 0 }}
@@ -452,23 +316,26 @@ const WorkPage = () => {
             exit={{ opacity: 0 }}
             className="flex-1 min-h-0 relative bg-black overflow-hidden flex flex-col"
           >
-            <div 
+            <div
               ref={containerRef}
               onScroll={handleScroll}
               className="flex-1 overflow-y-scroll snap-y snap-mandatory scrollbar-none flex flex-col w-full bg-white"
-              style={{ scrollBehavior: 'smooth' }}
+              style={{ scrollBehavior: "smooth" }}
             >
               <div className="flex-1">
                 {videoPortfolio.map((video, i) => (
-                  <ReelCard 
-                    key={video.id} 
-                    video={video} 
-                    isActive={i === activeVideoIndex} 
+                  <ReelCard
+                    key={video.id}
+                    video={video}
+                    isActive={i === activeVideoIndex}
                     onEnded={() => {
                       if (i < videoPortfolio.length - 1) {
-                        containerRef.current?.scrollTo({ top: (i + 1) * containerRef.current.clientHeight, behavior: 'smooth' });
+                        containerRef.current?.scrollTo({
+                          top: (i + 1) * containerRef.current.clientHeight,
+                          behavior: "smooth",
+                        });
                       } else {
-                        containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                        containerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
                       }
                     }}
                   />
@@ -476,77 +343,94 @@ const WorkPage = () => {
               </div>
             </div>
 
-
-            {/* Indicator / Info Overlay */}
-            <div className="absolute top-20 right-4 z-30 flex flex-col gap-2">
+            {/* Counter pill */}
+            <div className="absolute top-4 right-4 z-30">
               <div className="bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold text-white">
                 {activeVideoIndex + 1} / {videoPortfolio.length}
               </div>
             </div>
-            
-            {/* Desktop Navigation for Video Portfolio in Work Page - Synced with Reels Selection Nav */}
+
+            {/* Desktop nav arrows */}
             <div className="hidden lg:flex fixed flex-col right-12 top-1/2 -translate-y-1/2 gap-6 z-50">
-              <button 
-                onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex - 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
+              <button
+                onClick={() =>
+                  containerRef.current?.scrollTo({
+                    top: (activeVideoIndex - 1) * containerRef.current.clientHeight,
+                    behavior: "smooth",
+                  })
+                }
                 disabled={activeVideoIndex === 0}
-                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
+                className="p-4 rounded-full bg-foreground/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
               >
-                <ArrowUp className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
+                <ArrowUp className="w-6 h-6 text-foreground dark:text-white" />
               </button>
-              <button 
-                onClick={() => containerRef.current?.scrollTo({ top: (activeVideoIndex + 1) * containerRef.current.clientHeight, behavior: 'smooth' })}
+              <button
+                onClick={() =>
+                  containerRef.current?.scrollTo({
+                    top: (activeVideoIndex + 1) * containerRef.current.clientHeight,
+                    behavior: "smooth",
+                  })
+                }
                 disabled={activeVideoIndex === videoPortfolio.length - 1}
-                className="p-4 rounded-full bg-white/5 lg:bg-foreground/5 dark:lg:bg-white/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
+                className="p-4 rounded-full bg-foreground/5 hover:bg-primary/20 hover:scale-110 transition-all disabled:opacity-20 active:scale-95 border border-primary/20 shadow-xl backdrop-blur-md"
               >
-                <ArrowDown className="w-6 h-6 lg:text-foreground dark:lg:text-white" />
+                <ArrowDown className="w-6 h-6 text-foreground dark:text-white" />
               </button>
             </div>
-
           </motion.div>
         )}
 
-        {/* VIEW 3: CREATIVES */}
+        {/* VIEW 3: Creatives Gallery */}
         {activeFilter === "Social Media" && socialSubTab === "Creatives" && (
           <motion.div
             className="pb-24 pt-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="text-center mb-12 mt-12 pointer-events-none">
-              <h2 className="text-2xl font-serif font-bold text-foreground">
+            <div className="text-center mb-10 mt-6 pointer-events-none">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-foreground">
                 Welcome to My <span className="italic text-primary">Gallery</span>
               </h2>
-              <p className="text-xs text-muted-foreground font-light tracking-wide mt-1">A curation of visual experiments</p>
+              <p className="text-xs text-muted-foreground font-light tracking-wide mt-1">
+                A curation of visual experiments
+              </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-16 px-4 max-w-4xl mx-auto">
+            {/* 
+              MOBILE FIX: reduce hanging string spacing on small screens
+              grid-cols-2 on mobile, 3 on md+
+            */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-14 sm:gap-y-16 px-3 sm:px-4 max-w-4xl mx-auto">
               {creativeItems.map((item, index) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.08 }}
                   className="relative group cursor-pointer"
                   onClick={() => setSelectedCreative(item)}
                 >
-                  {/* Hanging String */}
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-slate-300 dark:bg-slate-700 z-0" />
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-600 shadow-sm z-0" />
+                  {/* Hanging string */}
+                  <div className="absolute -top-10 sm:-top-12 left-1/2 -translate-x-1/2 w-[1px] h-10 sm:h-12 bg-slate-300 dark:bg-slate-700 z-0" />
+                  <div className="absolute -top-10 sm:-top-12 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-600 shadow-sm z-0" />
 
                   {/* Frame */}
-                  <div className="bg-white p-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-1 relative z-10">
-                    <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+                  <div className="bg-white p-1.5 sm:p-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-1 relative z-10">
+                    <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                       <img
                         src={item.image}
                         alt={item.title}
                         className="w-full h-full object-cover filter contrast-[1.05]"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
-                    <div className="mt-3 text-center">
-                      <h3 className="text-[10px] font-serif font-bold truncate px-1 text-black tracking-tight">{item.title}</h3>
-                      <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-0.5">{item.category}</p>
+                    <div className="mt-2 sm:mt-3 text-center">
+                      <h3 className="text-[9px] sm:text-[10px] font-serif font-bold truncate px-0.5 text-black tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-[8px] sm:text-[9px] text-gray-400 uppercase tracking-widest mt-0.5">
+                        {item.category}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -554,74 +438,98 @@ const WorkPage = () => {
             </div>
           </motion.div>
         )}
-        {/* VIEW 4: PAID ADS */}
+
+        {/* VIEW 4: Paid Ads */}
         {activeFilter === "Social Media" && socialSubTab === "Paid Ads" && (
           <motion.div
             key="paid-ads"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="pb-24 pt-20 px-2 flex-1 overflow-y-auto"
+            className="pb-24 pt-6 px-1 flex-1 overflow-y-auto"
           >
-            <div className="text-center mb-10 w-full max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold mb-2">Ad <span className="gradient-text">Campaigns</span></h2>
-              <p className="text-sm text-muted-foreground">High-converting creatives & strategic funnels.</p>
+            <div className="text-center mb-8 w-full max-w-2xl mx-auto">
+              <h2 className="text-xl sm:text-2xl font-bold mb-1">
+                Ad <span className="gradient-text">Campaigns</span>
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                High-converting creatives & strategic funnels.
+              </p>
             </div>
 
-            <div className="grid gap-12 max-w-5xl mx-auto pb-12">
+            <div className="grid gap-8 sm:gap-12 max-w-5xl mx-auto pb-12">
               {[
                 {
                   id: 1,
                   title: "DTC Fashion Brand Scale",
                   result: "4.5x ROAS",
-                  strategy: "Full-funnel Meta Ads strategy. We used UGC creatives for top-of-funnel awareness and dynamic product ads for retargeting.",
+                  strategy:
+                    "Full-funnel Meta Ads strategy. We used UGC creatives for top-of-funnel awareness and dynamic product ads for retargeting.",
                   images: [
                     "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop"
+                    "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop",
                   ],
-                  stats: { spend: "$5k", revenue: "$22.5k", cpa: "$12" }
+                  stats: { spend: "$5k", revenue: "$22.5k", cpa: "$12" },
                 },
                 {
                   id: 2,
                   title: "Webinar Lead Gen",
                   result: "800+ Signups",
-                  strategy: "YouTube & LinkedIn Ads targeting B2B decision makers. Direct response copy focused on pain points.",
+                  strategy:
+                    "YouTube & LinkedIn Ads targeting B2B decision makers. Direct response copy focused on pain points.",
                   images: [
                     "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=600&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=600&auto=format&fit=crop"
+                    "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=600&auto=format&fit=crop",
                   ],
-                  stats: { spend: "$2k", leads: "842", cpl: "$2.37" }
-                }
+                  stats: { spend: "$2k", leads: "842", cpl: "$2.37" },
+                },
               ].map((campaign) => (
-                <div key={campaign.id} className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                <div
+                  key={campaign.id}
+                  className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-slate-100 dark:border-slate-800 shadow-sm"
+                >
+                  {/* Campaign header */}
+                  <div className="flex flex-col gap-3 mb-5">
                     <div>
-                      <h3 className="text-xl font-bold">{campaign.title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1 max-w-lg">{campaign.strategy}</p>
+                      <h3 className="text-lg sm:text-xl font-bold">{campaign.title}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-1">{campaign.strategy}</p>
                     </div>
-                    <div className="px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-xl font-bold text-sm border border-green-200 dark:border-green-900/50 flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4" /> {campaign.result}
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-xl font-bold text-xs sm:text-sm border border-green-200 dark:border-green-900/50 self-start">
+                      <TrendingUp className="w-3.5 h-3.5" /> {campaign.result}
                     </div>
                   </div>
 
-                  {/* Screenshots Grid */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
+                  {/* Screenshots */}
+                  <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-5">
                     {campaign.images.map((img, i) => (
-                      <div key={i} className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 aspect-video relative group">
-                        <img src={img} alt="Ad Creative" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <div
+                        key={i}
+                        className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 aspect-video relative group"
+                      >
+                        <img
+                          src={img}
+                          alt="Ad Creative"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="text-xs font-bold text-white border border-white/30 px-3 py-1 rounded-full backdrop-blur-md">View Creative</span>
+                          <span className="text-[10px] font-bold text-white border border-white/30 px-2 py-1 rounded-full backdrop-blur-md">
+                            View
+                          </span>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Stats Footer */}
-                  <div className="flex gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  {/* Stats footer */}
+                  <div className="flex gap-4 sm:gap-6 pt-3 sm:pt-4 border-t border-slate-100 dark:border-slate-800 flex-wrap">
                     {Object.entries(campaign.stats).map(([key, value]) => (
                       <div key={key}>
-                        <div className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">{key}</div>
-                        <div className="text-lg font-mono font-bold text-foreground">{value}</div>
+                        <div className="text-[9px] sm:text-[10px] uppercase text-muted-foreground font-bold tracking-wider">
+                          {key}
+                        </div>
+                        <div className="text-base sm:text-lg font-mono font-bold text-foreground">
+                          {value}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -631,23 +539,28 @@ const WorkPage = () => {
           </motion.div>
         )}
 
-        {/* VIEW 5: WEB DEVELOPMENT PROJECTS */}
+        {/* VIEW 5: Web Dev */}
         {activeFilter === "Web Dev" && (
           <motion.div
             key="web-dev"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="pb-24"
+            className="pb-24 px-1"
           >
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-1">
+            <div className="mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold mb-1">
                 Web <span className="gradient-text">Development</span>
               </h2>
-              <p className="text-sm text-muted-foreground">Live projects built with modern web technologies.</p>
+              <p className="text-sm text-muted-foreground">
+                Live projects built with modern web technologies.
+              </p>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+            {/* 
+              MOBILE FIX: single column on mobile, 2 columns on sm+
+            */}
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2">
               {webDevProjects.map((project, index) => (
                 <motion.div
                   key={project.id}
@@ -657,58 +570,66 @@ const WorkPage = () => {
                   transition={{ delay: index * 0.08 }}
                   className="group soft-card overflow-hidden cursor-pointer !p-0"
                 >
-                  {/* Cover Image */}
-                  <div className="relative h-44 overflow-hidden">
+                  {/* Cover */}
+                  <div className="relative h-40 sm:h-44 overflow-hidden">
                     <img
                       src={project.coverImage}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-60 mix-blend-multiply`} />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-60 mix-blend-multiply`}
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
 
                     {/* Status badge */}
-                    <div className="absolute top-3 left-3">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full backdrop-blur-md border border-white/20 text-white ${project.status === 'In Progress'
-                        ? 'bg-amber-500/50'
-                        : 'bg-green-500/50'
-                        }`}>
-                        {project.status === 'In Progress' ? '⚡ In Progress' : '✅ Live'}
+                    <div className="absolute top-2.5 left-2.5">
+                      <span
+                        className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full backdrop-blur-md border border-white/20 text-white ${project.status === "In Progress"
+                            ? "bg-amber-500/50"
+                            : "bg-green-500/50"
+                          }`}
+                      >
+                        {project.status === "In Progress" ? "⚡ In Progress" : "✅ Live"}
                       </span>
                     </div>
 
-                    {/* Title overlay */}
-                    <div className="absolute bottom-3 left-4 right-4">
-                      <div className="text-[10px] font-semibold text-white/70 mb-0.5">{project.badge}</div>
-                      <h3 className="font-bold text-lg text-white leading-tight">{project.title}</h3>
+                    {/* Title */}
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="text-[9px] font-semibold text-white/70 mb-0.5">
+                        {project.badge}
+                      </div>
+                      <h3 className="font-bold text-base sm:text-lg text-white leading-tight">
+                        {project.title}
+                      </h3>
                     </div>
                   </div>
 
-                  {/* Card body */}
-                  <div className="p-5">
-                    <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                  {/* Body */}
+                  <div className="p-4 sm:p-5">
+                    <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-2">
                       {project.description}
                     </p>
 
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-1.5 mb-4">
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-3 sm:mb-4">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20"
+                          className="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
 
-                    {/* View project link */}
+                    {/* Link */}
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-2 text-xs font-bold text-primary hover:underline group/link"
+                      className="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline group/link"
                     >
                       <Globe className="w-3.5 h-3.5" />
                       View Live Project
@@ -722,71 +643,100 @@ const WorkPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Project Detail Dialog */}
+      {/* ── Project Detail Dialog ── */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="bg-white dark:bg-slate-900 border-none text-foreground max-w-lg lg:max-w-2xl mx-auto p-0 overflow-hidden shadow-2xl rounded-3xl">
+        <DialogContent className="bg-white dark:bg-slate-900 border-none text-foreground w-[calc(100vw-24px)] max-w-2xl mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl sm:rounded-3xl">
           <DialogHeader className="sr-only">
             <DialogTitle>{selectedProject?.title}</DialogTitle>
             <DialogDescription>{selectedProject?.problem}</DialogDescription>
           </DialogHeader>
           {selectedProject && (
             <>
-              <div className="relative h-64 overflow-hidden">
-                <img src={selectedProject.coverImage} alt={selectedProject.title} className="w-full h-full object-cover" />
+              <div className="relative h-48 sm:h-64 overflow-hidden">
+                <img
+                  src={selectedProject.coverImage}
+                  alt={selectedProject.title}
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                <div className="absolute bottom-5 left-6 right-6">
-                  <h2 className="text-2xl font-bold text-white mb-2">{selectedProject.title}</h2>
-                  <div className="flex gap-2">
-                    {selectedProject.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold text-white border border-white/10">
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                    {selectedProject.title}
+                  </h2>
+                  <div className="flex gap-1.5 flex-wrap">
+                    {selectedProject.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 sm:px-3 py-0.5 sm:py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-semibold text-white border border-white/10"
+                      >
                         {tag}
                       </span>
                     ))}
                   </div>
                 </div>
               </div>
-              <div className="p-6 md:p-8 max-h-[60vh] overflow-y-auto">
-                <div className="flex items-center gap-3 mb-6 bg-green-50 dark:bg-green-900/10 p-4 rounded-2xl border border-green-100 dark:border-green-900/30">
-                  <div className="p-2 bg-green-500 rounded-full text-white">
-                    <TrendingUp className="w-5 h-5" />
+
+              <div className="p-4 sm:p-6 md:p-8 max-h-[55vh] overflow-y-auto">
+                {/* Key Result */}
+                <div className="flex items-center gap-3 mb-5 bg-green-50 dark:bg-green-900/10 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-green-100 dark:border-green-900/30">
+                  <div className="p-1.5 sm:p-2 bg-green-500 rounded-full text-white shrink-0">
+                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div>
-                    <span className="block text-xs font-bold uppercase text-green-600 dark:text-green-400 tracking-wider">Key Result</span>
-                    <span className="text-lg font-bold text-foreground">{selectedProject.result}</span>
+                    <span className="block text-[10px] font-bold uppercase text-green-600 dark:text-green-400 tracking-wider">
+                      Key Result
+                    </span>
+                    <span className="text-base sm:text-lg font-bold text-foreground">
+                      {selectedProject.result}
+                    </span>
                   </div>
                 </div>
 
-                <div className="grid gap-6 md:grid-cols-2 mb-8">
+                {/* Problem / Solution */}
+                <div className="grid gap-4 sm:grid-cols-2 mb-6">
                   <div>
-                    <h3 className="font-bold text-sm text-foreground mb-2 flex items-center gap-2">
+                    <h3 className="font-bold text-sm text-foreground mb-1.5 flex items-center gap-2">
                       <span className="w-1 h-4 bg-primary rounded-full" /> Problem
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{selectedProject.problem}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      {selectedProject.problem}
+                    </p>
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-foreground mb-2 flex items-center gap-2">
+                    <h3 className="font-bold text-sm text-foreground mb-1.5 flex items-center gap-2">
                       <span className="w-1 h-4 bg-green-500 rounded-full" /> Solution
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{selectedProject.solution}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      {selectedProject.solution}
+                    </p>
                   </div>
                 </div>
 
-                <div className="mb-8">
-                  <h3 className="font-bold text-sm text-foreground mb-3">Tech Stack & Tools</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.tools.map(tool => (
-                      <span key={tool} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium text-muted-foreground">
+                {/* Tools */}
+                <div className="mb-6">
+                  <h3 className="font-bold text-sm text-foreground mb-2">Tech Stack & Tools</h3>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {selectedProject.tools.map((tool) => (
+                      <span
+                        key={tool}
+                        className="px-2 sm:px-3 py-1 sm:py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-[10px] sm:text-xs font-medium text-muted-foreground"
+                      >
                         {tool}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-800 pt-6">
+                {/* Metrics */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 border-t border-slate-100 dark:border-slate-800 pt-4 sm:pt-6">
                   {selectedProject.metrics.map((metric, i) => (
                     <div key={i} className="text-center">
-                      <div className="text-xl md:text-2xl font-bold text-foreground mb-1">{metric.value}</div>
-                      <div className="text-[10px] uppercase font-bold text-muted-foreground">{metric.label}</div>
+                      <div className="text-lg sm:text-2xl font-bold text-foreground mb-0.5">
+                        {metric.value}
+                      </div>
+                      <div className="text-[8px] sm:text-[10px] uppercase font-bold text-muted-foreground">
+                        {metric.label}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -796,26 +746,33 @@ const WorkPage = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Creative Detail Modal (Lightbox) */}
+      {/* ── Creative Lightbox ── */}
       <Dialog open={!!selectedCreative} onOpenChange={() => setSelectedCreative(null)}>
-        <DialogContent className="bg-black/95 border-none text-white max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
+        <DialogContent className="bg-black/95 border-none text-white w-[calc(100vw-24px)] max-w-lg mx-auto p-0 overflow-hidden shadow-2xl rounded-2xl">
           {selectedCreative && (
             <div className="relative">
-              <img src={selectedCreative.image} alt={selectedCreative.title} className="w-full h-auto max-h-[60vh] object-contain bg-black/50" />
-              <div className="p-5">
+              <img
+                src={selectedCreative.image}
+                alt={selectedCreative.title}
+                className="w-full h-auto max-h-[55vh] object-contain bg-black/50"
+              />
+              <div className="p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">{selectedCreative.category}</span>
+                  <span className="text-[10px] font-medium text-primary tracking-widest uppercase border border-primary/30 px-2 py-0.5 rounded">
+                    {selectedCreative.category}
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold mb-2 font-serif tracking-tight">{selectedCreative.title}</h3>
-                <p className="text-sm text-gray-300 leading-relaxed font-light">{selectedCreative.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold mb-1.5 font-serif tracking-tight">
+                  {selectedCreative.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-light">
+                  {selectedCreative.description}
+                </p>
               </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
-      {/* Floating Back Button for Mobile Accessibility */}
-      {/* Floating Back Button for Mobile Accessibility */}
-        {/* Back button removed */}
     </div>
   );
 };
