@@ -527,15 +527,15 @@ const ReelsPage = () => {
           />
         ))}
 
-        {/* Desktop navigation buttons */}
-        <div className="hidden lg:flex fixed flex-col right-8 lg:right-12 top-1/2 -translate-y-1/2 gap-4 z-50">
+        {/* Navigation buttons */}
+        <div className="flex fixed flex-col right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-[60%] gap-3 sm:gap-4 z-[60]">
           <button onClick={() => scrollToIndex(Math.max(activeIndex - 1, 0))} disabled={activeIndex === 0}
-            className="p-4 rounded-2xl bg-white hover:bg-slate-50 hover:-translate-y-1 transition-all disabled:opacity-30 disabled:hover:translate-y-0 active:scale-95 border border-slate-200 shadow-xl text-slate-700"
+            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white hover:-translate-y-1 transition-all disabled:opacity-20 disabled:hover:translate-y-0 active:scale-95 border border-slate-200 shadow-lg text-slate-700"
             title="Previous (Arrow Up)">
             <ArrowUp className="w-5 h-5" />
           </button>
           <button onClick={() => scrollToIndex(Math.min(activeIndex + 1, videoPortfolio.length - 1))} disabled={activeIndex === videoPortfolio.length - 1}
-            className="p-4 rounded-2xl bg-white hover:bg-slate-50 hover:translate-y-1 transition-all disabled:opacity-30 disabled:hover:translate-y-0 active:scale-95 border border-slate-200 shadow-xl text-slate-700"
+            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white hover:translate-y-1 transition-all disabled:opacity-20 disabled:hover:translate-y-0 active:scale-95 border border-slate-200 shadow-lg text-slate-700"
             title="Next (Arrow Down)">
             <ArrowDown className="w-5 h-5" />
           </button>

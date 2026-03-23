@@ -20,16 +20,26 @@ const SimpleDialog = ({ open, onOpenChange, children, className }: any) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-xl"
+            className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl"
             onClick={() => onOpenChange(false)}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            className={`fixed left-1/2 top-1/2 z-[201] -translate-x-1/2 -translate-y-1/2 w-full max-w-[95vw] md:max-w-5xl bg-black/90 border border-white/10 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center max-h-[90vh] md:max-h-[90vh] p-2 ${className || ""}`}
+            className={`fixed inset-0 z-[201] flex items-center justify-center pointer-events-none p-4 sm:p-8 md:p-12`}
           >
-            {children}
+            {/* Global Close Button */}
+            <button
+               onClick={() => onOpenChange(false)}
+               className="fixed top-4 right-4 sm:top-8 sm:right-8 z-[210] pointer-events-auto p-2.5 sm:p-3 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all active:scale-90"
+               aria-label="Close dialog"
+            >
+               <X className="w-5 h-5 sm:w-6 h-6" />
+            </button>
+            <div className={`relative pointer-events-auto max-w-full max-h-full flex flex-col outline-none overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl ${className || ""}`}>
+              {children}
+            </div>
           </motion.div>
         </>
       )}
@@ -99,41 +109,58 @@ const creativeItems = [
 const adCampaigns = [
   {
     id: 1,
-    title: "Orgalife – Meta Ads Funnel Optimization",
-    subtitle: "Full-funnel Meta Ads strategy focused on improving audience quality and reducing acquisition cost for an organic food brand.",
-    highlightBadge: "370K+ Reach Generated at Low Cost",
-    strategy: "Implemented a structured full-funnel strategy to improve campaign efficiency. Focused on awareness and engagement campaigns to build a high-quality audience, resulting in strong reach and very low interaction cost.",
+    title: "Orgalife – Full Funnel Meta Ads Strategy",
+    subtitle: "Structured Meta Ads funnel to improve audience quality, reduce costs, and build a scalable foundation for conversions.",
+    highlightBadge: "370K+ People Reached at Low Cost",
+    strategy: "Implemented a structured full-funnel Meta Ads strategy focusing on awareness and engagement to build a high-quality audience. This approach significantly improved cost efficiency and prepared a strong base for future conversion campaigns.",
     images: [
-      // Placeholder for Awareness ad creative (Gud Chana / Oil)
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop",
-      // Placeholder for Engagement video creative
-      "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop", 
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800&auto=format&fit=crop"
     ],
-    metricsRow1: {
-      "Reach": "370,166",
-      "Interactions": "1,771",
-      "Cost per Result": "₹2.96",
-      "Cost per Engagement": "₹0.30"
-    },
-    metricsRow2: {
-      "Ad Spend": "₹1,600",
-      "Campaign Type": "Awareness + Engagement Funnel",
-      "Platform": "Meta Ads (Facebook & Instagram)"
-    },
-    keyInsight: "Cold audiences do not convert directly. Warming users through awareness and engagement significantly improves campaign efficiency and prepares audiences for future conversions.",
+    funnel: [
+      { 
+        stage: "Awareness Stage", 
+        icon: "Globe", 
+        color: "text-blue-500", 
+        metrics: [
+          { label: "Reach", value: "370,166" },
+          { label: "Cost per result", value: "₹2.96" }
+        ] 
+      },
+      { 
+        stage: "Engagement Stage", 
+        icon: "MessageCircle", 
+        color: "text-amber-500", 
+        metrics: [
+          { label: "Interactions", value: "1,771" },
+          { label: "Cost per interaction", value: "₹0.30" }
+        ] 
+      },
+      { 
+        stage: "Conversion Stage", 
+        icon: "TrendingUp", 
+        color: "text-rose-500", 
+        status: "Under optimization",
+        insight: "Cold audiences required warming before conversion"
+      }
+    ],
+    additionalMetrics: [
+      { label: "Total Ad Spend", value: "₹1,600 (approx)" },
+      { label: "Platform", value: "Meta Ads (FB & IG)" },
+      { label: "Funnel Type", value: "Awareness → Engagement → Retargeting" }
+    ],
+    keyInsight: "Cold audiences do not convert directly. A funnel-based approach improves efficiency by warming users before retargeting.",
     optimizationApproach: [
-      "Built awareness campaigns for maximum reach",
+      "Built awareness campaigns for reach",
       "Used engagement campaigns to educate users",
-      "Created custom audiences for future retargeting",
-      "Optimized creatives for higher interaction"
+      "Created custom audiences for retargeting",
+      "Improved creative performance for higher interaction"
     ],
+    proofText: "Campaign snapshots showing Reach and Engagement results at peak performance.",
     proofImages: [
-      // Placeholders for Met Ads Manager cropped screenshots
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop"
-    ],
-    proofText: "Screenshots attached for performance validation."
+      "/assets/work/ads/proofs/orgalife-reach-proof.png",
+      "/assets/work/ads/proofs/orgalife-engagement-proof.png"
+    ]
   }
 ];
 
@@ -283,10 +310,45 @@ const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("Social Media");
   const [socialSubTab, setSocialSubTab] = useState("Video Portfolio");
   const [selectedProject, setSelectedProject] = useState<any>(null);
-  const [selectedCreative, setSelectedCreative] = useState<any>(null);
-  const [selectedAdImage, setSelectedAdImage] = useState<string | null>(null);
+  const [creativeGallery, setCreativeGallery] = useState<{ index: number } | null>(null);
+  const [adGallery, setAdGallery] = useState<{ images: string[], index: number } | null>(null);
   const [activeReelIndex, setActiveReelIndex] = useState<any>(null); // null means grid view
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Keyboard Navigation for Lightboxes & Galleries
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // 1. Creative Gallery Shortcuts (Left/Right arrow)
+      if (creativeGallery !== null) {
+        if (e.key === "ArrowRight") {
+          setCreativeGallery({ index: (creativeGallery.index + 1) % creativeItems.length });
+        } else if (e.key === "ArrowLeft") {
+          setCreativeGallery({ index: (creativeGallery.index - 1 + creativeItems.length) % creativeItems.length });
+        } else if (e.key === "Escape") {
+          setCreativeGallery(null);
+        }
+      }
+
+      // 2. Ad Campaign Gallery Shortcuts (Left/Right arrow)
+      if (adGallery !== null) {
+        if (e.key === "ArrowRight") {
+          setAdGallery({ ...adGallery, index: (adGallery.index + 1) % adGallery.images.length });
+        } else if (e.key === "ArrowLeft") {
+          setAdGallery({ ...adGallery, index: (adGallery.index - 1 + adGallery.images.length) % adGallery.images.length });
+        } else if (e.key === "Escape") {
+          setAdGallery(null);
+        }
+      }
+
+      // 3. Project Detail Modal Close (Escape)
+      if (selectedProject !== null) {
+        if (e.key === "Escape") setSelectedProject(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [creativeGallery, adGallery, selectedProject]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     setIsScrolled(e.currentTarget.scrollTop > 50);
@@ -443,8 +505,8 @@ const WorkPage = () => {
           {/* VIEW: CREATIVES GALLERY */}
           {activeFilter === "Social Media" && socialSubTab === "Creatives" && (
             <motion.div key="creatives" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-              {creativeItems.map((item) => (
-                <motion.div key={item.id} whileHover={{ scale: 1.02 }} className="group relative break-inside-avoid bg-card rounded-3xl overflow-hidden cursor-pointer border border-border/50" onClick={() => setSelectedCreative(item)}>
+              {creativeItems.map((item, i) => (
+                <motion.div key={item.id} whileHover={{ scale: 1.02 }} className="group relative break-inside-avoid bg-card rounded-3xl overflow-hidden cursor-pointer border border-border/50" onClick={() => setCreativeGallery({ index: i })}>
                   <img src={item.image} alt={item.title} className="w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                      <span className="text-xs font-bold text-primary uppercase tracking-widest mb-2">{item.category}</span>
@@ -472,7 +534,7 @@ const WorkPage = () => {
                   {/* Images Row */}
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     {campaign.images.map((img, i) => (
-                      <div key={i} onClick={() => setSelectedAdImage(img)} className="rounded-2xl overflow-hidden aspect-video border border-border/50 relative group cursor-pointer shadow-sm">
+                      <div key={i} onClick={() => setAdGallery({ images: campaign.images, index: i })} className="rounded-2xl overflow-hidden aspect-video border border-border/50 relative group cursor-pointer shadow-sm">
                          <img src={img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Ad Creative" />
                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span className="text-[10px] sm:text-xs font-bold text-white border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-md flex items-center gap-1"><Maximize2 className="w-3 h-3" /> View Ad</span>
@@ -481,31 +543,67 @@ const WorkPage = () => {
                     ))}
                   </div>
 
-                  {/* Metrics Row 1 */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                    {Object.entries(campaign.metricsRow1).map(([key, value]) => (
-                      <div key={key} className="p-5 bg-muted/30 rounded-2xl border border-border/50 flex flex-col items-center justify-center text-center">
-                        <div className="text-[11px] uppercase text-muted-foreground font-bold tracking-wider mb-2">{key}</div>
-                        <div className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">{value}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Metrics Row 2 */}
-                  <div className="grid grid-flow-row grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    {Object.entries(campaign.metricsRow2).map(([key, value]) => (
-                      <div key={key} className="p-4 bg-muted/20 rounded-2xl border border-border/50 flex flex-col sm:flex-row items-start sm:items-center justify-between sm:px-6 gap-2">
-                        <div className="text-[10px] sm:text-[11px] uppercase text-muted-foreground font-bold tracking-widest shrink-0">{key}</div>
-                        <div className="text-sm sm:text-base font-bold text-foreground text-left sm:text-right">{value}</div>
-                      </div>
-                    ))}
-                  </div>
-
                   {/* Strategy Description */}
                   <div className="mb-8 bg-card border border-border/50 rounded-2xl p-6 sm:p-8">
-                    <p className="text-base sm:text-lg text-foreground leading-relaxed font-medium">
+                    <p className="text-base sm:text-lg text-foreground leading-relaxed font-medium capitalize-first">
                       {campaign.strategy}
                     </p>
+                  </div>
+
+                  {/* 📊 Funnel Breakdown */}
+                  <div className="flex flex-col gap-4 mb-8">
+                     <div className="flex items-center gap-2 text-foreground/80 font-bold text-sm uppercase tracking-[0.2em] mb-2 px-2">
+                        <BarChart3 className="w-4 h-4 text-primary" /> Funnel Breakdown
+                     </div>
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {campaign.funnel.map((stage: any, idx: number) => {
+                          const IconComp = { Globe, MessageCircle, TrendingUp }[stage.icon as "Globe" | "MessageCircle" | "TrendingUp"] || Globe;
+                          return (
+                            <div key={idx} className="relative p-6 bg-muted/30 rounded-3xl border border-border/50 group hover:border-primary/30 transition-all flex flex-col gap-4 overflow-hidden">
+                               <div className={`absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity -mr-4 -mt-4`}>
+                                  <IconComp className="w-24 h-24" />
+                               </div>
+                               <div className="flex items-center gap-3">
+                                  <div className={`p-2 rounded-xl bg-background shadow-sm ${stage.color}`}>
+                                     <IconComp className="w-5 h-5" />
+                                  </div>
+                                  <span className="font-bold text-sm text-foreground/90">{stage.stage}</span>
+                               </div>
+                               {stage.metrics ? (
+                                  <div className="grid grid-cols-1 gap-3">
+                                     {stage.metrics.map((m: any, i: number) => (
+                                        <div key={i} className="flex flex-col">
+                                           <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{m.label}</span>
+                                           <span className="text-xl font-black text-foreground">{m.value}</span>
+                                        </div>
+                                     ))}
+                                  </div>
+                               ) : (
+                                  <div className="flex flex-col gap-2">
+                                     <div className="flex items-center gap-2">
+                                        <span className="relative flex h-2 w-2">
+                                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                                           <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                                        </span>
+                                        <span className="text-[10px] uppercase font-bold text-rose-500 tracking-widest">{stage.status}</span>
+                                     </div>
+                                     <span className="text-xs text-muted-foreground leading-snug italic">"{stage.insight}"</span>
+                                  </div>
+                               )}
+                            </div>
+                          );
+                        })}
+                     </div>
+                  </div>
+
+                  {/* ➕ Additional Metrics */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 p-6 bg-primary/5 rounded-3xl border border-primary/10">
+                    {campaign.additionalMetrics.map((m, i) => (
+                      <div key={i} className="flex flex-col">
+                         <span className="text-[10px] uppercase font-bold text-primary/60 tracking-widest mb-1">{m.label}</span>
+                         <span className="text-xs sm:text-sm font-bold text-foreground/90">{m.value}</span>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="grid lg:grid-cols-2 gap-6 mb-8">
@@ -543,7 +641,7 @@ const WorkPage = () => {
                      </p>
                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {campaign.proofImages.map((img, idx) => (
-                           <div key={idx} onClick={() => setSelectedAdImage(img)} className="rounded-xl overflow-hidden aspect-[4/3] border border-border/50 relative group cursor-pointer shadow-sm bg-muted flex items-center justify-center">
+                           <div key={idx} onClick={() => setAdGallery({ images: campaign.proofImages, index: idx })} className="rounded-xl overflow-hidden aspect-[4/3] border border-border/50 relative group cursor-pointer shadow-sm bg-muted flex items-center justify-center">
                               <img src={img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt={`Campaign Proof ${idx + 1}`} />
                               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                  <div className="flex flex-col items-center gap-2">
@@ -613,7 +711,7 @@ const WorkPage = () => {
       )}
 
       {/* 2. Project Detail Modal */}
-      <SimpleDialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)} className="flex flex-col bg-card border-border/50 p-0 w-full max-w-3xl overflow-hidden">
+      <SimpleDialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)} className="flex flex-col bg-card border border-white/10 shadow-2xl p-0 w-[95vw] w-full md:w-auto md:min-w-[700px] max-w-3xl overflow-hidden">
         {selectedProject && (
           <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
             <div className="relative h-48 md:h-64 shrink-0 overflow-hidden">
@@ -684,33 +782,94 @@ const WorkPage = () => {
         )}
       </SimpleDialog>
 
-      {/* 3. Creative Lightbox */}
-      <SimpleDialog open={!!selectedCreative} onOpenChange={() => setSelectedCreative(null)} className="flex-col md:flex-row bg-card border-border/50 p-0 md:p-0">
-        {selectedCreative && (
-           <>
-            <button onClick={() => setSelectedCreative(null)} className="absolute top-3 right-3 md:top-4 md:right-4 z-50 p-1.5 md:p-2 rounded-full bg-black/40 text-white backdrop-blur-md border border-white/10 hover:bg-black/60 transition-colors">
-              <X className="w-4 h-4 md:w-5 md:h-5" />
-            </button>
-            <div className="w-full md:w-2/3 bg-black/50 flex flex-1 items-center justify-center border-b md:border-b-0 md:border-r border-white/5 overflow-hidden">
-              <img src={selectedCreative.image} alt={selectedCreative.title} className="max-h-[50vh] md:max-h-[85vh] w-auto max-w-full object-contain" />
+      {/* 3. Creative Gallery Lightbox */}
+      <SimpleDialog open={!!creativeGallery} onOpenChange={() => setCreativeGallery(null)} className="flex-col md:flex-row bg-card border border-white/10 p-0 md:p-0 w-[95vw] sm:w-[90vw] md:w-auto md:min-w-[800px] max-w-5xl">
+        {creativeGallery && (
+          <>
+            <div className="relative w-full md:w-2/3 bg-black flex flex-1 items-center justify-center border-b md:border-b-0 md:border-r border-white/5 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={creativeGallery.index}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  src={creativeItems[creativeGallery.index].image} 
+                  alt={creativeItems[creativeGallery.index].title} 
+                  className="max-h-[50vh] md:max-h-[85vh] w-auto max-w-full object-contain" 
+                />
+              </AnimatePresence>
+
+              {/* Navigation Arrows */}
+              <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setCreativeGallery({ index: (creativeGallery.index - 1 + creativeItems.length) % creativeItems.length }); }}
+                  className="p-2 sm:p-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 pointer-events-auto hover:bg-black/70 transition-all active:scale-90"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setCreativeGallery({ index: (creativeGallery.index + 1) % creativeItems.length }); }}
+                  className="p-2 sm:p-3 rounded-full bg-black/50 text-white backdrop-blur-md border border-white/10 pointer-events-auto hover:bg-black/70 transition-all active:scale-90"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-            <div className="w-full md:w-1/3 p-6 md:p-8 flex flex-col justify-center bg-card">
-              <span className="text-[9px] md:text-[10px] font-bold text-primary tracking-widest uppercase border border-primary/30 bg-primary/10 px-2 md:px-3 py-0.5 md:py-1 rounded-full w-fit mb-4 md:mb-6">{selectedCreative.category}</span>
-              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-3">{selectedCreative.title}</h3>
-              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{selectedCreative.description}</p>
+            <div className="w-full md:w-1/3 p-6 md:p-10 flex flex-col justify-center bg-card">
+              <span className="text-[9px] md:text-[10px] font-bold text-primary tracking-widest uppercase border border-primary/30 bg-primary/10 px-2 md:px-3 py-0.5 md:py-1 rounded-full w-fit mb-4 md:mb-6">{creativeItems[creativeGallery.index].category}</span>
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4">{creativeItems[creativeGallery.index].title}</h3>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic border-l-2 border-primary/20 pl-4">{creativeItems[creativeGallery.index].description}</p>
+              
+              <div className="mt-8 flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                <span className="text-primary">{creativeGallery.index + 1}</span>
+                <span className="opacity-30">/</span>
+                <span>{creativeItems.length}</span>
+              </div>
             </div>
           </>
         )}
       </SimpleDialog>
 
-      {/* 4. Ad Image Lightbox */}
-      <SimpleDialog open={!!selectedAdImage} onOpenChange={() => setSelectedAdImage(null)} className="bg-transparent border-none shadow-none md:bg-transparent p-0 flex items-center justify-center">
-        {selectedAdImage && (
-          <div className="relative w-full h-full flex items-center justify-center">
-            <button onClick={() => setSelectedAdImage(null)} className="absolute top-2 right-2 md:top-4 md:right-4 z-50 p-2 md:p-3 rounded-full bg-black/60 text-white backdrop-blur-md border border-white/20 hover:bg-black/80 transition-transform hover:scale-105">
-              <X className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            <img src={selectedAdImage} alt="Ad Creative Expanded" className="w-full h-auto max-w-full max-h-[85vh] object-contain rounded-xl md:rounded-2xl shadow-2xl" />
+      {/* 4. Ad Image Gallery Lightbox */}
+      <SimpleDialog open={!!adGallery} onOpenChange={() => setAdGallery(null)} className="bg-transparent border-none shadow-none p-0 flex items-center justify-center overflow-visible">
+        {adGallery && (
+          <div className="relative flex items-center justify-center w-full h-full max-w-[95vw] md:max-w-6xl">
+            <AnimatePresence mode="wait">
+              <motion.img 
+                key={adGallery.index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                src={adGallery.images[adGallery.index]} 
+                alt="Ad Campaign Image" 
+                className="w-auto h-auto max-w-full max-h-[80vh] md:max-h-[85vh] object-contain rounded-xl md:rounded-2xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.5)] border border-white/5" 
+              />
+            </AnimatePresence>
+
+            {/* Navigation Arrows for Proofs/Ads */}
+            {adGallery.images.length > 1 && (
+              <div className="absolute inset-x-[-20px] sm:inset-x-[-60px] top-1/2 -translate-y-1/2 flex justify-between pointer-events-none px-4">
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setAdGallery({ ...adGallery, index: (adGallery.index - 1 + adGallery.images.length) % adGallery.images.length }); }}
+                  className="p-3 sm:p-4 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 pointer-events-auto hover:bg-white/20 transition-all active:scale-90"
+                >
+                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setAdGallery({ ...adGallery, index: (adGallery.index + 1) % adGallery.images.length }); }}
+                  className="p-3 sm:p-4 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 pointer-events-auto hover:bg-white/20 transition-all active:scale-90"
+                >
+                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+              </div>
+            )}
+
+            {/* Image Counter */}
+            {adGallery.images.length > 1 && (
+              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white uppercase tracking-widest">
+                {adGallery.index + 1} / {adGallery.images.length}
+              </div>
+            )}
           </div>
         )}
       </SimpleDialog>
