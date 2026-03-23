@@ -87,7 +87,7 @@ const timeAgo = (date) => {
 };
 
 // Reusable animated button component
-const ActionButton = ({ icon: Icon, label, onClick, isActive, activeColor, tooltip }) => (
+const ActionButton = ({ icon: Icon, label, onClick, isActive = false, activeColor = "", tooltip = "" }: any) => (
   <button
     onClick={onClick}
     className="flex flex-col items-center gap-2 group relative"
@@ -232,11 +232,11 @@ export const ReelCard = ({ video, isActive, onEnded }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="relative flex-1 flex flex-col xl:flex-row items-center justify-center z-10 overflow-hidden cursor-pointer xl:gap-16 xl:px-12 2xl:px-24 mb-24 xl:mb-0"
+        className="relative flex-1 flex flex-col xl:flex-row items-center justify-center z-10 overflow-hidden cursor-pointer xl:gap-16 xl:px-12 2xl:px-24"
         onClick={togglePlay}
       >
         {/* VIDEO COLUMN */}
-        <div className="relative h-full xl:h-[82vh] aspect-[9/16] max-h-screen flex items-center justify-center bg-black xl:bg-slate-900 xl:rounded-[2.5rem] xl:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] xl:border-8 border-white overflow-hidden transition-all duration-500 group">
+        <div className="relative w-full h-full xl:h-[82vh] xl:aspect-[9/16] xl:w-auto max-h-screen flex items-center justify-center bg-black xl:bg-slate-900 xl:rounded-[2.5rem] xl:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] xl:border-8 border-white overflow-hidden transition-all duration-500 group">
 
           <video ref={videoRef} src={video.videoUrl}
             className={`transition-all duration-700 ${video.aspectRatio === "9:16" ? "h-full w-full object-cover" : "aspect-video h-auto w-full object-contain"}`}
@@ -297,7 +297,7 @@ export const ReelCard = ({ video, isActive, onEnded }) => {
             </p>
 
             <div className="pt-4 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white font-bold text-sm shadow-md">
                 NP
               </div>
               <div>
@@ -441,7 +441,7 @@ export const ReelCard = ({ video, isActive, onEnded }) => {
                   <div className="flex gap-2 relative">
                     <input ref={commentInputRef} type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..."
                       className="flex-1 bg-white border border-slate-200 rounded-xl pl-4 pr-12 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition-all shadow-sm" />
-                    <button type="submit" disabled={!newComment.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg disabled:opacity-30 transition-colors">
+                    <button type="submit" disabled={!newComment.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-primary hover:bg-indigo-50 rounded-lg disabled:opacity-30 transition-colors">
                       <Send className="w-4 h-4" />
                     </button>
                   </div>
@@ -528,7 +528,7 @@ const ReelsPage = () => {
         ))}
 
         {/* Desktop navigation buttons */}
-        <div className="hidden lg:flex fixed flex-col left-12 top-1/2 -translate-y-1/2 gap-4 z-50">
+        <div className="hidden lg:flex fixed flex-col right-8 lg:right-12 top-1/2 -translate-y-1/2 gap-4 z-50">
           <button onClick={() => scrollToIndex(Math.max(activeIndex - 1, 0))} disabled={activeIndex === 0}
             className="p-4 rounded-2xl bg-white hover:bg-slate-50 hover:-translate-y-1 transition-all disabled:opacity-30 disabled:hover:translate-y-0 active:scale-95 border border-slate-200 shadow-xl text-slate-700"
             title="Previous (Arrow Up)">

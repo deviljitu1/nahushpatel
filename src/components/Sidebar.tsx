@@ -38,36 +38,27 @@ const Sidebar = ({ activeTab, onTabChange, isDark, onToggleTheme }: SidebarProps
       className="hidden lg:flex flex-col h-screen sticky top-0 left-0 bg-background/80 backdrop-blur-xl border-r border-border/50 z-[100] overflow-hidden px-4 py-8"
     >
       {/* Sidebar Header & Toggle */}
-      <div className={`mb-10 flex items-center ${isExpanded ? "justify-between px-2" : "justify-center"}`}>
-        <AnimatePresence mode="wait">
-          {isExpanded ? (
-            <motion.h1
-              key="logo-full"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              className="text-xl font-bold tracking-tighter whitespace-nowrap"
-            >
-              NAHUSH<span className="gradient-text">.IN</span>
-            </motion.h1>
-          ) : (
-            <motion.div
-              key="logo-compact"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center"
-            >
-              <span className="text-primary font-black text-sm">N.</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className={`mb-10 flex items-center min-h-[44px] ${isExpanded ? "justify-between px-2" : "justify-center"}`}>
+        {isExpanded ? (
+          <motion.h1
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-xl font-bold tracking-tighter whitespace-nowrap"
+          >
+            NAHUSH<span className="gradient-text">.IN</span>
+          </motion.h1>
+        ) : null}
 
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className={`p-2 rounded-lg hover:bg-muted/50 transition-colors ${!isExpanded ? "absolute top-8 left-1/2 -translate-x-1/2" : ""}`}
+          className="p-2 rounded-lg hover:bg-muted/50 transition-colors"
+          aria-label="Toggle Menu"
         >
-          {isExpanded ? <Menu className="w-5 h-5 text-muted-foreground" /> : <Menu className="w-5 h-5 text-primary" />}
+          {isExpanded ? (
+            <Menu className="w-5 h-5 text-muted-foreground" />
+          ) : (
+            <Menu className="w-5 h-5 text-primary" />
+          )}
         </button>
       </div>
 
