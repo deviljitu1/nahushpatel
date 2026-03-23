@@ -189,17 +189,17 @@ const ReelSlide = ({ video, isActive, onEnded }: any) => {
         </AnimatePresence>
 
         {/* Right Interaction Bar */}
-        <div className="absolute right-4 bottom-28 z-20 flex flex-col items-center gap-6">
+        <div className="absolute right-3 bottom-[180px] z-20 flex flex-col items-center gap-5">
           <ActionButton icon={Heart} label={formatCount(video.likes + (isLiked?1:0))} onClick={(e: any) => { e.stopPropagation(); setIsLiked(!isLiked); }} isActive={isLiked} activeColor="text-primary fill-primary" />
           <ActionButton icon={MessageCircle} label={formatCount(video.comments)} onClick={(e: any) => { e.stopPropagation(); setShowComments(true); }} />
           <ActionButton icon={Share2} label={formatCount(video.shares)} onClick={(e: any) => { e.stopPropagation(); }} />
         </div>
 
         {/* Bottom Details */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-6 pt-24 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none text-white">
-          <div className="pointer-events-auto">
-            <h3 className="text-lg font-bold mb-2">{video.title}</h3>
-            <p className="text-sm text-white/80 line-clamp-2">{video.description}</p>
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-6 pb-[100px] pt-24 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none text-white">
+          <div className="pointer-events-auto max-w-[85%]">
+            <h3 className="text-base font-black mb-1">{video.title}</h3>
+            <p className="text-sm text-white/90 line-clamp-2 leading-relaxed">{video.description}</p>
           </div>
         </div>
 

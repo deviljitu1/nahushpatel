@@ -277,38 +277,38 @@ export const ReelCard = ({ video, isActive, onEnded }) => {
             )}
           </AnimatePresence>
 
-          <div className="absolute right-4 bottom-28 z-20 flex flex-col items-center gap-6">
-            <button onClick={handleLike} className="flex flex-col items-center gap-1 group">
-              <motion.div whileTap={{ scale: 1.2 }} className="p-3 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
-                <Heart className={`w-7 h-7 transition-all duration-300 ${isLiked ? "text-red-500 fill-red-500" : "text-white drop-shadow-md"}`} />
+          <div className="absolute right-3 bottom-[180px] z-20 flex flex-col items-center gap-5">
+            <button onClick={handleLike} className="flex flex-col items-center gap-1.5 group">
+              <motion.div whileTap={{ scale: 1.2 }} className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/10 ring-1 ring-white/5 shadow-xl">
+                <Heart className={`w-6 h-6 transition-all duration-300 ${isLiked ? "text-primary fill-primary" : "text-white"}`} />
               </motion.div>
-              <span className="text-xs text-white font-bold drop-shadow-md">{formatCount(likeCount)}</span>
+              <span className="text-[10px] text-white font-bold drop-shadow-md tracking-wider">{formatCount(likeCount)}</span>
             </button>
 
-            <button onClick={(e) => { e.stopPropagation(); setShowComments(true); if (isPlaying) togglePlay(); }} className="flex flex-col items-center gap-1 group">
-              <div className="p-3 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
-                <MessageCircle className="w-7 h-7 text-white drop-shadow-md" />
+            <button onClick={(e) => { e.stopPropagation(); setShowComments(true); if (isPlaying) togglePlay(); }} className="flex flex-col items-center gap-1.5 group">
+              <div className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/10 ring-1 ring-white/5 shadow-xl">
+                <MessageCircle className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xs text-white font-bold drop-shadow-md">{formatCount(commentCount)}</span>
+              <span className="text-[10px] text-white font-bold drop-shadow-md tracking-wider">{formatCount(commentCount)}</span>
             </button>
 
-            <button onClick={handleShare} className="flex flex-col items-center gap-1 group">
-              <div className="p-3 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
-                <Share2 className="w-7 h-7 text-white drop-shadow-md" />
+            <button onClick={handleShare} className="flex flex-col items-center gap-1.5 group">
+              <div className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/10 ring-1 ring-white/5 shadow-xl">
+                <Share2 className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xs text-white font-bold drop-shadow-md">{formatCount(shareCount)}</span>
+              <span className="text-[10px] text-white font-bold drop-shadow-md tracking-wider">{formatCount(shareCount)}</span>
             </button>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 z-10 p-5 pb-8 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none">
-            <div className="pointer-events-auto">
-              <h3 className="text-lg font-bold text-white drop-shadow-md mb-2 flex items-center gap-2">
+          <div className="absolute bottom-0 left-0 right-0 z-10 p-5 pb-[100px] bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none">
+            <div className="pointer-events-auto max-w-[85%]">
+              <h3 className="text-base font-black text-white drop-shadow-md mb-2 flex items-center gap-2">
                 {video.creator}
               </h3>
-              <p className={`text-sm text-white/90 drop-shadow-md leading-relaxed pr-16 ${!showMore ? "line-clamp-2" : ""}`}
+              <p className={`text-sm text-white/90 drop-shadow-md leading-relaxed ${!showMore ? "line-clamp-2" : ""}`}
                 onClick={(e) => { e.stopPropagation(); setShowMore(!showMore); }}>
                 {video.description}
-                {!showMore && <span className="text-white/70 font-bold ml-2 cursor-pointer">more</span>}
+                {!showMore && <span className="text-white/70 font-bold ml-2 cursor-pointer inline-block">more</span>}
               </p>
             </div>
           </div>
