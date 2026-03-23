@@ -8,18 +8,16 @@ const allSkills = [
   { name: "Google Ads", icon: "https://cdn.simpleicons.org/googleads/4285F4", isImg: true, tier: "Expert", cat: "Marketing" },
   { name: "Meta Ads", icon: "https://cdn.simpleicons.org/meta/0081FB", isImg: true, tier: "Expert", cat: "Marketing" },
   { name: "Analytics (GA4)", icon: "https://cdn.simpleicons.org/googleanalytics/E37400", isImg: true, tier: "Expert", cat: "Marketing" },
-  { name: "Email Marketing", icon: "https://cdn.simpleicons.org/mailchimp/FFE01B", isImg: true, tier: "Proficient", cat: "Marketing" },
   { name: "Content Strategy", icon: "✍️", isImg: false, tier: "Proficient", cat: "Marketing" },
   { name: "Funnel Building", icon: "🎯", isImg: false, tier: "Proficient", cat: "Marketing" },
+  { name: "Video Editing", icon: "🎬", isImg: false, tier: "Expert", cat: "Marketing" },
+  { name: "Visual Design", icon: "🎨", isImg: false, tier: "Expert", cat: "Marketing" },
   { name: "CRO", icon: "https://cdn.simpleicons.org/hotjar/FD3A5C", isImg: true, tier: "Skilled", cat: "Marketing" },
   // Tech
-  { name: "React / Next.js", icon: "https://cdn.simpleicons.org/react/61DAFB", isImg: true, tier: "Expert", cat: "Tech" },
   { name: "WordPress", icon: "https://cdn.simpleicons.org/wordpress/21759B", isImg: true, tier: "Expert", cat: "Tech" },
   { name: "HTML / CSS", icon: "https://cdn.simpleicons.org/html5/E34F26", isImg: true, tier: "Expert", cat: "Tech" },
   { name: "n8n Automation", icon: "https://cdn.simpleicons.org/n8n/EA4B71", isImg: true, tier: "Expert", cat: "Tech" },
-  { name: "REST APIs", icon: "https://cdn.simpleicons.org/postman/FF6C37", isImg: true, tier: "Proficient", cat: "Tech" },
-  { name: "Figma / UI Design", icon: "https://cdn.simpleicons.org/figma/F24E1E", isImg: true, tier: "Proficient", cat: "Tech" },
-  { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/339933", isImg: true, tier: "Skilled", cat: "Tech" },
+  { name: "Vibe Coding", icon: "🤖", isImg: false, tier: "Expert", cat: "Tech" },
   { name: "Webflow", icon: "https://cdn.simpleicons.org/webflow/4353FF", isImg: true, tier: "Skilled", cat: "Tech" },
 ];
 
@@ -31,10 +29,10 @@ const tierBadge: Record<string, string> = {
 
 
 const tools = [
-  "Google Ads", "Meta Ads Manager", "Ahrefs", "SEMrush", "GA4",
-  "Google Search Console", "React", "WordPress", "HTML / CSS", "n8n",
-  "Figma", "Canva", "Hotjar", "ClickFunnels",
-  "Notion", "Webflow", "Mailchimp",
+  "Meta Ads Manager", "Google Ads", "Ahrefs", "SEMrush", "GA4",
+  "Google Search Console", "n8n", "Vibe Coding (AI)", "ClickFunnels",
+  "WordPress", "Adobe Premiere Pro", "Canva", "Hotjar", 
+  "Notion", "Webflow",
 ];
 
 const timeline = [
@@ -169,7 +167,7 @@ const SkillsPage = () => {
       >
         Skills &amp; <span className="text-shimmer">Experience</span>
       </motion.h1>
-      <p className="text-xs sm:text-sm text-muted-foreground mb-8">4+ years of hands-on expertise in marketing &amp; development</p>
+      <p className="text-xs sm:text-sm text-muted-foreground mb-8">Specializing in high-performance Meta & Google Ads, technical SEO, and conversion-led automation.</p>
 
       {/* ── Skill icon card grid ── */}
       <motion.div

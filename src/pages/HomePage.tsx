@@ -17,22 +17,22 @@ const stats = [
 const whatIDo = [
   {
     icon: Megaphone,
-    title: "Digital Marketing",
-    desc: "SEO, Google Ads, Meta Ads & growth funnels that convert.",
+    title: "Performance Marketing",
+    desc: "Meta Ads, Google Ads & full-funnel strategies that drive ROAS.",
     color: "text-orange-500",
     bg: "bg-orange-500/10",
   },
   {
-    icon: Code2,
-    title: "Web Development",
-    desc: "React, WordPress & custom sites built for speed & conversions.",
-    color: "text-blue-500",
-    bg: "bg-blue-500/10",
+    icon: TrendingUp,
+    title: "Growth SEO",
+    desc: "Scaling organic traffic through technical SEO and content clusters.",
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10",
   },
   {
     icon: Zap,
-    title: "Automation",
-    desc: "n8n workflows & AI automations that save 20+ hours a week.",
+    title: "Automation & AI",
+    desc: "Leveraging n8n & Vibe Coding to build high-leverage marketing systems.",
     color: "text-purple-500",
     bg: "bg-purple-500/10",
   },
@@ -123,10 +123,11 @@ interface HomePageProps {
 const HomePage = ({ onNavigate }: HomePageProps) => {
   const [zoomOpen, setZoomOpen] = useState(false);
   const typed = useTypewriter([
-    "Digital Marketer",
-    "Web Developer",
-    "Growth Hacker",
-    "Automation Expert",
+    "Performance Marketer",
+    "Digital Growth Strategist",
+    "Ads Specialist",
+    "SEO Expert",
+    "AI Automation Architect",
   ]);
 
   return (
@@ -205,7 +206,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           <motion.p variants={item} className="text-sm sm:text-base text-muted-foreground max-w-sm lg:max-w-md mx-auto leading-relaxed mb-6 px-4">
-            I craft high-converting digital experiences — from ads that sell to automations that scale.
+            I build high-ROAS marketing engines — combining strategic digital ads with AI automation to scale revenue.
           </motion.p>
 
           {/* CTAs — full width on mobile, inline on sm+ */}

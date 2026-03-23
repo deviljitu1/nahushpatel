@@ -422,7 +422,7 @@ const ReelSlide = ({ video, isActive, onEnded }: any) => {
 
 const WorkPage = () => {
   const [activeFilter, setActiveFilter] = useState("Social Media");
-  const [socialSubTab, setSocialSubTab] = useState("Video Portfolio");
+  const [socialSubTab, setSocialSubTab] = useState("Paid Ads");
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [creativeGallery, setCreativeGallery] = useState<{ index: number } | null>(null);
   const [adGallery, setAdGallery] = useState<{ images: string[], index: number } | null>(null);
