@@ -458,7 +458,7 @@ const ReelsPage = () => {
         ))}
 
         {/* Navigation buttons */}
-        <div className="flex fixed flex-col right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-[60%] gap-3 sm:gap-4 z-[60]">
+        <div className="hidden lg:flex fixed flex-col right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-[60%] gap-3 sm:gap-4 z-[60]">
           <button onClick={() => scrollToIndex(Math.max(activeIndex - 1, 0))} disabled={activeIndex === 0}
             className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-md hover:bg-white hover:-translate-y-1 transition-all disabled:opacity-20 disabled:hover:translate-y-0 active:scale-95 border border-slate-200 shadow-lg text-slate-700"
             title="Previous (Arrow Up)">
