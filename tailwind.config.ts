@@ -17,7 +17,8 @@ export default {
         xs: "475px",
       },
       fontFamily: {
-        sans: ["Space Grotesk", "Inter", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
+        heading: ["Space Grotesk", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

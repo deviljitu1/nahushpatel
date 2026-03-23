@@ -184,7 +184,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
           </motion.div>
 
           {/* Name */}
-          <motion.h1 variants={item} className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-1 tracking-tight">
+          <motion.h1 variants={item} className="text-3xl lg:text-4xl font-bold mb-1 tracking-tight">
             Hi, I'm <span className="text-shimmer">Nahush Patel</span>
           </motion.h1>
 
@@ -295,7 +295,7 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
                 initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.6, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                transition={{ type: "spring" as const, stiffness: 300, damping: 25 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="rounded-3xl overflow-hidden shadow-2xl gradient-bg p-[3px]"

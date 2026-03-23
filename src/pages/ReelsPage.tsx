@@ -2,78 +2,8 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageCircle, Share2, X, Play, Youtube, Instagram, ArrowUp, ArrowDown, Maximize2, Send } from "lucide-react";
 
-// Video data remains exactly the same
-export const videoPortfolio = [
-  {
-    id: 1, title: "Art of the Whisk", category: "YouTube Shorts",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344608/Whisk_qty2idzlzmzkvgzz0iy3itytmznlrtl2ugn30iy_zhzkzd.mp4",
-    creator: "@nahushpatel", description: "A high-speed culinary motion study focusing on textures and movement. 🍳",
-    likes: 3200, comments: 245, shares: 1100, aspectRatio: "16:9",
-    type: "youtube"
-  },
-  {
-    id: 2, title: "Urban Rhythms", category: "Instagram Reels",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344582/_scene_1_202511111742_sh8fv_srx10l.mp4",
-    creator: "@nahushpatel", description: "Capturing the essence of city life through dynamic transitions and sound design. 🏙️",
-    likes: 4500, comments: 312, shares: 890, aspectRatio: "16:9",
-    type: "instagram"
-  },
-  {
-    id: 3, title: "November Hues", category: "Lifestyle",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344554/Nov_17__1228_15s_202511171254_32z0y_oqrmxq.mp4",
-    creator: "@nahushpatel", description: "A seasonal lifestyle edit with warm tones and cinematic grading. 🍂",
-    likes: 2800, comments: 156, shares: 432, aspectRatio: "16:9",
-    type: "tiktok"
-  },
-  {
-    id: 4, title: "Golden Hour Story", category: "Cinematic",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344538/Nov_14__1433_29s_202511141457_ho8je_yimvk9.mp4",
-    creator: "@nahushpatel", description: "Exploring light and shadow during the most magical hour of the day. ☀️",
-    likes: 5100, comments: 423, shares: 1200, aspectRatio: "16:9",
-    type: "instagram"
-  },
-  {
-    id: 5, title: "Cultural Narratives", category: "YouTube Shorts",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344516/Hindi_sdkg1s.mp4",
-    creator: "@nahushpatel", description: "A vertical documentary piece exploring Hindi cultural expressions. 🇮🇳",
-    likes: 8900, comments: 1100, shares: 3400, aspectRatio: "9:16",
-    type: "youtube"
-  },
-  {
-    id: 6, title: "Masterpiece Production", category: "Film",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344504/1_npwj0g.mp4",
-    creator: "@nahushpatel", description: "Full-scale production showcase with high-end camera work and VFX. 🎥",
-    likes: 12000, comments: 2400, shares: 5600, aspectRatio: "16:9",
-    type: "showcase"
-  },
-  {
-    id: 7, title: "Quick Branding Snap", category: "Social",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344468/_duration_8s_202511170013_dbx1h_n7ypbj.mp4",
-    creator: "@nahushpatel", description: "Short-form content designed for maximum engagement in under 10 seconds. ⚡",
-    likes: 1500, comments: 89, shares: 267, aspectRatio: "16:9",
-    type: "instagram"
-  },
-  {
-    id: 8, title: "Cinematic Vertical", category: "Instagram Reels",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344453/_description_cinematic_202512082302_8oaa_k4drmr.mp4",
-    creator: "@nahushpatel", description: "Premium cinematic storytelling optimized for mobile scrolling. ✨",
-    likes: 6700, comments: 534, shares: 1800, aspectRatio: "9:16",
-    type: "instagram"
-  },
-  {
-    id: 9, title: "Widescreen Vision", category: "Showcase",
-    videoUrl: "https://res.cloudinary.com/djm7sh0zd/video/upload/v1773344437/_description_cinematic_202511170019_ltn6_paqx05.mp4",
-    creator: "@nahushpatel", description: "Cinematic wide-ratio showcase for high-resolution displays. 🎞️",
-    likes: 9200, comments: 890, shares: 2100, aspectRatio: "16:9",
-    type: "showcase"
-  },
-];
-
-const formatCount = (n) => {
-  if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-  return n.toString();
-};
+import { videoPortfolio } from "@/data/portfolioData";
+import { formatCount } from "@/lib/utils";
 
 const timeAgo = (date) => {
   const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
@@ -396,7 +326,7 @@ export const ReelCard = ({ video, isActive, onEnded }) => {
 
             <motion.div
               initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              transition={{ type: "spring" as const, damping: 30, stiffness: 300 }}
               className="absolute bottom-0 left-0 right-0 xl:left-auto xl:right-12 xl:bottom-12 xl:w-[400px] xl:rounded-3xl z-50 bg-white shadow-2xl rounded-t-[2rem] flex flex-col border border-slate-100"
               style={{ maxHeight: '70vh' }}
               onClick={(e) => e.stopPropagation()}>

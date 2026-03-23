@@ -85,8 +85,15 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    @apply bg-background text-foreground antialiased font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  p, span, div, button, a, input, textarea {
+    @apply font-sans;
   }
 
   /* Desktop: slightly larger base so all rem-based text scales up */

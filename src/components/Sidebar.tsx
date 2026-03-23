@@ -34,7 +34,7 @@ const Sidebar = ({ activeTab, onTabChange, isDark, onToggleTheme }: SidebarProps
     <motion.aside 
       initial={false}
       animate={{ width: isExpanded ? 260 : 80 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: "spring" as const, stiffness: 300, damping: 30 }}
       className="hidden lg:flex flex-col h-screen sticky top-0 left-0 bg-background/80 backdrop-blur-xl border-r border-border/50 z-[100] overflow-hidden px-4 py-8"
     >
       {/* Sidebar Header & Toggle */}
@@ -96,7 +96,7 @@ const Sidebar = ({ activeTab, onTabChange, isDark, onToggleTheme }: SidebarProps
                 <motion.div
                   layoutId="activeTabSidebar"
                   className="absolute left-0 w-1 h-6 bg-primary rounded-full"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{ type: "spring" as const, stiffness: 300, damping: 30 }}
                 />
               )}
 

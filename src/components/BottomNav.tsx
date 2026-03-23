@@ -48,7 +48,7 @@ const BottomNav = ({ activeTab, onTabChange, isDark, onToggleTheme }: BottomNavP
                     boxShadow: "0 8px 28px hsl(24 95% 53% / 0.4)",
                     border: "4px solid hsl(var(--background))",
                   }}
-                  transition={{ type: "spring", stiffness: 420, damping: 28 }}
+                  transition={{ type: "spring" as const, stiffness: 420, damping: 28 }}
                 >
                   <Icon className="w-5 h-5 text-primary-foreground" />
                 </motion.div>

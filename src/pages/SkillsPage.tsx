@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useState } from "react";
 import { Award, Heart, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -133,19 +133,19 @@ const volunteering = [
   },
 ];
 
-const cardAnim = {
+const cardAnim: Variants = {
   hidden: { opacity: 0, y: 16, scale: 0.94 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "easeOut" as const } },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08 } },
 };
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.97 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 // How many skills fit in 2 rows for each breakpoint
@@ -165,9 +165,9 @@ const SkillsPage = () => {
         transition={{ duration: 0.6 }}
         className="text-3xl lg:text-4xl font-bold mb-1 tracking-tight"
       >
-        Skills &amp; <span className="text-shimmer">Experience</span>
+        Skills & <span className="text-shimmer">Experience</span>
       </motion.h1>
-      <p className="text-xs sm:text-sm text-muted-foreground mb-8">Specializing in high-performance Meta & Google Ads, technical SEO, and conversion-led automation.</p>
+      <p className="text-sm sm:text-base text-muted-foreground mb-8 font-medium">Specializing in high-performance Meta & Google Ads, technical SEO, and conversion-led automation.</p>
 
       {/* ── Skill icon card grid ── */}
       <motion.div
@@ -204,8 +204,8 @@ const SkillsPage = () => {
                 </div>
                 {/* Category dot */}
                 <div className="flex-1">
-                  <p className="text-xs font-bold text-foreground leading-snug mt-1">{s.name}</p>
-                  <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wide mt-0.5">{s.cat}</p>
+                  <p className="text-sm font-bold text-foreground leading-snug mt-1">{s.name}</p>
+                  <p className="text-[10px] font-bold text-primary/70 uppercase tracking-widest mt-0.5">{s.cat}</p>
                 </div>
                 <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${tierBadge[s.tier]}`}>
                   {s.tier}
@@ -272,16 +272,18 @@ const SkillsPage = () => {
               <div className="absolute left-2 top-3 w-6 h-6 rounded-full bg-background border-2 border-primary z-10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300" style={{ boxShadow: '0 0 12px hsl(24 95% 53% / 0.3)' }}>
                 <div className="w-2 h-2 rounded-full bg-primary" />
               </div>
-              <div className="soft-card p-4 group-hover:-translate-y-0.5 transition-transform duration-300">
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="text-sm font-bold">{t.title}</h3>
+              <div className="soft-card p-5 group-hover:-translate-y-0.5 transition-transform duration-300">
+                <div className="flex items-start justify-between gap-2 mb-1.5">
+                  <h3 className="text-base sm:text-lg font-bold leading-tight">{t.title}</h3>
                   {t.current && (
-                    <span className="shrink-0 text-[9px] font-bold px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">● Current</span>
+                    <span className="shrink-0 text-[10px] font-black px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 uppercase tracking-wider">● Current</span>
                   )}
                 </div>
-                <p className="text-[10px] font-semibold text-primary/80 mb-0.5">{t.company}</p>
-                <p className="text-[10px] text-muted-foreground mb-2">{t.year}</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">{t.description}</p>
+                <p className="text-sm font-bold text-primary mb-1">{t.company}</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <p className="text-xs font-medium text-muted-foreground">{t.year}</p>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed font-medium">{t.description}</p>
               </div>
             </motion.div>
           ))}
@@ -315,10 +317,10 @@ const SkillsPage = () => {
                 </div>
               )}
               <div className="min-w-0 flex-1">
-                <h3 className="text-xs font-bold leading-tight mb-0.5">{cert.title}</h3>
-                <p className="text-[10px] font-semibold text-primary/80">{cert.issuer}</p>
-                <p className="text-[10px] text-muted-foreground mb-1.5">Issued {cert.date}</p>
-                <p className="text-[10px] text-muted-foreground/70 leading-relaxed mb-2">{cert.skills}</p>
+                <h3 className="text-sm font-black leading-tight mb-1">{cert.title}</h3>
+                <p className="text-[11px] font-bold text-primary mb-1">{cert.issuer}</p>
+                <p className="text-[10px] font-medium text-muted-foreground mb-2">Issued {cert.date}</p>
+                <p className="text-[11px] text-muted-foreground/80 leading-relaxed mb-3 font-medium">{cert.skills}</p>
                 {cert.link && (
                   <a
                     href={cert.link}
