@@ -161,6 +161,120 @@ const adCampaigns = [
       "/assets/work/ads/proofs/orgalife-reach-proof.png",
       "/assets/work/ads/proofs/orgalife-engagement-proof.png"
     ]
+  },
+  {
+    id: 2,
+    title: "Orgalife – Festive Reach & Brand Awareness Strategy",
+    subtitle: "Seasonal awareness campaigns tied to Indian festivals, achieving mass reach at exceptionally low cost across 7 targeted campaigns.",
+    highlightBadge: "2M+ People Reached · ₹2.17 Avg Cost per Person",
+    strategy: "Mapped Orgalife's product calendar to India's festive calendar. Launched reach campaigns during Makar Sankranti (Gud Chana), Ganesh Utsav, Republic Day, and product launches — using low-budget ads timed to peak cultural attention windows to achieve maximum reach at minimum cost.",
+    images: [
+      "https://images.unsplash.com/photo-1604594849809-dfedbc827105?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop"
+    ],
+    funnel: [
+      {
+        stage: "Makar Sankranti",
+        icon: "Globe",
+        color: "text-amber-500",
+        metrics: [
+          { label: "Reach", value: "3,75,396" },
+          { label: "Cost per Reach", value: "₹1.54" }
+        ]
+      },
+      {
+        stage: "Ganesh Utsav + Republic Day",
+        icon: "TrendingUp",
+        color: "text-blue-500",
+        metrics: [
+          { label: "Combined Reach", value: "5,55,420" },
+          { label: "Avg Cost per Reach", value: "₹1.98" }
+        ]
+      },
+      {
+        stage: "Sunflower Oil Launch",
+        icon: "MessageCircle",
+        color: "text-emerald-500",
+        metrics: [
+          { label: "Reach", value: "3,78,447" },
+          { label: "Cost per Reach", value: "₹3.07" }
+        ]
+      }
+    ],
+    additionalMetrics: [
+      { label: "Total Reach", value: "19,97,694" },
+      { label: "Total Impressions", value: "22,89,861" },
+      { label: "Total Ad Spend", value: "₹4,335 across 7 campaigns" }
+    ],
+    keyInsight: "Festival-timed awareness campaigns achieve 40–60% lower cost per reach than non-festive periods. Seasonal buying intent acts as natural amplification for organic food products.",
+    optimizationApproach: [
+      "Mapped campaign launches to Indian festive calendar",
+      "Used product-relevant creatives tied to each occasion",
+      "Optimized for maximum reach within ₹500–₹1,200 budgets",
+      "Built retargeting audiences from each reach campaign for future use"
+    ],
+    proofText: "Meta Ads Manager screenshots available — cropped metrics showing reach, cost per result, and frequency per campaign.",
+    proofImages: [
+      "/assets/work/ads/proofs/orgalife-festive-reach-proof.png",
+      "/assets/work/ads/proofs/orgalife-republic-day-proof.png"
+    ]
+  },
+  {
+    id: 3,
+    title: "Orgalife – Video Thruplay & Audience Warming Strategy",
+    subtitle: "9 video campaigns using testimonials, product demos, and creator content to generate high-volume completed views and build qualified warm audiences for retargeting.",
+    highlightBadge: "1.39L+ Completed Views · ₹0.058 Lowest Cost per View",
+    strategy: "Ran 9 video campaigns testing 3 content formats — customer testimonials, product demonstrations, and creator-led videos. Optimized for completed views (thruplays), not just impressions, to ensure only genuinely interested users entered the retargeting funnel. Testimonial creatives consistently outperformed product-only visuals.",
+    images: [
+      "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1536240478700-b869ad10e2b1?q=80&w=800&auto=format&fit=crop"
+    ],
+    funnel: [
+      {
+        stage: "Testimonial Videos",
+        icon: "Globe",
+        color: "text-purple-500",
+        metrics: [
+          { label: "Best Cost per View", value: "₹0.058" },
+          { label: "Top Campaign", value: "Haldi Jaggery Nov" }
+        ]
+      },
+      {
+        stage: "Product Demo Videos",
+        icon: "MessageCircle",
+        color: "text-blue-500",
+        metrics: [
+          { label: "Total Thruplays", value: "1,39,059" },
+          { label: "Avg Cost per View", value: "₹0.089" }
+        ]
+      },
+      {
+        stage: "Audience Retargeting Pool",
+        icon: "TrendingUp",
+        color: "text-emerald-500",
+        metrics: [
+          { label: "Total Impressions", value: "5,34,104" },
+          { label: "Total Spend", value: "₹12,335" }
+        ]
+      }
+    ],
+    additionalMetrics: [
+      { label: "Total Completed Views", value: "1,39,059 thruplays" },
+      { label: "Campaigns Run", value: "9 video campaigns" },
+      { label: "Platform", value: "Meta Ads (Facebook & Instagram)" }
+    ],
+    keyInsight: "Testimonial-style videos (real customer faces) achieved 35–50% lower cost per view than product-only visuals. Trust signals outperform feature highlights for organic food audiences.",
+    optimizationApproach: [
+      "Tested 3 video formats: testimonials, product demos, creator-led content",
+      "Optimized for thruplay (completed view) not just impressions",
+      "Used video viewers as custom audience seed for retargeting funnel",
+      "Scaled budget only on creatives with cost per view below ₹0.10"
+    ],
+    proofText: "Meta Ads Manager screenshots available — cropped video metrics showing thruplays, cost per view, and watch-through rate per campaign.",
+    proofImages: [
+      "/assets/work/ads/proofs/orgalife-video-thruplay-proof.png",
+      "/assets/work/ads/proofs/orgalife-testimonial-video-proof.png"
+    ]
   }
 ];
 
