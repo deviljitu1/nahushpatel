@@ -254,18 +254,18 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image:
-      linear-gradient(hsl(220 50% 50% / 0.13) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(220 50% 50% / 0.13) 1px, transparent 1px);
+    --grid-color: hsl(var(--foreground) / 0.05);
+    background-image: 
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
     background-size: 40px 40px;
-    -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 40%, black 30%, transparent 100%);
-    mask-image: radial-gradient(ellipse 75% 75% at 50% 40%, black 30%, transparent 100%);
+    mask-image: radial-gradient(circle at 50% 0%, black, transparent 90%);
+    -webkit-mask-image: radial-gradient(circle at 50% 0%, black, transparent 90%);
   }
 
   .dark .grid-bg {
-    background-image:
-      linear-gradient(hsl(220 40% 80% / 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(220 40% 80% / 0.06) 1px, transparent 1px);
+    --grid-color: hsl(var(--foreground) / 0.07);
+    mask-image: radial-gradient(circle at 50% 0%, black, transparent 85%);
   }
 }
 

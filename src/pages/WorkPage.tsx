@@ -650,6 +650,18 @@ const WorkPage = () => {
                   ))}
                 </div>
               </div>
+              {selectedProject.liveUrl && (
+                <div className="absolute top-4 left-4 z-10">
+                   <a 
+                     href={selectedProject.liveUrl} 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-xl animate-shimmer hover:scale-105 transition-all"
+                   >
+                     <Globe className="w-4 h-4" /> Visit Live Site
+                   </a>
+                </div>
+              )}
             </div>
 
             <div className="p-5 md:p-8 overflow-y-auto space-y-6 md:space-y-8 flex-1">
@@ -697,6 +709,34 @@ const WorkPage = () => {
                       <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{metric.label}</div>
                     </div>
                   ))}
+                </div>
+              )}
+
+              {selectedProject.liveUrl && (
+                <div className="pt-8 border-t border-border">
+                   <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-sm font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-primary" /> Live Preview
+                      </h3>
+                      <a 
+                        href={selectedProject.liveUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                      >
+                        Open in New Tab <ExternalLink className="w-3 h-3" />
+                      </a>
+                   </div>
+                   <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-border bg-muted/50 group">
+                      <iframe 
+                        src={selectedProject.liveUrl} 
+                        className="w-full h-full border-none"
+                        title={selectedProject.title}
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 pointer-events-none transition-colors" />
+                   </div>
+                   <p className="mt-4 text-[10px] text-muted-foreground italic text-center">Note: Some websites may restrict previewing within an iframe for security reasons.</p>
                 </div>
               )}
             </div>

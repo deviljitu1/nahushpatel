@@ -13,10 +13,12 @@ export const videoPortfolio = [
 export const categories = ["Social Media", "Web Dev", "SEO", "Automation"];
 
 export const webDevProjects = [
+  { id: 5, title: "Rajim Kumbh Kalp 2026", badge: "Live Site", status: "Live", description: "Official website for Rajim Kumbh Kalp 2026, showcasing schedules, maps, and cultural highlights.", tags: ["React", "Framer Motion", "Tailwind"], coverImage: "/portfolio/rajimkumbh.png", liveUrl: "https://rajimkumbh.in/" },
+  { id: 6, title: "EmotiFrame", badge: "Live Site", status: "Live", description: "Cinematic agency portfolio focused on high-end video production and branding showcase.", tags: ["React", "Custom Design", "Live"], coverImage: "/portfolio/emotiframe.png", liveUrl: "http://emotiframe.in/" },
+  { id: 7, title: "Eyes Events", badge: "Live Site", status: "Live", description: "Strategic event management portal for professional wedding and event coordination services.", tags: ["WordPress", "SEO", "Optimization"], coverImage: "/portfolio/eyesevents.png", liveUrl: "https://eyesevents.in/" },
+  { id: 8, title: "Personal Portfolio", badge: "Live Site", status: "Live", description: "A sleek, premium portfolio showcasing performance marketing and dev expertise.", tags: ["React", "Vite", "Tailwind"], coverImage: "/portfolio/nahushpatel.png", liveUrl: "https://nahushpatel.in/" },
   { id: 1, title: "Project Kisan", badge: "🏆 Hackathon", status: "In Progress", description: "An AI-powered farming assistant built for Google Hackathon 2025.", tags: ["React", "Gemini AI", "Vercel"], coverImage: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?q=80&w=800&auto=format&fit=crop" },
   { id: 2, title: "LinkPost AI", badge: "🤖 AI Tool", status: "Live", description: "An AI-powered LinkedIn post generator built with React and OpenAI/Gemini API.", tags: ["React", "OpenAI", "Netlify"], coverImage: "https://images.unsplash.com/photo-1611944212129-29977ae1398c?q=80&w=800&auto=format&fit=crop" },
-  { id: 3, title: "Tindog", badge: "🐶 Landing Page", status: "Live", description: "A responsive Tinder-like landing page for dogs, built with Bootstrap 5.", tags: ["HTML", "CSS", "Bootstrap 5"], coverImage: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop" },
-  { id: 4, title: "Personal Portfolio", badge: "🌐 Portfolio", status: "Live", description: "A responsive personal portfolio website showcasing projects, skills and experience.", tags: ["HTML", "CSS", "JavaScript"], coverImage: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=800&auto=format&fit=crop" },
 ];
 
 export const seoProjects = [
@@ -52,7 +54,7 @@ export const adCampaigns = [
         icon: "Globe", 
         color: "text-blue-500", 
         metrics: [
-          { label: "Reach", value: "370,166" },
+          { label: "Total Reach", value: "3.71L+" },
           { label: "Cost per result", value: "₹2.96" }
         ] 
       },
@@ -95,7 +97,7 @@ export const adCampaigns = [
     id: 2,
     title: "Orgalife – Festive Reach & Brand Awareness Strategy",
     subtitle: "Seasonal awareness campaigns tied to Indian festivals, achieving mass reach at exceptionally low cost across 7 targeted campaigns.",
-    highlightBadge: "2M+ People Reached · ₹2.17 Avg Cost per Person",
+    highlightBadge: "20L+ People Reached · ₹2.17 Avg CPC",
     strategy: "Mapped Orgalife's product calendar to India's festive calendar. Launched reach campaigns during Makar Sankranti (Gud Chana), Ganesh Utsav, Republic Day, and product launches — using low-budget ads timed to peak cultural attention windows to achieve maximum reach at minimum cost.",
     images: [
       "https://images.unsplash.com/photo-1604594849809-dfedbc827105?q=80&w=800&auto=format&fit=crop",
@@ -107,7 +109,7 @@ export const adCampaigns = [
         icon: "Globe",
         color: "text-amber-500",
         metrics: [
-          { label: "Reach", value: "3,75,396" },
+          { label: "Reach", value: "3.75L+" },
           { label: "Cost per Reach", value: "₹1.54" }
         ]
       },
@@ -116,7 +118,7 @@ export const adCampaigns = [
         icon: "TrendingUp",
         color: "text-blue-500",
         metrics: [
-          { label: "Combined Reach", value: "5,55,420" },
+          { label: "Combined Reach", value: "5.55L+" },
           { label: "Avg Cost per Reach", value: "₹1.98" }
         ]
       },
@@ -125,13 +127,13 @@ export const adCampaigns = [
         icon: "MessageCircle",
         color: "text-emerald-500",
         metrics: [
-          { label: "Reach", value: "3,78,447" },
+          { label: "Reach", value: "3.78L+" },
           { label: "Cost per Reach", value: "₹3.07" }
         ]
       }
     ],
     additionalMetrics: [
-      { label: "Total Reach", value: "19,97,694" },
+      { label: "Total Reach", value: "19.97L (1.9M+)" },
       { label: "Total Impressions", value: "22,89,861" },
       { label: "Total Ad Spend", value: "₹4,335 across 7 campaigns" }
     ],
@@ -173,7 +175,7 @@ export const adCampaigns = [
         icon: "MessageCircle",
         color: "text-blue-500",
         metrics: [
-          { label: "Total Thruplays", value: "1,39,059" },
+          { label: "Total Completed Views", value: "1.39L+" },
           { label: "Avg Cost per View", value: "₹0.089" }
         ]
       },
@@ -182,7 +184,7 @@ export const adCampaigns = [
         icon: "TrendingUp",
         color: "text-emerald-500",
         metrics: [
-          { label: "Total Impressions", value: "5,34,104" },
+          { label: "Total Impressions", value: "5.34L+" },
           { label: "Total Spend", value: "₹12,335" }
         ]
       }

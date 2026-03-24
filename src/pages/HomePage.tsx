@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight, Eye, TrendingUp, Users, DollarSign,
+  ArrowRight, Eye, TrendingUp, Users, IndianRupee,
   Sparkles, X, MapPin, Mail, Briefcase, Code2, Megaphone, Zap, Download
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
@@ -8,10 +8,10 @@ import ProfileCube from "@/components/ProfileCube";
 
 /* ─── Data ─────────────────────────────────────────────────────────── */
 const stats = [
-  { label: "Projects", value: 50, suffix: "+", icon: Sparkles },
+  { label: "Projects Completed", value: 35, suffix: "+", icon: Sparkles },
   { label: "Leads Generated", value: 10, suffix: "K+", icon: TrendingUp },
-  { label: "Clients Served", value: 30, suffix: "+", icon: Users },
-  { label: "Revenue Generated", value: 2, suffix: "M+", icon: DollarSign },
+  { label: "Ad Spend Managed", value: 12, suffix: "L+", prefix: "₹", icon: Megaphone },
+  { label: "Client Revenue Generated", value: 45, suffix: "L+", prefix: "₹", icon: IndianRupee },
 ];
 
 const whatIDo = [
@@ -46,7 +46,7 @@ const clients = [
 ];
 
 /* ─── Hooks ─────────────────────────────────────────────────────────── */
-function useCountUp(end: number, duration = 2000) {
+function useCountUp(end: number, duration = 2000, decimals = 0) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const started = useRef(false);
@@ -61,7 +61,8 @@ function useCountUp(end: number, duration = 2000) {
           const start = performance.now();
           const animate = (now: number) => {
             const progress = Math.min((now - start) / duration, 1);
-            setCount(Math.floor(progress * end));
+            const val = progress * end;
+            setCount(parseFloat(val.toFixed(decimals)) as any);
             if (progress < 1) requestAnimationFrame(animate);
           };
           requestAnimationFrame(animate);
@@ -71,7 +72,7 @@ function useCountUp(end: number, duration = 2000) {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [end, duration]);
+  }, [end, duration, decimals]);
 
   return { count, ref };
 }
@@ -325,7 +326,8 @@ const HomePage = ({ onNavigate }: HomePageProps) => {
 
 /* ─── Stat Card ─────────────────────────────────────────────────────── */
 function StatCard({ stat }: { stat: (typeof stats)[number] }) {
-  const { count, ref } = useCountUp(stat.value);
+  const decimals = stat.value % 1 === 0 ? 0 : 1;
+  const { count, ref } = useCountUp(stat.value, 2000, decimals);
   const Icon = stat.icon;
   return (
     <motion.div
@@ -337,7 +339,9 @@ function StatCard({ stat }: { stat: (typeof stats)[number] }) {
         <Icon className="w-5 h-5 text-primary" />
       </div>
       <div className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-        {count}<span className="text-primary">{stat.suffix}</span>
+        {stat.prefix && <span className="text-primary">{stat.prefix}</span>}
+        {count}
+        <span className="text-primary">{stat.suffix}</span>
       </div>
       <p className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] mt-1">{stat.label}</p>
     </motion.div>

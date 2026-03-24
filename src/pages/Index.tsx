@@ -77,6 +77,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden font-sans selection:bg-primary/30 block lg:flex uppercase-none">
+      {/* Global Grid Background */}
+      <div className="grid-bg" />
+
       <div className="hidden lg:block h-screen sticky top-0 left-0 z-[100] shrink-0">
         <Sidebar activeTab={activeTab} onTabChange={handleTabChange} isDark={isDark} onToggleTheme={toggleTheme} />
       </div>

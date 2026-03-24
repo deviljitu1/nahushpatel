@@ -31,7 +31,7 @@ const services = [
     short: "High ROAS paid campaigns",
     badge: "High ROI",
     details: "Strategic paid campaigns on Google, Facebook & Instagram. Full funnel setup with retargeting, lookalike audiences, and conversion tracking.",
-    highlights: ["Average 4.2x ROAS delivered", "Full funnel & retargeting", "Weekly performance reports"],
+    highlights: ["Scalable Funnel Design", "4.2x Avg. ROAS delivered", "Weekly performance reports"],
     pricing: "Starting ₹8,000 / mo + ad spend",
   },
   {
